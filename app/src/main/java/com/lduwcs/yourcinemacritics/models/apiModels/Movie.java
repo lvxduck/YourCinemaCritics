@@ -1,10 +1,12 @@
-package com.lduwcs.yourcinemacritics.models;
+package com.lduwcs.yourcinemacritics.models.apiModels;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Movie {
@@ -19,12 +21,12 @@ public class Movie {
     private String title;
 
     @ColumnInfo(name = "film_release_day")
-    @SerializedName("release_day")
+    @SerializedName("release_date")
     private String releaseDay;
 
     @ColumnInfo(name = "film_genres")
     @SerializedName("genre_ids")
-    private int[] genres;
+    private ArrayList<Integer> genres;
 
     @ColumnInfo(name = "film_poster_path")
     @SerializedName("poster_path")
@@ -38,7 +40,7 @@ public class Movie {
     @SerializedName("vote_average")
     private double voteAverage;
 
-    public Movie(int id, String title, String releaseDay, int[] genres, String posterPath, String overview, double voteAverage) {
+    public Movie(int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage) {
         this.id = id;
         this.title = title;
         this.releaseDay = releaseDay;
@@ -72,11 +74,11 @@ public class Movie {
         this.releaseDay = releaseDay;
     }
 
-    public int[] getGenres() {
+    public ArrayList<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenres(int[] genres) {
+    public void setGenres(ArrayList<Integer> genres) {
         this.genres = genres;
     }
 
@@ -104,3 +106,4 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 }
+

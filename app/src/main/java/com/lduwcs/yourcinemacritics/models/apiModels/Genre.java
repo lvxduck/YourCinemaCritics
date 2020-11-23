@@ -1,4 +1,4 @@
-package com.lduwcs.yourcinemacritics.models;
+package com.lduwcs.yourcinemacritics.models.apiModels;
 
 public class Genre {
     private int id;

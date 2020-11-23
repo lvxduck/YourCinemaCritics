@@ -1,8 +1,6 @@
 package com.lduwcs.yourcinemacritics.utils;
 
-import com.google.gson.Gson;
-import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.models.Genre;
+import com.lduwcs.yourcinemacritics.models.apiModels.Genre;
 
 
 import java.util.List;
