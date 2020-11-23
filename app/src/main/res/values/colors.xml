@@ -13,4 +13,5 @@
     <color name="grey">#7D3A3A3A</color>
     <color name="yellow_start">#FFC337</color>
     <color name="dark_grey">#A12C2C2C</color>
+    <color name="light_grey">#343A3A3A</color>
 </resources>

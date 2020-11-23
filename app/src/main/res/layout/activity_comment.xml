@@ -121,6 +121,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        tools:itemCount="3"
+        tools:listitem="@layout/comment_item"
         app:layout_constraintBottom_toTopOf="@+id/btnDetailCommentBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
