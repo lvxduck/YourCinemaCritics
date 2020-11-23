@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.adapters.HomeAdapter;
@@ -60,6 +61,15 @@ public class HomeFragment extends Fragment {
 
         homeRecView = view.findViewById(R.id.homeRecView);
 
+//        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
+//        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                reloadTrending();
+//                pullToRefresh.setRefreshing(false);
+//            }
+//        });
+
         utils = new ApiUtils(getContext());
         AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
                 .allowMainThreadQueries()
@@ -67,33 +77,6 @@ public class HomeFragment extends Fragment {
         moviesDao = appDatabase.getMoviesDao();
 
         movies = new ArrayList<>();
-//        movies.add(new Movie(
-//                299534,
-//                "Avengers: Endgame",
-//                "2019-04-24",
-//                ints,
-//                "/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
-//                "After the devastating events of Avengers: Infinity War, the universe is in ruins due to the efforts of the Mad Titan, Thanos. With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos' actions and restore order to the universe once and for all, no matter what consequences may be in store.",
-//                8.3
-//        ));
-//        movies.add(new Movie(
-//                299534,
-//                "Avengers: Endgame",
-//                "2019-04-24",
-//                ints,
-//                "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg",
-//                "After the devastating events of Avengers: Infinity War, the universe is in ruins due to the efforts of the Mad Titan, Thanos. With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos' actions and restore order to the universe once and for all, no matter what consequences may be in store.",
-//                8.3
-//        ));
-//        movies.add(new Movie(
-//                299534,
-//                "Avengers: Endgame",
-//                "2019-04-24",
-//                ints,
-//                "/jlJ8nDhMhCYJuzOw3f52CP1W8MW.jpg",
-//                "After the devastating events of Avengers: Infinity War, the universe is in ruins due to the efforts of the Mad Titan, Thanos. With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos' actions and restore order to the universe once and for all, no matter what consequences may be in store.",
-//                8.3
-//        ));
 
         adapter = new HomeAdapter(view.getContext(), movies);
         homeRecView.setAdapter(adapter);
@@ -102,22 +85,24 @@ public class HomeFragment extends Fragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(homeRecView);
 
-        //    reloadFavorites();
-        loadFavoriteFromRoom();
+        //    reloadTrending();
+        if(moviesDao.getAllFavorites().size()>0){
+            reloadTrending();
+        }else loadTrendingFromRoom();
     }
 
     //Human_duck
-    private void reloadFavorites() {
+    private void reloadTrending() {
         moviesDao.deleteAll();
         utils.getTrending();
     }
 
-    private void loadFavoriteFromRoom(){
+    private void loadTrendingFromRoom(){
         movies.addAll(moviesDao.getAllFavorites());
     }
 
-    static public void onLoadFavoritesDone(ArrayList<Movie> data, Context context) {
-        movies = new ArrayList<>();
+    static public void onLoadTrendingDone(ArrayList<Movie> data, Context context) {
+        movies.clear();
         movies.addAll(data);
         for (Movie movie : data) {
             moviesDao.insert(movie);
