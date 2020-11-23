@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">YourCinemaCritics</string>
+    <string name="movie_name">MOVIE NAME</string>
+    <string name="star_rating">star rating</string>
+    <string name="add_to_favorite">add to favorite</string>
+    <string name="this_is_a_short_overview_of_this_movie">This is a short overview of this movie</string>
+    <string name="movie_poster">movie poster</string>
+    <string name="button_icon">button_icon</string>
 </resources>
