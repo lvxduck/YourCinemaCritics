@@ -1,11 +1,10 @@
-package com.lduwcs.yourcinemacritics.models;
-
-import androidx.room.Entity;
+package com.lduwcs.yourcinemacritics.models.apiModels;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+//Class to nhat khi lay du lieu ve tu api
 public class MovieData {
 
     @SerializedName("results")

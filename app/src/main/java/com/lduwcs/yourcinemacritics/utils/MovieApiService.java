@@ -1,11 +1,8 @@
 package com.lduwcs.yourcinemacritics.utils;
 
-import com.lduwcs.yourcinemacritics.models.Movie;
-import com.lduwcs.yourcinemacritics.models.MovieData;
-import com.lduwcs.yourcinemacritics.models.MoviesApi;
-import com.lduwcs.yourcinemacritics.models.Trailer;
-
-import java.util.List;
+import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
+import com.lduwcs.yourcinemacritics.models.apiModels.MoviesApi;
+import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.core.Single;

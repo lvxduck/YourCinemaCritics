@@ -2,11 +2,8 @@ package com.lduwcs.yourcinemacritics.utils;
 
 import android.util.Log;
 
-import com.lduwcs.yourcinemacritics.models.Movie;
-import com.lduwcs.yourcinemacritics.models.MovieData;
-import com.lduwcs.yourcinemacritics.models.Trailer;
-
-import java.util.List;
+import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
+import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;

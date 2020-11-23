@@ -1,4 +1,4 @@
-package com.lduwcs.yourcinemacritics.models;
+package com.lduwcs.yourcinemacritics.models.apiModels;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

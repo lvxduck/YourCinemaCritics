@@ -1,6 +1,4 @@
-package com.lduwcs.yourcinemacritics.models;
-
-import java.util.List;
+package com.lduwcs.yourcinemacritics.models.apiModels;
 
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.GET;
