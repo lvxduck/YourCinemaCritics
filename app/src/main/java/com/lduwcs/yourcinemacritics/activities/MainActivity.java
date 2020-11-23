@@ -1,8 +1,10 @@
-package com.lduwcs.yourcinemacritics;
+package com.lduwcs.yourcinemacritics.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.lduwcs.yourcinemacritics.R;
 
 public class MainActivity extends AppCompatActivity {
 
