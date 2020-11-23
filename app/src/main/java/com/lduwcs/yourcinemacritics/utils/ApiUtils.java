@@ -24,6 +24,12 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movies) {
+                        Log.d("DEBUG1", String.valueOf(movies.getResults().get(0).getId()));
+                        Log.d("DEBUG1", movies.getResults().get(0).getTitle());
+                        Log.d("DEBUG1", movies.getResults().get(0).getReleaseDay());
+                        Log.d("DEBUG1", movies.getResults().get(0).getOverview());
+                        Log.d("DEBUG1", movies.getResults().get(0).getPosterPath());
+                        Log.d("DEBUG1", String.valueOf(movies.getResults().get(0).getVoteAverage()));
                         Log.d("DEBUG1", "Success");
                     }
 
@@ -43,6 +49,7 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<Trailer>() {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
+                        Log.d("DEBUG1", trailer.getResults().get(0).getKey());
                         Log.d("DEBUG1", "Success");
                     }
 
@@ -63,12 +70,17 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull MovieData movies) {
                         //TODO: đưa danh sách trending vào mảng
+                        Log.d("DEBUG1", movies.getResults().get(0).getTitle());
+                        Log.d("DEBUG1", movies.getResults().get(0).getReleaseDay());
+                        Log.d("DEBUG1", movies.getResults().get(0).getOverview());
+                        Log.d("DEBUG1", movies.getResults().get(0).getPosterPath());
+                        Log.d("DEBUG1", String.valueOf(movies.getResults().get(0).getVoteAverage()));
                         Log.d("DEBUG1", "Success");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("DEBUG1", "Error!");
+                        Log.d("DEBUG1", "Error!"+e.getMessage());
                     }
                 });
     }
