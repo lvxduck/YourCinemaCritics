@@ -32,6 +32,11 @@ dependencies {
     //neumorphism
     implementation 'com.github.Borutsky:neumorphism-android:1.0.0-alpha01'
 
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
     def nav_version = "2.3.0"
     def room_version = "2.2.5"
 
