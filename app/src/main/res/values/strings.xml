@@ -6,4 +6,24 @@
     <string name="this_is_a_short_overview_of_this_movie">This is a short overview of this movie</string>
     <string name="movie_poster">movie poster</string>
     <string name="button_icon">button_icon</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="email">Email</string>
+    <string name="login">LOGIN</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="not_registered_an_account_yet">Not registered an account yet?</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="or">OR</string>
+    <string name="register">REGISTER</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="re_enter_password">Re-enter Password</string>
 </resources>

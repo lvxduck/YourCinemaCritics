@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:clipChildren="false"
+    tools:context=".activities.RegisterActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/register"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.borutsky.neumorphism.NeumorphicFrameLayout
+        android:id="@+id/neumorphicFrameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        app:corner_radius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:state="flat">
+
+        <EditText
+            android:id="@+id/txtRegEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@null"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+
+    <com.borutsky.neumorphism.NeumorphicFrameLayout
+        android:id="@+id/passwordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        app:corner_radius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/neumorphicFrameLayout2"
+        app:layout_constraintStart_toStartOf="@+id/neumorphicFrameLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2"
+        app:state="flat">
+
+        <EditText
+            android:id="@+id/txtRegPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@null"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+
+    <com.borutsky.neumorphism.NeumorphicFrameLayout
+        android:id="@+id/reEnterPasswordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        app:corner_radius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/passwordContainer"
+        app:layout_constraintStart_toStartOf="@+id/passwordContainer"
+        app:layout_constraintTop_toBottomOf="@+id/passwordContainer"
+        app:state="flat">
+
+        <EditText
+            android:id="@+id/txtRegReEnterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@null"
+            android:hint="@string/re_enter_password"
+            android:inputType="textPassword" />
+    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:cardBackgroundColor="@color/orange"
+        app:cardCornerRadius="28dp"
+        app:layout_constraintEnd_toEndOf="@+id/reEnterPasswordContainer"
+        app:layout_constraintStart_toStartOf="@+id/reEnterPasswordContainer"
+        app:layout_constraintTop_toBottomOf="@+id/reEnterPasswordContainer">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:text="@string/sign_up"
+            android:textColor="@color/background_white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
