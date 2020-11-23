@@ -29,11 +29,13 @@
 
     <TextView
         android:id="@+id/txtHomeTittle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/movie_name"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:text="movie_ kj fds kj ovie_ kj fds kj"
+        android:gravity="center"
         android:textAllCaps="true"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -98,6 +100,8 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
@@ -107,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/this_is_a_short_overview_of_this_movie" />
+                android:text="this_is_a_ short_overview_of_this_movie this_is_a _short_overvie w_of_this_moviethis_is_a_short_overview_of_this_movie" />
         </LinearLayout>
 
     </ScrollView>
