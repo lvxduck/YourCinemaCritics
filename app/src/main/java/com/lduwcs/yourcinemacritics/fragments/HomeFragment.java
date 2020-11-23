@@ -102,21 +102,21 @@ public class HomeFragment extends Fragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(homeRecView);
 
-        //    reloadFavorites();
-        loadFavoriteFromRoom();
+        //    reloadTrending();
+        loadTrendingFromRoom();
     }
 
     //Human_duck
-    private void reloadFavorites() {
+    private void reloadTrending() {
         moviesDao.deleteAll();
         utils.getTrending();
     }
 
-    private void loadFavoriteFromRoom(){
+    private void loadTrendingFromRoom(){
         movies.addAll(moviesDao.getAllFavorites());
     }
 
-    static public void onLoadFavoritesDone(ArrayList<Movie> data, Context context) {
+    static public void onLoadTrendingDone(ArrayList<Movie> data, Context context) {
         movies = new ArrayList<>();
         movies.addAll(data);
         for (Movie movie : data) {
