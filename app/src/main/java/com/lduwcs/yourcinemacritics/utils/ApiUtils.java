@@ -3,6 +3,7 @@ package com.lduwcs.yourcinemacritics.utils;
 import android.util.Log;
 
 import com.lduwcs.yourcinemacritics.models.Movie;
+import com.lduwcs.yourcinemacritics.models.MovieData;
 import com.lduwcs.yourcinemacritics.models.Trailer;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class ApiUtils {
         apiService.getMovies(content)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Movie>>() {
+                .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
-                    public void onSuccess(@NonNull List<Movie> movies) {
+                    public void onSuccess(@NonNull MovieData movies) {
                         Log.d("DEBUG1", "Success");
                     }
 
@@ -58,9 +59,10 @@ public class ApiUtils {
         apiService.getTrending()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Movie>>() {
+                .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
-                    public void onSuccess(@NonNull List<Movie> movies) {
+                    public void onSuccess(@NonNull MovieData movies) {
+                        //TODO: đưa danh sách trending vào mảng
                         Log.d("DEBUG1", "Success");
                     }
 

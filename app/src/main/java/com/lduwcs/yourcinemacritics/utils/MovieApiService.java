@@ -1,6 +1,7 @@
 package com.lduwcs.yourcinemacritics.utils;
 
 import com.lduwcs.yourcinemacritics.models.Movie;
+import com.lduwcs.yourcinemacritics.models.MovieData;
 import com.lduwcs.yourcinemacritics.models.MoviesApi;
 import com.lduwcs.yourcinemacritics.models.Trailer;
 
@@ -12,7 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieApiService {
-    private static final String BASE_URL = "https://api.themoviedb.org/3";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
     private MoviesApi api;
 
     public MovieApiService(){
@@ -23,7 +24,7 @@ public class MovieApiService {
                         .build()
                         .create(MoviesApi.class);
     }
-    public Single<List<Movie>> getMovies(String content){ return api.getMovies(content);}
+    public Single<MovieData> getMovies(String content){ return api.getMovies(content);}
     public Single<Trailer> getMovieTrailer(String id){ return api.getMovieTrailer(id);}
-    public Single<List<Movie>> getTrending(){ return api.getTrending();}
+    public Single<MovieData> getTrending(){ return api.getTrending();}
 }
