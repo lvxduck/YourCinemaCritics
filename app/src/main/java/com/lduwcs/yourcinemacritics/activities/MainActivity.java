@@ -25,9 +25,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DEBUG1";
-    ApiUtils utils;
-    static ArrayList<Movie> movies;
-    static MoviesDao moviesDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,31 +33,11 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initBotNavBar();
-
-        utils = new ApiUtils(this);
-
-        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, "yourmoviecriticsdb")
-                .allowMainThreadQueries()
-                .build();
-        moviesDao = appDatabase.getMoviesDao();
-
-        reloadFavorites();
     }
 
-    private void reloadFavorites() {
-        moviesDao.deleteAll();
-        utils.getTrending();
-    }
 
-    static public void onLoadFavoritesDone(ArrayList<Movie> data, Context context) {
-        movies = new ArrayList<>();
-        movies.addAll(data);
-        for (Movie movie : data) {
-            moviesDao.insert(movie);
-        }
-        Log.d(TAG, "onLoadFavoritesDone: success");
-    }
 
+    //thuan_loki
     private void initBotNavBar() {
         BotNavBar botNavBar = findViewById(R.id.botNavBar);
         final Fragment[] fragment = new Fragment[1];

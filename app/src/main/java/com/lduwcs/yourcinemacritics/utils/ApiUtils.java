@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
+import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Genre;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
@@ -74,7 +75,7 @@ public class ApiUtils {
                     public void onSuccess(@NonNull MovieData movieData) {
                         //TODO: đưa danh sách trending vào mảng
                         movies.addAll(movieData.getResults());
-                        MainActivity.onLoadFavoritesDone(movies,mContext);
+                        HomeFragment.onLoadFavoritesDone(movies,mContext);
                         Log.d("DEBUG1", "Success");
                     }
 
