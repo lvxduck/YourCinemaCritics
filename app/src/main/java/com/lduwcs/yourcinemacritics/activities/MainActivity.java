@@ -1,6 +1,7 @@
 package com.lduwcs.yourcinemacritics.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.fragments.FavoriteFragment;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
@@ -20,19 +22,28 @@ import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.uiComponents.BotNavBar;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DEBUG1";
-
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            initBotNavBar();
+        }
 
-        initBotNavBar();
     }
 
 
