@@ -20,32 +20,34 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DEBUG1";
     ApiUtils utils;
     static ArrayList<Movie> movies;
+    static MoviesDao moviesDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        utils = new ApiUtils(this);
-        Log.d(TAG, "onCreate: ");
-        utils.getAllMovies("avenger");
-//        utils.getTrailer("299534");
-//        utils.getTrending();
-    }
 
-    static public void onLoadMovieDone(ArrayList<Movie> data, Context context){
-        movies = new ArrayList<Movie>();
-        movies.addAll(data);
-        AppDatabase appDatabase= Room.databaseBuilder(context,AppDatabase.class,"yourmoviecriticsdb")
+        utils = new ApiUtils(this);
+
+        AppDatabase appDatabase= Room.databaseBuilder(this,AppDatabase.class,"yourmoviecriticsdb")
                 .allowMainThreadQueries()
                 .build();
-        MoviesDao moviesDao = appDatabase.getMoviesDao();
+        moviesDao = appDatabase.getMoviesDao();
 
+        reloadFavorites();
+    }
 
-        moviesDao.insert(movies.get(0));
-        moviesDao.insert(movies.get(1));
-        moviesDao.insert(movies.get(2));
+    private void reloadFavorites(){
+        moviesDao.deleteAll();
+        utils.getTrending();
+    }
 
-        List<Movie> movies2 = moviesDao.getAllFavorites();
-        Log.d(TAG, "onCreate: "+movies2);
+    static public void onLoadFavoritesDone(ArrayList<Movie> data, Context context){
+        movies = new ArrayList<Movie>();
+        movies.addAll(data);
+        for (Movie movie : data) {
+            moviesDao.insert(movie);
+        }
+        Log.d(TAG, "onLoadFavoritesDone: success");
     }
 }

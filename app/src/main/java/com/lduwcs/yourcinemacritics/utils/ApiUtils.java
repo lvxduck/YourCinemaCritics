@@ -26,9 +26,6 @@ public class ApiUtils {
     }
 
     public void getAllMovies(String content){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
-//        ArrayList<Integer> genres = new ArrayList<Integer>();
-
         apiService = new MovieApiService();
         apiService.getMovies(content)
                 .subscribeOn(Schedulers.newThread())
@@ -38,31 +35,7 @@ public class ApiUtils {
                     public void onSuccess(@NonNull MovieData movieData) {
                          Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
                          Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
-                         Movie movie = movieData.getResults().get(0);
-//                         movies.add(new Movie(movie.getId(),
-//                                 movie.getTitle(),
-//                                 movie.getReleaseDay(),
-//                                 movie.getGenres(),
-//                                 movie.getPosterPath(),
-//                                 movie.getOverview(),
-//                                 movie.getVoteAverage()));
-
-                        movies.add(movieData.getResults().get(0));
-                        movies.add(movieData.getResults().get(1));
-                        movies.add(movieData.getResults().get(2));
-                        movies.add(movieData.getResults().get(3));
-                        Log.d("DEBUG1", movie.getTitle());
-                        Log.d("DEBUG1", movie.getReleaseDay());
-                        Log.d("DEBUG1", movie.getGenres().toString());
-                        Log.d("DEBUG1", movie.getPosterPath());
-                        Log.d("DEBUG1", movie.getOverview());
-                        Log.d("DEBUG1", String.valueOf(movie.getVoteAverage()));
-                        Log.d("DEBUG1", "Success");
-
-
-                        MainActivity.onLoadMovieDone(movies,mContext);
                     }
-
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("DEBUG1", "Error!");
@@ -82,7 +55,6 @@ public class ApiUtils {
                         Log.d("DEBUG1", trailer.getResults().get(0).getKey());
                         Log.d("DEBUG1", "Success");
                     }
-
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("DEBUG1", "Error!");
@@ -92,19 +64,17 @@ public class ApiUtils {
 
 
     public void getTrending(){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getTrending()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
-                    public void onSuccess(@NonNull MovieData movies) {
+                    public void onSuccess(@NonNull MovieData movieData) {
                         //TODO: đưa danh sách trending vào mảng
-                        Log.d("DEBUG1", movies.getResults().get(0).getTitle());
-                        Log.d("DEBUG1", movies.getResults().get(0).getReleaseDay());
-                        Log.d("DEBUG1", movies.getResults().get(0).getOverview());
-                        Log.d("DEBUG1", movies.getResults().get(0).getPosterPath());
-                        Log.d("DEBUG1", String.valueOf(movies.getResults().get(0).getVoteAverage()));
+                        movies.addAll(movieData.getResults());
+                        MainActivity.onLoadFavoritesDone(movies,mContext);
                         Log.d("DEBUG1", "Success");
                     }
 
