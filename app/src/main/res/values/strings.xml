@@ -26,6 +26,19 @@
     <string name="register">REGISTER</string>
     <string name="sign_up">Sign Up</string>
     <string name="re_enter_password">Re-enter Password</string>
+    <string name="gmail_putin_com">gmail@putin.com</string>
+    <string name="cyka_blyat">cyka blyat</string>
+    <string name="_23_11_2020">23/11/2020</string>
+    <string name="avatar">avatar</string>
+    <string name="trending">Trending</string>
+    <string name="comment_background">comment background</string>
+    <string name="imdb_6_7_10">IMDB: 6.7/10</string>
+    <string name="action_comedy">Action, Comedy</string>
+    <string name="play_trailer">play trailer</string>
+    <string name="back">back</string>
+    <string name="type_something">Type something…</string>
+    <string name="send_comment">send comment</string>
+    <string name="logout">logout</string>
     <string name="oauth2ids">374193867527-jgqbtqtnb4s90qrkdh8jo4l66lg2icod.apps.googleusercontent.com</string>
 
 </resources>
