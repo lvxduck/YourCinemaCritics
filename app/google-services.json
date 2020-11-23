@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "726811391043",
+    "firebase_url": "https://yourcinemacritics-fa3ef.firebaseio.com",
+    "project_id": "yourcinemacritics-fa3ef",
+    "storage_bucket": "yourcinemacritics-fa3ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726811391043:android:9ad1cf413b51fa225910f6",
+        "android_client_info": {
+          "package_name": "com.lduwcs.yourcinemacritics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726811391043-cgfn3u00je30t0sgnh8rmikm5jm80vf4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lduwcs.yourcinemacritics",
+            "certificate_hash": "31745039df8d76630f4221db98397a92ac9fd40e"
+          }
+        },
+        {
+          "client_id": "726811391043-absmqh4kj2k1asna5sskaphn6b7nqiaq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABFmuR_-ToYEvCDmjuWoyOywMvMOtRmfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726811391043-absmqh4kj2k1asna5sskaphn6b7nqiaq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
