@@ -20,11 +20,11 @@
 
         <ImageView
             android:id="@+id/imgHomePoster"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/movie_poster"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/poster_demo"
-            android:contentDescription="@string/movie_poster" />
+            app:srcCompat="@drawable/no_preview" />
     </androidx.cardview.widget.CardView>
 
     <TextView

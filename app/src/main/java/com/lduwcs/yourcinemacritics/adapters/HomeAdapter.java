@@ -1,6 +1,9 @@
 package com.lduwcs.yourcinemacritics.adapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
+import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,7 +27,9 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
-    String base_url_image = "https://image.tmdb.org/t/p/w300";
+    String base_url_image = "https://image.tmdb.org/t/p/w500";
+    String base_url_video = "https://www.youtube.com/watch?v=";
+    private ApiUtils utils;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         this.context = context;
@@ -31,6 +37,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             this.movies = movies;
         else
             this.movies = new ArrayList<>();
+        utils = new ApiUtils(context);
     }
 
     @NonNull
@@ -50,11 +57,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
-                .resize(500,750)
-                .centerCrop()
+                .fit()
                 .placeholder(R.drawable.poster_demo)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
+        holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = String.valueOf(movies.get(position).getId());
+                utils.getTrailer(id);
+            }
+        });
 //        ...
     }
 
@@ -77,6 +90,23 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.movies = movies;
         //refresh recycler view when data updates
         notifyDataSetChanged();
+    }
+
+    public static void watchYoutubeVideo(Context context, String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
+//        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
+//        context.startActivity( launchIntent );
+    }
+
+    public void onVideoRequestSuccess(String key){
+        watchYoutubeVideo(context, key);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
