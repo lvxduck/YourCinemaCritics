@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
     static MoviesDao moviesDao;
 
     @SuppressLint("StaticFieldLeak")
-    static HomeAdapter adapter;
+    static public HomeAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
