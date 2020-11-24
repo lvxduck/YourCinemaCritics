@@ -61,14 +61,14 @@ public class HomeFragment extends Fragment {
 
         homeRecView = view.findViewById(R.id.homeRecView);
 
-//        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
-//        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                reloadTrending();
-//                pullToRefresh.setRefreshing(false);
-//            }
-//        });
+        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadTrending();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
         utils = new ApiUtils(getContext());
         AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
@@ -85,20 +85,24 @@ public class HomeFragment extends Fragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(homeRecView);
 
-        //    reloadTrending();
-        if(moviesDao.getAllFavorites().size()>0){
-            reloadTrending();
-        }else loadTrendingFromRoom();
+        //Load trending
+        if(moviesDao.getTrending().size()>0){
+            loadTrendingFromRoom();
+        }else reloadTrending();
     }
 
     //Human_duck
     private void reloadTrending() {
+        movies.clear();
+        adapter.notifyDataSetChanged();
         moviesDao.deleteAll();
         utils.getTrending();
     }
 
     private void loadTrendingFromRoom(){
-        movies.addAll(moviesDao.getAllFavorites());
+        movies.clear();
+        movies.addAll(moviesDao.getTrending());
+        adapter.notifyDataSetChanged();
     }
 
     static public void onLoadTrendingDone(ArrayList<Movie> data, Context context) {

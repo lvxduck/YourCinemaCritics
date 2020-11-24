@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface MoviesDao {
     @Query("SELECT * FROM movie")
-    public List<Movie> getAllFavorites();
+    public List<Movie> getTrending();
 
     @Insert
     public void insert(Movie... movie);
@@ -22,7 +22,7 @@ public interface MoviesDao {
     public void deleteAll();
 
     @Delete
-    public void deleteFavoriteMovie(Movie... movie);
+    public void deleteTrending(Movie... movie);
 
     @Query("SELECT * FROM movie WHERE film_title LIKE '%' || :content || '%' ")
     public List<Movie> searchByTitle(String content);

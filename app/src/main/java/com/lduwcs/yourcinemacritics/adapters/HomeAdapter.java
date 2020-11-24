@@ -59,13 +59,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     private String getLimitOverview(String overview, int max){
-        if(overview.length()>max){
-            while (overview.length()>max && overview.charAt(max)!=' '){
-                max+=1;
-            }
-            return overview.substring(0,max)+"...";
-        }
-        return overview;
+//        if(overview.length()>max){
+//            while (overview.length()>max && overview.charAt(max)!=' '){
+//                max+=1;
+//            }
+//            return overview.substring(0,max)+"...";
+//        }
+        return overview+overview;
     }
 
     @Override
