@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
+import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 
 import java.util.List;
 
@@ -26,4 +27,8 @@ public interface MoviesDao {
 
     @Query("SELECT * FROM movie WHERE film_title LIKE '%' || :content || '%' ")
     public List<Movie> searchByTitle(String content);
+
+    //--------
+    @Query("SELECT * FROM comment")
+    public List<Comment> getComment();
 }

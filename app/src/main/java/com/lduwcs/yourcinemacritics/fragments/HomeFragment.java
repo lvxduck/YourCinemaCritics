@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment {
 
         homeRecView = view.findViewById(R.id.homeRecView);
 
+        //Swipe to refresh
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,12 +71,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        utils = new ApiUtils(getContext());
+        //Connect to database
         AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
                 .allowMainThreadQueries()
                 .build();
         moviesDao = appDatabase.getMoviesDao();
 
+        utils = new ApiUtils(getContext());
         movies = new ArrayList<>();
 
         adapter = new HomeAdapter(view.getContext(), movies);
