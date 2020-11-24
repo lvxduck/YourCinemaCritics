@@ -38,4 +38,5 @@
     <string name="back">back</string>
     <string name="type_something">Type something…</string>
     <string name="send_comment">send comment</string>
+    <string name="logout">logout</string>
 </resources>
