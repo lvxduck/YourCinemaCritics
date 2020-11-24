@@ -11,8 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourCinemaCritics">
-        <activity android:name=".activities.CommentActivity" />
-        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.RegisterActivity"></activity>
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
