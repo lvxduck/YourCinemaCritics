@@ -6,12 +6,14 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lduwcs.yourcinemacritics.R;
 
 import java.util.Objects;
 
 public class CommentActivity extends AppCompatActivity {
+    private RecyclerView commentRecView;
     private CardView btnBack, btnTrailer, btnSendComment;
     private ImageView btnFav;
     private EditText edtCmt;
@@ -23,6 +25,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        commentRecView = findViewById(R.id.detailRecView);
         btnBack = findViewById(R.id.btnDetailBack);
         btnTrailer = findViewById(R.id.btnDetailTrailer);
         btnFav = findViewById(R.id.btnDetailFav);
