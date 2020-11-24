@@ -30,4 +30,12 @@
     <string name="cyka_blyat">cyka blyat</string>
     <string name="_23_11_2020">23/11/2020</string>
     <string name="avatar">avatar</string>
+    <string name="trending">Trending</string>
+    <string name="comment_background">comment background</string>
+    <string name="imdb_6_7_10">IMDB: 6.7/10</string>
+    <string name="action_comedy">Action, Comedy</string>
+    <string name="play_trailer">play trailer</string>
+    <string name="back">back</string>
+    <string name="type_something">Type something…</string>
+    <string name="send_comment">send comment</string>
 </resources>

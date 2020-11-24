@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:background="@color/background_white"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="52dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
