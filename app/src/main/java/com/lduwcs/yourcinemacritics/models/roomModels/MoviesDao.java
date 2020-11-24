@@ -28,7 +28,4 @@ public interface MoviesDao {
     @Query("SELECT * FROM movie WHERE film_title LIKE '%' || :content || '%' ")
     public List<Movie> searchByTitle(String content);
 
-    //--------
-    @Query("SELECT * FROM comment")
-    public List<Comment> getComment();
 }

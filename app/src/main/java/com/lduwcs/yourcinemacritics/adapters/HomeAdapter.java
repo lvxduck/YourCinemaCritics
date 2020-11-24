@@ -58,7 +58,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
-                .placeholder(R.drawable.poster_demo)
+                .placeholder(R.drawable.no_preview)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
         holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
