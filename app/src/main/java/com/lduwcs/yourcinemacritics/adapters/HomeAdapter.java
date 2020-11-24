@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
@@ -61,6 +62,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .placeholder(R.drawable.no_preview)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
+        holder.btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                context.startActivity(intent);
+            }
+        });
         holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
