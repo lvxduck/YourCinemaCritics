@@ -3,15 +3,12 @@ package com.lduwcs.yourcinemacritics.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
-import com.lduwcs.yourcinemacritics.models.apiModels.Genre;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -53,8 +50,9 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<Trailer>() {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
-                        Log.d("DEBUG1", trailer.getResults().get(0).getKey());
                         Log.d("DEBUG1", "Success");
+                        String key = trailer.getResults().get(0).getKey();
+                        HomeFragment.adapter.onVideoRequestSuccess(key);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {

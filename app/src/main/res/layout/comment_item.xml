@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    TODO: setting up for comment adapter
+    IDs:
+    - email : (TextView) txtCmtEmail
+    - content: (TextView) txtCmtContent
+    - star rate: (StarRate) srCmt
+    - comment date: (TextView) txtCmtDate
+    - avatar: (ImageView) imgCmtAvatar
+-->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="26dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="4dp"
+        android:layout_marginHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/txtCmtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="18sp"
+            android:textColor="@color/orange"
+            android:text="@string/gmail_putin_com"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imgCmtAvatar"
+            app:layout_constraintTop_toBottomOf="@+id/txtCmtDate" />
+
+        <TextView
+            android:id="@+id/txtCmtContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="dfd dfkjdfk fdsd kdfs dfs sdfd sdfs sfd fds dfss fdss fsd dfss dfs fds sdf"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCmtEmail" />
+
+        <TextView
+            android:id="@+id/txtCmtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_23_11_2020"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.lduwcs.yourcinemacritics.uiComponents.StarRate
+            android:id="@+id/srCmt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/imgCmtAvatar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srIconSize="20dp"
+            app:srRate="5" />
+
+        <ImageView
+            android:id="@+id/imgCmtAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_name"
+            android:contentDescription="@string/avatar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

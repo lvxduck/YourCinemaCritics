@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,7 @@ public class HomeFragment extends Fragment {
     static MoviesDao moviesDao;
 
     @SuppressLint("StaticFieldLeak")
-    static HomeAdapter adapter;
+    static public HomeAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,21 +62,24 @@ public class HomeFragment extends Fragment {
 
         homeRecView = view.findViewById(R.id.homeRecView);
 
-//        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
-//        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                reloadTrending();
-//                pullToRefresh.setRefreshing(false);
-//            }
-//        });
+        //Swipe to refresh
+        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadTrending();
+                pullToRefresh.setRefreshing(false);
+                Toast.makeText(getContext(),"Reloading",Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        utils = new ApiUtils(getContext());
+        //Connect to database
         AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
                 .allowMainThreadQueries()
                 .build();
         moviesDao = appDatabase.getMoviesDao();
 
+        utils = new ApiUtils(getContext());
         movies = new ArrayList<>();
 
         adapter = new HomeAdapter(view.getContext(), movies);
@@ -85,20 +89,24 @@ public class HomeFragment extends Fragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(homeRecView);
 
-        //    reloadTrending();
-        if(moviesDao.getAllFavorites().size()>0){
-            reloadTrending();
-        }else loadTrendingFromRoom();
+        //Load trending
+        if(moviesDao.getTrending().size()>0){
+            loadTrendingFromRoom();
+        }else reloadTrending();
     }
 
     //Human_duck
     private void reloadTrending() {
+        movies.clear();
+        adapter.notifyDataSetChanged();
         moviesDao.deleteAll();
         utils.getTrending();
     }
 
     private void loadTrendingFromRoom(){
-        movies.addAll(moviesDao.getAllFavorites());
+        movies.clear();
+        movies.addAll(moviesDao.getTrending());
+        adapter.notifyDataSetChanged();
     }
 
     static public void onLoadTrendingDone(ArrayList<Movie> data, Context context) {
