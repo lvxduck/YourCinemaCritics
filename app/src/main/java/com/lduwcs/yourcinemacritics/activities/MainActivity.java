@@ -31,7 +31,7 @@ import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
 import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.uiComponents.BotNavBar;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
-import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.Genres;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
             initBotNavBar();
 
         }
-
+        Genres.setData();
     }
+
 
 
     //thuan_loki
