@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
+import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 
 import java.util.ArrayList;
@@ -16,22 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtils {
-    public static void writeComment(int userId, int movieId, String email, String content, String date, Float rating){
+    public static void writeComment(String userId, String movieId, String email, String content, String date, Float rating){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("movies");
         DatabaseReference commentRef = rootRef.child(movieId);
-        DatabaseReference commentRef = rootRef.child("" + movieId);
         Comment comment = new Comment(email,content, rating, date);
-        commentRef.child("" + userId).setValue(comment);
+        commentRef.child(userId).setValue(comment);
     }
 
-    public static void getComments(String movieId){
-
-    public static ArrayList<Comment> getComments(int movieId){
+    public static ArrayList<Comment> getComments(String movieId){
         ArrayList<Comment> listComment = new ArrayList<>();
         Comment comment;
         comment = new Comment();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("movies");
-        DatabaseReference commentRef = rootRef.child("" + movieId);
+        DatabaseReference commentRef = rootRef.child(movieId);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -57,20 +55,40 @@ public class FirebaseUtils {
 
     }
 
-//    public static List<String> getFavMovies(String userId){
-//        final String[] listFavMovies = new String[1];
-//        final List<String> movieIdlist = new List<>();
-//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
-//        ValueEventListener eventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                listFavMovies[0] = dataSnapshot.child(userId).getValue(String.class);
-//                movieIdlist[0] = Arrays.asList(listFavMovies[0].split(","));
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {}
-//        };
-//        rootRef.addListenerForSingleValueEvent(eventListener);
-//        return movieIdlist[0];
-//    }
+    public static ArrayList<Movie> getFavMovies(String userId) {
+        ArrayList<Movie> listFavMovies = new ArrayList<>();
+        Movie movie;
+        movie = new Movie();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user");
+        DatabaseReference userRef = rootRef.child(userId);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String genres = ds.child("genres").getValue(String.class);
+                    List<String> arrayList = new ArrayList<String>(Arrays.asList(genres.split(",")));
+                    ArrayList<Integer> genresList = new ArrayList<Integer>();
+                    for(String g:arrayList){
+                        genresList.add(Integer.parseInt(g.trim()));
+                    }
+                    String overView = ds.child("over_view").getValue(String.class);
+                    String poster = ds.child("poster").getValue(String.class);
+                    String releaseDay = ds.child("release_day").getValue(String.class);
+                    String title = ds.child("title").getValue(String.class);
+                    Double voteAverage = ds.child("vote_average").getValue(Double.class);
+                    movie.setGenres(genresList);
+                    movie.setOverview(overView);
+                    movie.setPosterPath(poster);
+                    movie.setReleaseDay(releaseDay);
+                    movie.setTitle(title);
+                    movie.setVoteAverage(voteAverage);
+                    listFavMovies.add(movie);
+                };
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        userRef.addListenerForSingleValueEvent(eventListener);
+        return listFavMovies;
+    }
 }

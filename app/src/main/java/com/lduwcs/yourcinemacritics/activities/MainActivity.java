@@ -57,44 +57,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             initBotNavBar();
-            ArrayList<Movie> listFavMovies = new ArrayList<>();
-            Movie movie;
-            movie = new Movie();
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user");
-            DatabaseReference userRef = rootRef.child("user_id");
-            ValueEventListener eventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String genres = ds.child("genres").getValue(String.class);
-                        List<String> arrayList = new ArrayList<String>(Arrays.asList(genres.split(",")));
-                        ArrayList<Integer> genresList = new ArrayList<Integer>();
-                        for(String g:arrayList){
-                            genresList.add(Integer.parseInt(g.trim()));
-                        }
-                        String overView = ds.child("over_view").getValue(String.class);
-                        String poster = ds.child("poster").getValue(String.class);
-                        String releaseDay = ds.child("release_day").getValue(String.class);
-                        String title = ds.child("title").getValue(String.class);
-                        Double voteAverage = ds.child("vote_average").getValue(Double.class);
-                        movie.setGenres(genresList);
-                        movie.setOverview(overView);
-                        movie.setPosterPath(poster);
-                        movie.setReleaseDay(releaseDay);
-                        movie.setTitle(title);
-                        movie.setVoteAverage(voteAverage);
-                        Log.d(TAG, overView);
-                        Log.d(TAG, genres);
-                        Log.d(TAG, poster);
-                        Log.d(TAG, "" + voteAverage);
-                        listFavMovies.add(movie);
-//                        Log.d(TAG, listFavMovies.get(0).getOverview());
-                    };
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            userRef.addListenerForSingleValueEvent(eventListener);
 
         }
 
