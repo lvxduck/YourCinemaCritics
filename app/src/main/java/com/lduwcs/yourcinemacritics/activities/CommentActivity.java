@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -130,6 +131,8 @@ public class CommentActivity extends AppCompatActivity {
                     }
                     comments.add(comment);
                     commentAdapter.notifyDataSetChanged();
+                    hideSoftKeyBoard();
+                    edtCmt.clearComposingText();
                 }catch (Exception e){
                     Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                 }
@@ -160,5 +163,12 @@ public class CommentActivity extends AppCompatActivity {
     public void onVideoRequestSuccess(String key){
         watchYoutubeVideo(key);
         Log.d("DEBUG1", "onVideoRequestSuccess: "+key);
+    }
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }
