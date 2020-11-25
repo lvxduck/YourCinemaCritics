@@ -1,19 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-    TODO: setting up for comment adapter
-    IDs:
-    - email : (TextView) txtCmtEmail
-    - content: (TextView) txtCmtContent
-    - star rate: (StarRate) srCmt
-    - comment date: (TextView) txtCmtDate
-    - avatar: (ImageView) imgCmtAvatar
--->
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="8dp"
-    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/transparent_white"
+    app:cardElevation="0dp"
     app:cardCornerRadius="26dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:textSize="18sp"
             android:textColor="@color/orange"
@@ -64,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toEndOf="@+id/imgCmtAvatar"
             app:layout_constraintTop_toTopOf="parent"
             app:srIconSize="20dp"
@@ -72,8 +64,8 @@
 
         <ImageView
             android:id="@+id/imgCmtAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
