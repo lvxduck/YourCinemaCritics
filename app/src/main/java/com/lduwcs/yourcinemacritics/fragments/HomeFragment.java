@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,7 @@ public class HomeFragment extends Fragment {
     static MoviesDao moviesDao;
 
     @SuppressLint("StaticFieldLeak")
-    static HomeAdapter adapter;
+    static public HomeAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -68,6 +69,7 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
                 reloadTrending();
                 pullToRefresh.setRefreshing(false);
+                Toast.makeText(getContext(),"Reloading",Toast.LENGTH_SHORT).show();
             }
         });
 
