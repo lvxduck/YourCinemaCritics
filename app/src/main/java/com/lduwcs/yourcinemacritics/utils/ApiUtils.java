@@ -2,6 +2,7 @@ package com.lduwcs.yourcinemacritics.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
@@ -54,10 +55,15 @@ public class ApiUtils {
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
                         String key = trailer.getResults().get(0).getKey();
-                        if(mContext.getClass().getSimpleName()== "MainActivity"){
-                            HomeFragment.adapter.onVideoRequestSuccess(key);
-                        }else{
-                            CommentActivity.onVideoRequestSuccess(mContext,key);
+                        if(key.isEmpty() || key == null){
+                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
+                        }
+                        else {
+                            if(mContext.getClass().getSimpleName()== "MainActivity"){
+                                HomeFragment.adapter.onVideoRequestSuccess(key);
+                            }else{
+                                CommentActivity.onVideoRequestSuccess(mContext,key);
+                            }
                         }
                     }
                     @Override
