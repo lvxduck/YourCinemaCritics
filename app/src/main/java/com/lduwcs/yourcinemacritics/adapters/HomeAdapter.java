@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
@@ -59,16 +60,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
-                .placeholder(R.drawable.no_preview)
+                .placeholder(R.drawable.poster_demo)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
-        holder.btnComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CommentActivity.class);
-                context.startActivity(intent);
-            }
-        });
         holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,13 +74,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     private String getLimitOverview(String overview, int max){
-//        if(overview.length()>max){
-//            while (overview.length()>max && overview.charAt(max)!=' '){
-//                max+=1;
-//            }
-//            return overview.substring(0,max)+"...";
-//        }
-        return overview+overview;
+        if(overview.length()>max){
+            while (overview.length()>max && overview.charAt(max)!=' '){
+                max+=1;
+            }
+            return overview.substring(0,max)+"...";
+        }
+        return overview;
     }
 
     @Override
@@ -101,16 +95,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public static void watchYoutubeVideo(Context context, String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            context.startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
-        }
-//        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
-//        context.startActivity( launchIntent );
+//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("http://www.youtube.com/watch?v=" + id));
+//        try {
+//            context.startActivity(appIntent);
+//        } catch (ActivityNotFoundException ex) {
+//            context.startActivity(webIntent);
+//        }
+
+        Intent intent = new Intent(context, YoutubeActivity.class);
+        intent.putExtra("key", id);
+        context.startActivity(intent);
     }
 
     public void onVideoRequestSuccess(String key){

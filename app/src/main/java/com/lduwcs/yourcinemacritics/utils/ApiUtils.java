@@ -71,7 +71,6 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                        //TODO: đưa danh sách trending vào mảng
                         movies.addAll(movieData.getResults());
                         HomeFragment.onLoadTrendingDone(movies,mContext);
                         Log.d("DEBUG1", "Success");

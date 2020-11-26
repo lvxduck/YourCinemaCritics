@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
 }
-apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -69,4 +69,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+
+    //YoutubePlayerAPI
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }

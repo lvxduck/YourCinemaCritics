@@ -11,14 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourCinemaCritics">
-        <activity android:name=".activities.RegisterActivity"/>
-        <activity android:name=".activities.CommentActivity"/>
+        <activity android:name=".activities.YoutubeActivity"></activity>
+        <activity android:name=".activities.RegisterActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
