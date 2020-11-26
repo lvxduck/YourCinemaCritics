@@ -1,13 +1,16 @@
 package com.lduwcs.yourcinemacritics.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,21 +114,43 @@ public class CommentActivity extends AppCompatActivity {
         btnSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = edtCmt.getText().toString();
-                String date = "2020-1-1";
-                String email = "levinhnhanduc@gmail.com";
-                Float rating = 6.5f;
-                Comment comment = new Comment(email,content,rating,date);
-                try{
-                    FirebaseUtils.writeComment("ldeuc1233",movie_id,email,content,date,rating);
-                    if (isComment(email)) {
-                        comments.remove(comments.size() - 1);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
+                View layout= null;
+                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                layout = inflater.inflate(R.layout.user_rate, null);
+                final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                builder.setTitle("Rate this movie");
+                builder.setView(layout);
+
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Float value = ratingBar.getRating()*2;
+
+                        String content = edtCmt.getText().toString();
+                        String date = "2020-1-1";
+                        String email = "levinhnhanduc@gmail.com";
+                        Float rating = 6.5f;
+                        Comment comment = new Comment(email,content,rating,date);
+                        try{
+                            FirebaseUtils.writeComment("ldeuc1233",movie_id,email,content,date,rating);
+                            if (isComment(email)) {
+                                comments.remove(comments.size() - 1);
+                            }
+                            comments.add(comment);
+                            commentAdapter.notifyDataSetChanged();
+                        }catch (Exception e){
+                            Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
                     }
-                    comments.add(comment);
-                    commentAdapter.notifyDataSetChanged();
-                }catch (Exception e){
-                    Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                builder.show();
             }
         });
     }
