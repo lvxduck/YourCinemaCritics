@@ -50,8 +50,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
-                .resize(500,750)
-                .centerCrop()
+                .fit()
                 .placeholder(R.drawable.poster_demo)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
