@@ -141,7 +141,7 @@ public class CommentActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(),"Please Enter Proper Comment!",Toast.LENGTH_LONG).show();
                         } else {
                             Date date = new Date();
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd HH:mm");
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                             String dateComment = simpleDateFormat.format(date);
                             Float rating = ratingBar.getRating()*2;
                             FirebaseUser user = mAuth.getCurrentUser();

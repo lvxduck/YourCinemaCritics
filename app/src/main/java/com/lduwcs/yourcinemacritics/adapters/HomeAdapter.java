@@ -66,7 +66,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
-                .placeholder(R.drawable.poster_demo)
+                .placeholder(R.drawable.no_preview)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
         holder.btnComment.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 String reversedReleaseDay = "";
                 for(int i = 2; i >= 0; i--){
                     reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-                    if(i != 0) reversedReleaseDay += "-";
+                    if(i != 0) reversedReleaseDay += "/";
                 }
                 bundle.putString("release_day", reversedReleaseDay);
                 bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
