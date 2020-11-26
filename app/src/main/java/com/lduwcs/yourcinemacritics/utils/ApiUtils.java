@@ -62,7 +62,7 @@ public class ApiUtils {
                             if(mContext.getClass().getSimpleName()== "MainActivity"){
                                 HomeFragment.adapter.onVideoRequestSuccess(key);
                             }else{
-                                CommentActivity.onVideoRequestSuccess(mContext,key);
+                                CommentActivity.getInstance().onVideoRequestSuccess(key);
                             }
                         }
                     }

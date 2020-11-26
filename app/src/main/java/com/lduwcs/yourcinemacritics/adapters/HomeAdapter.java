@@ -86,8 +86,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 bundle.putString("release_day", reversedReleaseDay);
                 bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
                 bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+                bundle.putString("movie_id",movies.get(position).getId()+"");
                 intent.putExtras(bundle);
-                intent.putExtra("movie_id",movies.get(position).getId());
                 context.startActivity(intent);
             }
         });

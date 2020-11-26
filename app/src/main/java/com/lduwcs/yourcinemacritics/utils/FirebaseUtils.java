@@ -36,7 +36,7 @@ public class FirebaseUtils {
                     Float rating = ds.child("rating").getValue(Float.class);
                     comments.add(new Comment(email, content,rating,date));
                 };
-                CommentActivity.onGetCommentDone(comments);
+                CommentActivity.getInstance().onGetCommentDone(comments);
             }
 
             @Override
