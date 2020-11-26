@@ -63,6 +63,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .placeholder(R.drawable.poster_demo)
                 .into(holder.imgHomePoster);
         holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
+        holder.btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,CommentActivity.class);
+                context.startActivity(intent);
+            }
+        });
         holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,18 +102,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public static void watchYoutubeVideo(Context context, String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            context.startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
-        }
+//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("http://www.youtube.com/watch?v=" + id));
+//        try {
+//            context.startActivity(appIntent);
+//        } catch (ActivityNotFoundException ex) {
+//            context.startActivity(webIntent);
+//        }
 
-//        Intent intent = new Intent(context, YoutubeActivity.class);
-//        intent.putExtra("key", id);
-//        context.startActivity(intent);
+        Intent intent = new Intent(context, YoutubeActivity.class);
+        intent.putExtra("key", id);
+        context.startActivity(intent);
     }
 
     public void onVideoRequestSuccess(String key){

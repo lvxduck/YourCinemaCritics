@@ -13,6 +13,7 @@
         android:theme="@style/Theme.YourCinemaCritics">
         <activity android:name=".activities.YoutubeActivity"></activity>
         <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.CommentActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
