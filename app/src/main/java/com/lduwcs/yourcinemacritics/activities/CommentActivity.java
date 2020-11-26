@@ -35,7 +35,6 @@ public class CommentActivity extends AppCompatActivity {
     private ApiUtils utils;
 
     private String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private Boolean isComment = false;
     private String movie_id = "";
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
@@ -119,11 +118,11 @@ public class CommentActivity extends AppCompatActivity {
                 Comment comment = new Comment(email,content,rating,date);
                 try{
                     FirebaseUtils.writeComment("ldeuc1233",movie_id,email,content,date,rating);
-                    if(isComment==false){
-                        comments.add(comment);
-                        commentAdapter.notifyDataSetChanged();
-                        isComment=true;
+                    if (isComment(email)) {
+                        comments.remove(comments.size() - 1);
                     }
+                    comments.add(comment);
+                    commentAdapter.notifyDataSetChanged();
                 }catch (Exception e){
                     Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                 }
@@ -134,6 +133,15 @@ public class CommentActivity extends AppCompatActivity {
     public void onGetCommentDone(ArrayList<Comment> data){
         comments.addAll(data);
         commentAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isComment(String email){
+        for (Comment comment: comments) {
+            if(comment.getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void watchYoutubeVideo( String id){
