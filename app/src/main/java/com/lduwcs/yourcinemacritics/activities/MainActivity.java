@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.fragments.FavoriteFragment;
