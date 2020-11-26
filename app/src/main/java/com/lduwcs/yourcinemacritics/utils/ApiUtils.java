@@ -3,6 +3,8 @@ package com.lduwcs.yourcinemacritics.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.lduwcs.yourcinemacritics.activities.CommentActivity;
+import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
@@ -52,7 +54,11 @@ public class ApiUtils {
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
                         String key = trailer.getResults().get(0).getKey();
-                        HomeFragment.adapter.onVideoRequestSuccess(key);
+                        if(mContext.getClass().getSimpleName()== "MainActivity"){
+                            HomeFragment.adapter.onVideoRequestSuccess(key);
+                        }else{
+                            CommentActivity.onVideoRequestSuccess(mContext,key);
+                        }
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {

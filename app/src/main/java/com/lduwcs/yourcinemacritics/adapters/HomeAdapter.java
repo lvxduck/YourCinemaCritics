@@ -67,6 +67,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,CommentActivity.class);
+                intent.putExtra("movie_id",movies.get(position).getId());
                 context.startActivity(intent);
             }
         });

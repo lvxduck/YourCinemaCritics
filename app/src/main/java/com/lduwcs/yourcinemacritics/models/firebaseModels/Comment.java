@@ -8,7 +8,9 @@ public class Comment {
     String content;
     Float rating;
     String date;
+    public Comment(){
 
+    }
     public Comment(String email, String content, Float rating, String date) {
         this.email = email;
         this.content = content;
