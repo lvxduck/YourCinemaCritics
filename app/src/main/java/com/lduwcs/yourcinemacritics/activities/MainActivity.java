@@ -34,7 +34,9 @@ import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             initBotNavBar();
+
         }
         Genres.setData();
     }

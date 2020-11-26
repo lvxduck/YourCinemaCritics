@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,9 @@ import com.squareup.picasso.Picasso;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class CommentActivity extends AppCompatActivity {
@@ -119,19 +122,27 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String content = edtCmt.getText().toString();
-                String date = "2020-1-1";
-                Float rating = 6.5f;
-                FirebaseUser user = mAuth.getCurrentUser();
-                Comment comment = new Comment(user.getEmail(),content,rating,date);
-                try{
-                    FirebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,date,rating);
-                    if (isComment(user.getEmail())) {
-                        comments.remove(comments.size() - 1);
+                if(content.trim().isEmpty()){
+                    Toast.makeText(getBaseContext(),"Please Enter Proper Comment!",Toast.LENGTH_LONG).show();
+                } else {
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy_MM_dd HH:mm");
+                    String dateComment = simpleDateFormat.format(date);
+                    Float rating = 6.5f;
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
+                    try{
+                        FirebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
+                        if (isComment(user.getEmail())) {
+                            comments.remove(comments.size() - 1);
+                        }
+                        comments.add(comment);
+                        commentAdapter.notifyDataSetChanged();
+                        edtCmt.clearComposingText();
+                        hideSoftKeyBoard();
+                    }catch (Exception e){
+                        Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                     }
-                    comments.add(comment);
-                    commentAdapter.notifyDataSetChanged();
-                }catch (Exception e){
-                    Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -160,5 +171,12 @@ public class CommentActivity extends AppCompatActivity {
     public void onVideoRequestSuccess(String key){
         watchYoutubeVideo(key);
         Log.d("DEBUG1", "onVideoRequestSuccess: "+key);
+    }
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }
