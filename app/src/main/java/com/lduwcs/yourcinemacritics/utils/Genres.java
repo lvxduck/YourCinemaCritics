@@ -1,29 +1,35 @@
 package com.lduwcs.yourcinemacritics.utils;
 
-import com.lduwcs.yourcinemacritics.models.apiModels.Genre;
 
-
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Genres {
-    public static List<Genre> genreList;
+    public static HashMap<Integer, String> genreList;
     public static void setData(){
-        //String data = "[{\"id\":28,\"name\":\"Action\"},{\"id\":12,\"name\":\"Adventure\"},{\"id\":16,\"name\":\"Animation\"},{\"id\":35,\"name\":\"Comedy\"},{\"id\":80,\"name\":\"Crime\"},{\"id\":99,\"name\":\"Documentary\"},{\"id\":18,\"name\":\"Drama\"},{\"id\":10751,\"name\":\"Family\"},{\"id\":14,\"name\":\"Fantasy\"},{\"id\":36,\"name\":\"History\"},{\"id\":27,\"name\":\"Horror\"},{\"id\":10402,\"name\":\"Music\"},{\"id\":9648,\"name\":\"Mystery\"},{\"id\":10749,\"name\":\"Romance\"},{\"id\":878,\"name\":\"Science Fiction\"},{\"id\":10770,\"name\":\"TV Movie\"},{\"id\":53,\"name\":\"Thriller\"},{\"id\":10752,\"name\":\"War\"},{\"id\":37,\"name\":\"Western\"}]";
-        //Gson gson = new Gson(); // khởi tạo Gson
-        genreList.add(new Genre(28, "Action"));
-        genreList.add(new Genre(12, "Adventure"));
-        genreList.add(new Genre(16, "Animation"));
-        genreList.add(new Genre(35, "Comedy"));
-        genreList.add(new Genre(80, "Crime"));
-        genreList.add(new Genre(99, "Documentary"));
-        genreList.add(new Genre(18, "Drama"));
-        genreList.add(new Genre(10751, "Family"));
-        genreList.add(new Genre(9648, "Mystery"));
-        genreList.add(new Genre(10749, "Romance"));
-        genreList.add(new Genre(878, "Science fiction"));
-        genreList.add(new Genre(10770, "TV movie"));
-        genreList.add(new Genre(53, "Thriller"));
-        genreList.add(new Genre(10752, "War"));
-        genreList.add(new Genre(37, "Western"));
+        genreList.put(28, "Action");
+        genreList.put(12, "Adventure");
+        genreList.put(16, "Animation");
+        genreList.put(35, "Comedy");
+        genreList.put(80, "Crime");
+        genreList.put(99, "Documentary");
+        genreList.put(18, "Drama");
+        genreList.put(10751, "Family");
+        genreList.put(9648, "Mystery");
+        genreList.put(10749, "Romance");
+        genreList.put(878, "Science fiction");
+        genreList.put(10770, "TV movie");
+        genreList.put(53, "Thriller");
+        genreList.put(10752, "War");
+        genreList.put(37, "Western");
+    }
+
+    public String changeGenresIdToName(ArrayList<Integer> filmGenres){
+        String result = "";
+        for(Integer item : filmGenres){
+            result.concat(genreList.get(item)+", ");
+        }
+        result.substring(0, result.length()-2);
+        return result;
     }
 }
