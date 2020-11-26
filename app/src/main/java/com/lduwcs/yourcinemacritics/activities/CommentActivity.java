@@ -144,6 +144,43 @@ public class CommentActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
+                AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
+                View layout= null;
+                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                layout = inflater.inflate(R.layout.user_rate, null);
+                final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                builder.setTitle("Rate this movie");
+                builder.setView(layout);
+
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Float value = ratingBar.getRating()*2;
+
+                        String content = edtCmt.getText().toString();
+                        String date = "2020-1-1";
+                        String email = "levinhnhanduc@gmail.com";
+                        Float rating = 6.5f;
+                        Comment comment = new Comment(email,content,rating,date);
+                        try{
+                            FirebaseUtils.writeComment("ldeuc1233",movie_id,email,content,date,rating);
+                            if (isComment(email)) {
+                                comments.remove(comments.size() - 1);
+                            }
+                            comments.add(comment);
+                            commentAdapter.notifyDataSetChanged();
+                        }catch (Exception e){
+                            Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                builder.show();
             }
         });
     }
