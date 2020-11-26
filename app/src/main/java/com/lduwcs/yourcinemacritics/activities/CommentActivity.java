@@ -124,7 +124,7 @@ public class CommentActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 Comment comment = new Comment(user.getEmail(),content,rating,date);
                 try{
-                    FirebaseUtils.writeComment(user.getUid(),movie_id,user.getUid(),content,date,rating);
+                    FirebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,date,rating);
                     if (isComment(user.getEmail())) {
                         comments.remove(comments.size() - 1);
                     }
