@@ -40,5 +40,10 @@
     <string name="send_comment">send comment</string>
     <string name="logout">logout</string>
     <string name="oauth2ids">440106815243-jf163qfvtvmf41o8vakgerdna6edr3ti.apps.googleusercontent.com</string>
+    <string name="hello">Hello,</string>
+    <string name="thuan_gmail_com">Thuan@gmail.com</string>
+    <string name="search_movies">SEARCH MOVIES</string>
+    <string name="coming_soon">COMING SOON</string>
+    <string name="favorite_movies">FAVORITE MOVIES</string>
 
 </resources>
