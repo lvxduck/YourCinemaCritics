@@ -31,12 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO: change String to model
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    String base_url_video = "https://www.youtube.com/watch?v=";
     private ApiUtils utils;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
