@@ -126,7 +126,7 @@ public class CommentActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),"Please Enter Proper Comment!",Toast.LENGTH_LONG).show();
                 } else {
                     Date date = new Date();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy_MM_dd HH:mm");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd HH:mm");
                     String dateComment = simpleDateFormat.format(date);
                     Float rating = 6.5f;
                     FirebaseUser user = mAuth.getCurrentUser();
@@ -138,7 +138,7 @@ public class CommentActivity extends AppCompatActivity {
                         }
                         comments.add(comment);
                         commentAdapter.notifyDataSetChanged();
-                        edtCmt.clearComposingText();
+                        edtCmt.getText().clear();
                         hideSoftKeyBoard();
                     }catch (Exception e){
                         Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
