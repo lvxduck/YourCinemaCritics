@@ -1,8 +1,11 @@
 package com.lduwcs.yourcinemacritics.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.adapters.CommentAdapter;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,15 +25,41 @@ public class CommentActivity extends AppCompatActivity {
     private ImageView btnFav;
     private EditText edtCmt;
 
+    private ImageView imgCmtBackground;
+    private TextView txtDetailTitle;
+    private TextView txtDetailReleaseDate;
+    private TextView txtDetailRating;
+    private TextView txtDetailGenre;
+
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
+    String base_url_image = "https://image.tmdb.org/t/p/w500";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
+        Bundle bundle = getIntent().getExtras();
+
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        imgCmtBackground = findViewById(R.id.imgCmtBackground);
+        txtDetailTitle = findViewById(R.id.txtDetailTitle);
+        txtDetailReleaseDate = findViewById(R.id.txtDetailReleaseDate);
+        txtDetailRating = findViewById(R.id.txtDetailRating);
+        txtDetailGenre = findViewById(R.id.txtDetailGenre);
+
+        Picasso.get()
+                .load(base_url_image + bundle.getString("img_path"))
+                .fit()
+                .placeholder(R.drawable.no_preview)
+                .into(imgCmtBackground);
+        txtDetailTitle.setText(bundle.getString("title"));
+        txtDetailReleaseDate.setText("Release Day: " + bundle.getString("release_day"));
+        txtDetailGenre.setText("Genres: "+ bundle.getString("genres"));
+        txtDetailRating.setText("Rating: "+ bundle.getString("rating"));
+
 
         commentRecView = findViewById(R.id.detailRecView);
         btnBack = findViewById(R.id.btnDetailBack);

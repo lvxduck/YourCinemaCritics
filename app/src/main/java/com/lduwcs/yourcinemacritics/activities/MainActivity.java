@@ -22,6 +22,7 @@ import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
 import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.uiComponents.BotNavBar;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.Genres;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             initBotNavBar();
         }
-
+        Genres.setData();
     }
 
 
