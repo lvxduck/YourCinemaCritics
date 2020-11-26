@@ -1,9 +1,12 @@
 package com.lduwcs.yourcinemacritics.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.util.Log;
 import android.widget.EditText;
@@ -15,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.adapters.CommentAdapter;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
@@ -39,6 +44,8 @@ public class CommentActivity extends AppCompatActivity {
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
     private Context context;
+    private FirebaseAuth mAuth;
+
 
     //------Instance----------
     private static CommentActivity instance;
@@ -49,6 +56,7 @@ public class CommentActivity extends AppCompatActivity {
         return instance;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,13 @@ public class CommentActivity extends AppCompatActivity {
         TextView txtDetailReleaseDate = findViewById(R.id.txtDetailReleaseDate);
         TextView txtDetailRating = findViewById(R.id.txtDetailRating);
         TextView txtDetailGenre = findViewById(R.id.txtDetailGenre);
+        commentRecView = findViewById(R.id.detailRecView);
+        btnBack = findViewById(R.id.btnDetailBack);
+        btnTrailer = findViewById(R.id.btnDetailTrailer);
+        btnFav = findViewById(R.id.btnDetailFav);
+        btnSendComment = findViewById(R.id.btnDetailSendComment);
+        edtCmt = findViewById(R.id.edtDetailComment);
+        utils = new ApiUtils(getBaseContext());
         context = getBaseContext();
 
         //------UI------------
@@ -78,15 +93,7 @@ public class CommentActivity extends AppCompatActivity {
         txtDetailGenre.setText("Genres: "+ bundle.getString("genres"));
         txtDetailRating.setText("Rating: "+ bundle.getString("rating"));
         movie_id = bundle.getString("movie_id");
-
-        commentRecView = findViewById(R.id.detailRecView);
-        btnBack = findViewById(R.id.btnDetailBack);
-        btnTrailer = findViewById(R.id.btnDetailTrailer);
-        btnFav = findViewById(R.id.btnDetailFav);
-        btnSendComment = findViewById(R.id.btnDetailSendComment);
-        edtCmt = findViewById(R.id.edtDetailComment);
-        utils = new ApiUtils(getBaseContext());
-        Intent intent = getIntent();
+        mAuth = FirebaseAuth.getInstance();
 
         //---------adapter-----------
         comments = new ArrayList<>();
@@ -113,12 +120,12 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String content = edtCmt.getText().toString();
                 String date = "2020-1-1";
-                String email = "levinhnhanduc@gmail.com";
                 Float rating = 6.5f;
-                Comment comment = new Comment(email,content,rating,date);
+                FirebaseUser user = mAuth.getCurrentUser();
+                Comment comment = new Comment(user.getEmail(),content,rating,date);
                 try{
-                    FirebaseUtils.writeComment("ldeuc1233",movie_id,email,content,date,rating);
-                    if (isComment(email)) {
+                    FirebaseUtils.writeComment(user.getUid(),movie_id,user.getUid(),content,date,rating);
+                    if (isComment(user.getEmail())) {
                         comments.remove(comments.size() - 1);
                     }
                     comments.add(comment);
