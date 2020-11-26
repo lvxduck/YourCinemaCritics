@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             initBotNavBar();
-
         }
         Genres.setData();
     }
