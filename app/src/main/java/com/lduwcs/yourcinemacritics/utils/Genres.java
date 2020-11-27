@@ -1,12 +1,15 @@
 package com.lduwcs.yourcinemacritics.utils;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Genres {
     public static HashMap<Integer, String> genreList;
     public static void setData(){
+        genreList = new HashMap<Integer, String>();
         genreList.put(28, "Action");
         genreList.put(12, "Adventure");
         genreList.put(16, "Animation");
@@ -15,6 +18,10 @@ public class Genres {
         genreList.put(99, "Documentary");
         genreList.put(18, "Drama");
         genreList.put(10751, "Family");
+        genreList.put(14, "Fantasy");
+        genreList.put(36, "History");
+        genreList.put(27, "Horror");
+        genreList.put(10402, "Music");
         genreList.put(9648, "Mystery");
         genreList.put(10749, "Romance");
         genreList.put(878, "Science fiction");
@@ -24,12 +31,14 @@ public class Genres {
         genreList.put(37, "Western");
     }
 
-    public String changeGenresIdToName(ArrayList<Integer> filmGenres){
+    public static String changeGenresIdToName(ArrayList<Integer> filmGenres){
         String result = "";
         for(Integer item : filmGenres){
-            result.concat(genreList.get(item)+", ");
+            result = result + (genreList.get(item)+", ");
         }
-        result.substring(0, result.length()-2);
+        if(!result.isEmpty()){
+            result = result.substring(0, result.length()-2);
+        }
         return result;
     }
 }

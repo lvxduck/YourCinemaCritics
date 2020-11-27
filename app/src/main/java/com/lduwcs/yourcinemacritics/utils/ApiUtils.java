@@ -2,7 +2,10 @@ package com.lduwcs.yourcinemacritics.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.lduwcs.yourcinemacritics.activities.CommentActivity;
+import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
@@ -52,7 +55,16 @@ public class ApiUtils {
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
                         String key = trailer.getResults().get(0).getKey();
-                        HomeFragment.adapter.onVideoRequestSuccess(key);
+                        if(key.isEmpty() || key == null){
+                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
+                        }
+                        else {
+                            if(mContext.getClass().getSimpleName()== "MainActivity"){
+                                HomeFragment.adapter.onVideoRequestSuccess(key);
+                            }else{
+                                CommentActivity.getInstance().onVideoRequestSuccess(key);
+                            }
+                        }
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
@@ -71,7 +83,6 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                        //TODO: đưa danh sách trending vào mảng
                         movies.addAll(movieData.getResults());
                         HomeFragment.onLoadTrendingDone(movies,mContext);
                         Log.d("DEBUG1", "Success");

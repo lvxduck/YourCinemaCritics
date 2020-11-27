@@ -20,7 +20,7 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
     <string name="not_registered_an_account_yet">Not registered an account yet?</string>
-    <string name="sign_in_with_google">Sign In With Google</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
     <string name="create_new_account">Create new account</string>
     <string name="or">OR</string>
     <string name="register">REGISTER</string>
@@ -40,5 +40,12 @@
     <string name="send_comment">send comment</string>
     <string name="logout">logout</string>
     <string name="oauth2ids">440106815243-jf163qfvtvmf41o8vakgerdna6edr3ti.apps.googleusercontent.com</string>
+    <string name="hello">Hello,</string>
+    <string name="thuan_gmail_com">Thuan@gmail.com</string>
+    <string name="search_movies">SEARCH MOVIES</string>
+    <string name="coming_soon">COMING SOON</string>
+    <string name="favorite_movies">FAVORITE MOVIES</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

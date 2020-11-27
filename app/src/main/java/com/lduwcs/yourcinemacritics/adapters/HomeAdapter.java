@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +15,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-//TODO: change String to model
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    String base_url_video = "https://www.youtube.com/watch?v=";
     private ApiUtils utils;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
@@ -66,6 +71,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", movies.get(position).getTitle());
+                bundle.putString("img_path", movies.get(position).getPosterPath());
+                String releaseDay = movies.get(position).getReleaseDay();
+                String[] releaseDayArray = releaseDay.split("-");
+                String reversedReleaseDay = "";
+                for(int i = 2; i >= 0; i--){
+                    reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
+                    if(i != 0) reversedReleaseDay += "/";
+                }
+                bundle.putString("release_day", reversedReleaseDay);
+                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
+                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+                bundle.putString("movie_id",movies.get(position).getId()+"");
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
@@ -80,13 +100,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     private String getLimitOverview(String overview, int max){
-//        if(overview.length()>max){
-//            while (overview.length()>max && overview.charAt(max)!=' '){
-//                max+=1;
-//            }
-//            return overview.substring(0,max)+"...";
-//        }
-        return overview+overview;
+        if(overview.length()>max){
+            while (overview.length()>max && overview.charAt(max)!=' '){
+                max+=1;
+            }
+            return overview.substring(0,max)+"...";
+        }
+        return overview;
     }
 
     @Override
@@ -101,16 +121,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public static void watchYoutubeVideo(Context context, String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            context.startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
-        }
-//        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
-//        context.startActivity( launchIntent );
+//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("http://www.youtube.com/watch?v=" + id));
+//        try {
+//            context.startActivity(appIntent);
+//        } catch (ActivityNotFoundException ex) {
+//            context.startActivity(webIntent);
+//        }
+
+        Intent intent = new Intent(context, YoutubeActivity.class);
+        intent.putExtra("key", id);
+        context.startActivity(intent);
     }
 
     public void onVideoRequestSuccess(String key){

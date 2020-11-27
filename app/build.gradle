@@ -69,4 +69,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    //YoutubePlayerAPI
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.google.firebase:firebase-database'
+
 }
