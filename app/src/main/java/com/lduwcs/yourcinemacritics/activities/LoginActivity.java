@@ -67,12 +67,14 @@ public class LoginActivity extends AppCompatActivity {
                 //VALIDATION
                 //Validate email
                 if(TextUtils.isEmpty(email)){
+                    txtEmail.requestFocus();
                     txtEmail.setError("Email is required!");
                     return;
                 }
 
                 //Validate password
                 if(TextUtils.isEmpty(password)){
+                    txtPassword.requestFocus();
                     txtPassword.setError("Password is required!");
                     return;
                 }
