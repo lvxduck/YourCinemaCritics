@@ -59,7 +59,7 @@ public class ApiUtils {
                             Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
                         }
                         else {
-                            if(mContext.getClass().getSimpleName()== "MainActivity"){
+                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
                                 HomeFragment.adapter.onVideoRequestSuccess(key);
                             }else{
                                 CommentActivity.getInstance().onVideoRequestSuccess(key);

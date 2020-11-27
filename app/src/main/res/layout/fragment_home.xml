@@ -48,7 +48,8 @@
             android:textSize="72sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="NotSibling" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
