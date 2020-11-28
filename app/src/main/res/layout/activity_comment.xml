@@ -12,10 +12,10 @@
         android:id="@+id/imgCmtBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/poster_demo"
-        android:scaleType="centerCrop"
         android:alpha="0.4"
-        android:contentDescription="@string/comment_background" />
+        android:contentDescription="@string/comment_background"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/poster_demo" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnDetailBack"
@@ -123,14 +123,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:itemCount="3"
+        android:paddingBottom="210dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/comment_item"
-        app:layout_constraintBottom_toTopOf="@+id/btnDetailCommentBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDetailGenre"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:itemCount="3"
+        tools:listitem="@layout/comment_item" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnDetailCommentBox"
