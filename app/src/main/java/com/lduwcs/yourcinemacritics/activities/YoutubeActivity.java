@@ -33,7 +33,7 @@ public class YoutubeActivity extends YouTubeBaseActivity {
                 Log.d("DEBUG1", "Youtube video loaded!");
                 youTubePlayer.loadVideo(key);
                 youTubePlayer.play();
-                youTubePlayer.setFullscreen(true);
+//                youTubePlayer.setFullscreen(true);
             }
 
             @Override
