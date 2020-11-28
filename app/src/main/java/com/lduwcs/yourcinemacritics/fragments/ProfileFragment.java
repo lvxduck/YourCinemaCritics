@@ -56,13 +56,7 @@ public class ProfileFragment extends Fragment {
         txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
             String email = user.getEmail();
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
-
-            String uid = user.getUid();
             txtProfileEmail.setText(email);
         }
 
