@@ -26,9 +26,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_margin="8dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_margin="12dp"
                 android:background="@drawable/ic_logout"
                 android:backgroundTint="@color/grey"
                 android:contentDescription="@string/logout" />
@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/ic_action_name"
@@ -48,7 +48,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:textSize="24sp"
             android:textColor="@color/grey"
             android:text="@string/hello"
