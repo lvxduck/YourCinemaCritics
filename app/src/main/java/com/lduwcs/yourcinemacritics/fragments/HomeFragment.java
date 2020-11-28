@@ -116,6 +116,6 @@ public class HomeFragment extends Fragment {
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();
-        Log.d(TAG, "onLoadFavoritesDone: success");
+        Log.d(TAG, "onLoadTrendingDone: success");
     }
 }

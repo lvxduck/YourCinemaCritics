@@ -134,7 +134,7 @@ public class CommentActivity extends AppCompatActivity {
                 builder.setView(layout);
 
                 // Add the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String content = edtCmt.getText().toString();
                         if(content.trim().isEmpty()){
@@ -148,12 +148,13 @@ public class CommentActivity extends AppCompatActivity {
                             Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
                             try{
                                 FirebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
-                                if (isComment(user.getEmail())) {
-                                    comments.remove(comments.size() - 1);
+                                if (isComment(user.getEmail()) != -1) {
+                                    comments.remove(isComment(user.getEmail()));
                                 }
                                 comments.add(comment);
                                 commentAdapter.notifyDataSetChanged();
                                 edtCmt.getText().clear();
+                                Toast.makeText(getBaseContext(),"Your comment has been posted!",Toast.LENGTH_LONG).show();
                                 hideSoftKeyBoard();
                             }catch (Exception e){
                                 Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -161,7 +162,7 @@ public class CommentActivity extends AppCompatActivity {
                         }
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
@@ -176,13 +177,13 @@ public class CommentActivity extends AppCompatActivity {
         commentAdapter.notifyDataSetChanged();
     }
 
-    private boolean isComment(String email){
-        for (Comment comment: comments) {
-            if(comment.getEmail().equals(email)){
-                return true;
+    private int isComment(String email){
+        for(int i = 0; i < comments.size(); i++){
+            if(comments.get(i).getEmail().equals(email)){
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     public void watchYoutubeVideo( String id){

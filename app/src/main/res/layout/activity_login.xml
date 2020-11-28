@@ -87,6 +87,7 @@
             android:layout_marginHorizontal="84dp"
             android:layout_marginVertical="8dp"
             android:text="@string/sign_in"
+            android:layout_gravity="center"
             android:textColor="@color/background_white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -119,7 +120,10 @@
             android:layout_marginVertical="8dp"
             android:text="@string/sign_in_with_google"
             android:textColor="@color/background_white"
-            android:textSize="24sp"
+            android:drawableLeft="@drawable/google"
+            android:drawablePadding="7dp"
+            android:textSize="21sp"
+            android:layout_gravity="center"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
