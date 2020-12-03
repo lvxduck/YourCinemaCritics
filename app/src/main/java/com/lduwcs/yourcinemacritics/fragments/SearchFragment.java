@@ -2,6 +2,7 @@ package com.lduwcs.yourcinemacritics.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -49,10 +50,10 @@ public class SearchFragment extends Fragment {
 
     private RecyclerView searchRecView;
     static ArrayList<Movie> movies;
+    private static TextView txtNoResult;
     private SearchView searchView;
     private CardView btnFilter;
     private CardView btnSort;
-    private TextView txtNoResult;
     private ArrayList<MaterialCheckBox> checkBoxes;
     private boolean isDescendingSorted = true;
 
@@ -137,9 +138,6 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 utils.getAllMovies(s);
                 isDescendingSorted = true;
-                if(adapter.getItemCount() == 0){
-                    txtNoResult.setVisibility(View.VISIBLE);
-                }
                 return false;
             }
 
@@ -221,6 +219,10 @@ public class SearchFragment extends Fragment {
         movies.clear();
         movies.addAll(data);
         adapter.notifyDataSetChanged();
+        txtNoResult.setVisibility(View.INVISIBLE);
+        if(movies.size() == 0){
+            txtNoResult.setVisibility(View.VISIBLE);
+        }
         Log.d(TAG, "onSearchingDone: success");
     }
 
