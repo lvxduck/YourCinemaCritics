@@ -12,10 +12,10 @@
         android:id="@+id/imgCmtBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/poster_demo"
-        android:scaleType="centerCrop"
         android:alpha="0.4"
-        android:contentDescription="@string/comment_background" />
+        android:contentDescription="@string/comment_background"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/poster_demo" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnDetailBack"
@@ -29,8 +29,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginStart="12dp"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="4dp"
@@ -62,8 +62,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_margin="8dp"
             android:background="@drawable/ic_round_play_arrow_24"
             android:contentDescription="@string/play_trailer" />
@@ -78,7 +78,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/movie_name"
         android:textColor="@color/button_white"
-        android:textSize="26sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="@string/_23_11_2020"
         android:textColor="@color/button_white"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/txtDetailTitle"
         app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
 
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:text="@string/imdb_6_7_10"
         android:textColor="@color/button_white"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/txtDetailReleaseDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtDetailTitle"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:text="@string/action_comedy"
         android:textColor="@color/button_white"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/txtDetailReleaseDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtDetailRating"
@@ -123,18 +123,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:itemCount="3"
+        android:paddingBottom="210dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/comment_item"
-        app:layout_constraintBottom_toTopOf="@+id/btnDetailCommentBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDetailGenre"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:itemCount="3"
+        tools:listitem="@layout/comment_item" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnDetailCommentBox"
-        android:layout_width="320dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
@@ -148,12 +148,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginVertical="12sp"
+            android:layout_marginVertical="10sp"
             android:autofillHints=""
             android:background="@null"
             android:inputType="text"
             android:hint="@string/type_something"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -170,8 +170,8 @@
         app:layout_constraintStart_toEndOf="@+id/btnDetailCommentBox">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_margin="8dp"
             android:background="@drawable/ic_round_send_24"
             android:backgroundTint="@color/orange"
