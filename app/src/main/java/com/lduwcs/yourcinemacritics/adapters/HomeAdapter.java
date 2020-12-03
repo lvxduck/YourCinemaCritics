@@ -1,21 +1,22 @@
 package com.lduwcs.yourcinemacritics.adapters;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.ArrayUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
@@ -23,22 +24,25 @@ import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
+    ArrayList<Movie> favoriteMovies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
     private ApiUtils utils;
+    FirebaseUser user;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        favoriteMovies = new ArrayList<>();
         this.context = context;
         if (movies != null)
             this.movies = movies;
@@ -54,6 +58,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onGetTrailerError(String err) {
 
+            }
+        });
+        FirebaseUtils.getFavMovies(user.getUid());
+        FirebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
+            @Override
+            public void onGetFavoriteDone(ArrayList<Movie> movies) {
+                favoriteMovies.addAll(movies);
             }
         });
     }
@@ -106,6 +117,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 utils.getTrailer(id);
             }
         });
+        holder.btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isInFavoriteMovies(movies.get(position))){
+                    FirebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId());
+                    favoriteMovies.remove(position);
+                    Toast.makeText(context,"Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseUtils.addToFavMovies(user.getUid(), movies.get(position).getId(),
+                            movies.get(position).getTitle(),movies.get(position).getReleaseDay(),
+                            movies.get(position).getGenres(),movies.get(position).getPosterPath(),
+                            movies.get(position).getOverview(), movies.get(position).getVoteAverage());
+                    favoriteMovies.add(movies.get(position));
+                    Toast.makeText(context,"Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
     private String getLimitOverview(String overview, int max){
@@ -138,7 +167,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 //    public void onVideoRequestSuccess(String key){
 //        watchYoutubeVideo(context, key);
 //    }
-
+    public boolean isInFavoriteMovies(Movie movie){
+        for(Movie m : favoriteMovies){
+            if(movie.getId() == m.getId()) return true;
+        }
+        return false;
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;
         private final ImageView btnAddToFavorite;
