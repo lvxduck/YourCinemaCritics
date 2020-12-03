@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
+import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
@@ -27,6 +28,7 @@ public class ApiUtils {
     }
 
     public void getAllMovies(String content){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getMovies(content)
                 .subscribeOn(Schedulers.newThread())
@@ -36,6 +38,8 @@ public class ApiUtils {
                     public void onSuccess(@NonNull MovieData movieData) {
                          Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
                          Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
+                         movies.addAll(movieData.getResults());
+                         SearchFragment.onSearchingDone(movies, mContext);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
