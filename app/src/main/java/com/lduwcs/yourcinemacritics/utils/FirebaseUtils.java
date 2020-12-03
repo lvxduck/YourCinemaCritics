@@ -11,12 +11,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtils {
+
+    static FireBaseUtilsCommentListener fireBaseUtilsCommentListener;
+
+    public static void setFireBaseUtilsCommentListener(FireBaseUtilsCommentListener fireBaseUtilsCommentListener) {
+        FirebaseUtils.fireBaseUtilsCommentListener = fireBaseUtilsCommentListener;
+    }
+
     public static void writeComment(String userId, String movieId, String email, String content, String date, Float rating){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("movies");
         DatabaseReference commentRef = rootRef.child(movieId);
@@ -41,11 +49,13 @@ public class FirebaseUtils {
                     Float rating = ds.child("rating").getValue(Float.class);
                     comments.add(new Comment(email, content,rating,date));
                 };
-                CommentActivity.getInstance().onGetCommentDone(comments);
+                //CommentActivity.getInstance().onGetCommentDone(comments);
+                fireBaseUtilsCommentListener.onGetCommentDone(comments);
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+                fireBaseUtilsCommentListener.onGetCommentError(databaseError.getMessage());
+            }
         };
         commentRef.addListenerForSingleValueEvent(eventListener);
         return listComment;
@@ -92,3 +102,7 @@ public class FirebaseUtils {
         return listFavMovies;
     }
 }
+
+//interface FirebaseUtilsListener {
+//    public  onGetCommentDone();
+//}

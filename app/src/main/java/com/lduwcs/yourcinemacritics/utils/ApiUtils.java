@@ -1,15 +1,12 @@
 package com.lduwcs.yourcinemacritics.utils;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.lduwcs.yourcinemacritics.activities.CommentActivity;
-import com.lduwcs.yourcinemacritics.activities.MainActivity;
-import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 
 import java.util.ArrayList;
 
@@ -20,10 +17,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ApiUtils {
     MovieApiService apiService;
-    Context mContext;
 
-    public ApiUtils(Context context) {
-        this.mContext=context;
+    ApiUtilsCommentListener apiUtilsCommentListener;
+    ApiUtilsTrailerListener apiUtilsTrailerListener;
+
+    public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
+        this.apiUtilsCommentListener = apiUtilsCommentListener;
+    }
+
+    public void setApiUtilsTrailerListener(ApiUtilsTrailerListener apiUtilsTrailerListener) {
+        this.apiUtilsTrailerListener = apiUtilsTrailerListener;
+    }
+
+    public ApiUtils() {
     }
 
     public void getAllMovies(String content){
@@ -44,7 +50,6 @@ public class ApiUtils {
                 });
     }
 
-
     public void getTrailer(String id){
         apiService = new MovieApiService();
         apiService.getMovieTrailer(id)
@@ -56,14 +61,16 @@ public class ApiUtils {
                         Log.d("DEBUG1", "Success");
                         String key = trailer.getResults().get(0).getKey();
                         if(key.isEmpty() || key == null){
-                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
+//                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
+                            apiUtilsTrailerListener.onGetTrailerError("Key is null");
                         }
                         else {
-                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
-                                HomeFragment.adapter.onVideoRequestSuccess(key);
-                            }else{
-                                CommentActivity.getInstance().onVideoRequestSuccess(key);
-                            }
+                            apiUtilsTrailerListener.onGetTrailerDone(key);
+//                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
+//                                HomeFragment.adapter.onVideoRequestSuccess(key);
+//                            }else{
+//                                CommentActivity.getInstance().onVideoRequestSuccess(key);
+//                            }
                         }
                     }
                     @Override
@@ -72,7 +79,6 @@ public class ApiUtils {
                     }
                 });
     }
-
 
     public void getTrending(){
         ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -83,15 +89,16 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                        movies.addAll(movieData.getResults());
-                        HomeFragment.onLoadTrendingDone(movies,mContext);
+                        apiUtilsCommentListener.onGetTrendingDone((ArrayList<Movie>) movieData.getResults());
                         Log.d("DEBUG1", "Success");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("DEBUG1", "Error!"+e.getMessage());
+                        apiUtilsCommentListener.onGetTrendingError(e.getMessage());
                     }
                 });
     }
 }
+

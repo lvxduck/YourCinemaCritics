@@ -24,6 +24,7 @@ import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
@@ -43,7 +44,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             this.movies = movies;
         else
             this.movies = new ArrayList<>();
-        utils = new ApiUtils(context);
+        utils = new ApiUtils();
+        utils.setApiUtilsTrailerListener(new ApiUtilsTrailerListener() {
+            @Override
+            public void onGetTrailerDone(String key) {
+                watchYoutubeVideo(context, key);
+            }
+
+            @Override
+            public void onGetTrailerError(String err) {
+
+            }
+        });
     }
 
     @NonNull
@@ -57,8 +69,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //change item's content; choose what item does
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        //TODO: model to view
-//        holder.imgHomePoster.setImageDrawable();
         holder.txtTittle.setText(movies.get(position).getTitle());
         holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
         Picasso.get()
@@ -96,7 +106,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 utils.getTrailer(id);
             }
         });
-//        ...
     }
 
     private String getLimitOverview(String overview, int max){
@@ -120,24 +129,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public static void watchYoutubeVideo(Context context, String id){
-//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("http://www.youtube.com/watch?v=" + id));
-//        try {
-//            context.startActivity(appIntent);
-//        } catch (ActivityNotFoundException ex) {
-//            context.startActivity(webIntent);
-//        }
-
+    private void watchYoutubeVideo(Context context, String id){
         Intent intent = new Intent(context, YoutubeActivity.class);
         intent.putExtra("key", id);
         context.startActivity(intent);
     }
-
-    public void onVideoRequestSuccess(String key){
-        watchYoutubeVideo(context, key);
-    }
+//
+//    public void onVideoRequestSuccess(String key){
+//        watchYoutubeVideo(context, key);
+//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;

@@ -1,7 +1,6 @@
 package com.lduwcs.yourcinemacritics.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
 import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
                 .build();
         moviesDao = appDatabase.getMoviesDao();
 
-        utils = new ApiUtils(getContext());
+        utils = new ApiUtils();
         movies = new ArrayList<>();
 
         adapter = new HomeAdapter(view.getContext(), movies);
@@ -88,6 +88,18 @@ public class HomeFragment extends Fragment {
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(homeRecView);
+
+        //----Add ApiUtils Listener-------------
+        utils.setApiUtilsCommentListener(new ApiUtilsCommentListener() {
+            @Override
+            public void onGetTrendingDone(ArrayList<Movie> movies) {
+                onLoadTrendingDone(movies);
+            }
+
+            @Override
+            public void onGetTrendingError(String err) {
+            }
+        });
 
         //Load trending
         if(moviesDao.getTrending().size()>0){
@@ -109,7 +121,7 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    static public void onLoadTrendingDone(ArrayList<Movie> data, Context context) {
+    private void onLoadTrendingDone(ArrayList<Movie> data) {
         movies.clear();
         movies.addAll(data);
         for (Movie movie : data) {
