@@ -8,11 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.adapters.CommentAdapter;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
 import com.squareup.picasso.Picasso;
@@ -56,9 +61,10 @@ public class CommentActivity extends AppCompatActivity {
     private Context context;
     private FirebaseAuth mAuth;
 
-    ProgressDialog mProgressDialog;
+    CustomProgressDialog mProgressDialog;
 
-    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @SuppressLint({"SetTextI18n", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +87,7 @@ public class CommentActivity extends AppCompatActivity {
         edtCmt = findViewById(R.id.edtDetailComment);
         utils = new ApiUtils();
         context = getBaseContext();
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Loading, please wait...");
-        mProgressDialog.setView(LayoutInflater.from(context).inflate(
-                R.layout.progress_dialog, null));
+        mProgressDialog = new CustomProgressDialog(this);
         mProgressDialog.show();
 
         //------UI------------
