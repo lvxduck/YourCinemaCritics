@@ -45,35 +45,35 @@ public class RegisterActivity extends AppCompatActivity {
 
                 //VALIDATION
                 //Validate email
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     txtRegEmail.requestFocus();
                     txtRegEmail.setError("Email is required!");
                     return;
                 }
 
                 //Validate password
-                if(TextUtils.isEmpty(password)){
+                if (TextUtils.isEmpty(password)) {
                     txtRegPassword.requestFocus();
                     txtRegPassword.setError("Password is required!");
                     return;
                 }
 
                 //Minimum length of password
-                if(password.length() < 6){
+                if (password.length() < 6) {
                     txtRegPassword.requestFocus();
                     txtRegPassword.setError("Password must be equal or more than 6 characters!");
                     return;
                 }
 
                 //Validate Re-password
-                if(TextUtils.isEmpty(repassword)){
+                if (TextUtils.isEmpty(repassword)) {
                     txtRegReEnterPassword.requestFocus();
                     txtRegReEnterPassword.setError("Password is required!");
                     return;
                 }
 
                 //Check Re-password
-                if(!password.equals(repassword)){
+                if (!password.equals(repassword)) {
                     txtRegReEnterPassword.requestFocus();
                     txtRegReEnterPassword.setError("Password doesn't match!");
                     return;
@@ -91,7 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                }
+            }
+
         });
     }
 }
