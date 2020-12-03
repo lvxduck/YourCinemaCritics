@@ -36,8 +36,6 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                         Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
-                         Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
                          movies.addAll(movieData.getResults());
                          SearchFragment.onSearchingDone(movies, mContext);
                     }
