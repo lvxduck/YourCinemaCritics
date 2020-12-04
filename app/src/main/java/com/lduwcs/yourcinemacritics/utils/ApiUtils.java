@@ -56,16 +56,17 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
-                        String key = trailer.getResults().get(0).getKey();
-                        if(key.isEmpty() || key == null){
-                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
-                        }
-                        else {
+                        if(trailer.getResults() != null && trailer.getResults().size() > 0){
+                            String key = trailer.getResults().get(0).getKey();
                             if(mContext.getClass().getSimpleName().equals("MainActivity")){
                                 HomeFragment.adapter.onVideoRequestSuccess(key);
-                            }else{
+                            }
+                            else{
                                 CommentActivity.getInstance().onVideoRequestSuccess(key);
                             }
+                        }
+                        else{
+                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
