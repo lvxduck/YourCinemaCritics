@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
+    android:background="@color/main_background"
     android:clipChildren="false"
     tools:context=".activities.RegisterActivity">
 
@@ -14,75 +14,93 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/register"
+        android:textColor="@color/text_color"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
         android:id="@+id/neumorphicFrameLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="8dp"
-        app:corner_radius="20dp"
+        app:neomorph_view_type="rectangular"
+        app:neomorph_shadow_type="outer"
+        app:neomorph_elevation="8dp"
+        app:neomorph_corner_radius="16dp"
+        app:neomorph_background_color="@color/main_background"
+        app:neomorph_shadow_color="@color/neomorph_shadow_color"
+        app:neomorph_highlight_color="@color/neomorph_highlight_color"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:state="flat">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <EditText
             android:id="@+id/txtRegEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:padding="12dp"
+            android:textColor="@color/text_color"
             android:background="@null"
             android:hint="@string/email"
             android:textSize="20sp"
             android:inputType="textEmailAddress" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
         android:id="@+id/passwordContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="8dp"
-        app:corner_radius="20dp"
+        app:neomorph_view_type="rectangular"
+        app:neomorph_shadow_type="outer"
+        app:neomorph_elevation="8dp"
+        app:neomorph_corner_radius="16dp"
+        app:neomorph_background_color="@color/main_background"
+        app:neomorph_shadow_color="@color/neomorph_shadow_color"
+        app:neomorph_highlight_color="@color/neomorph_highlight_color"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/neumorphicFrameLayout2"
         app:layout_constraintStart_toStartOf="@+id/neumorphicFrameLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2"
-        app:state="flat">
+        app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2">
 
         <EditText
             android:id="@+id/txtRegPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:padding="12dp"
             android:background="@null"
             android:textSize="20sp"
+            android:textColor="@color/text_color"
             android:hint="@string/password"
             android:inputType="textPassword" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
         android:id="@+id/reEnterPasswordContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="8dp"
-        app:corner_radius="20dp"
+        app:neomorph_view_type="rectangular"
+        app:neomorph_shadow_type="outer"
+        app:neomorph_elevation="8dp"
+        app:neomorph_corner_radius="16dp"
+        app:neomorph_background_color="@color/main_background"
+        app:neomorph_shadow_color="@color/neomorph_shadow_color"
+        app:neomorph_highlight_color="@color/neomorph_highlight_color"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/passwordContainer"
         app:layout_constraintStart_toStartOf="@+id/passwordContainer"
-        app:layout_constraintTop_toBottomOf="@+id/passwordContainer"
-        app:state="flat">
+        app:layout_constraintTop_toBottomOf="@+id/passwordContainer">
 
         <EditText
             android:id="@+id/txtRegReEnterPassword"
@@ -91,9 +109,11 @@
             android:autofillHints=""
             android:background="@null"
             android:textSize="20sp"
+            android:padding="12dp"
+            android:textColor="@color/text_color"
             android:hint="@string/re_enter_password"
             android:inputType="textPassword" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnSignUp"
@@ -112,7 +132,7 @@
             android:layout_marginHorizontal="92dp"
             android:layout_marginVertical="8dp"
             android:text="@string/sign_up"
-            android:textColor="@color/background_white"
+            android:textColor="@color/text_color_alt"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>

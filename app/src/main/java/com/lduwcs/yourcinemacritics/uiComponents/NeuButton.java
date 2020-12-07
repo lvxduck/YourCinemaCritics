@@ -6,15 +6,15 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.borutsky.neumorphism.NeumorphicFrameLayout;
 import com.lduwcs.yourcinemacritics.R;
 
-public class NeuButton extends NeumorphicFrameLayout {
+public class NeuButton extends RelativeLayout {
     private ImageView icon;
 
     public NeuButton(@NonNull Context context) {
@@ -29,11 +29,6 @@ public class NeuButton extends NeumorphicFrameLayout {
 
     public NeuButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(attrs);
-    }
-
-    public NeuButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         initView(attrs);
     }
 
@@ -56,10 +51,8 @@ public class NeuButton extends NeumorphicFrameLayout {
     public void setOnActive(boolean isOnActive) {
         if (isOnActive) {
             icon.setColorFilter(getContext().getResources().getColor(R.color.orange));
-            this.setState(NeumorphicFrameLayout.State.CONCAVE);
         } else {
             icon.setColorFilter(getContext().getResources().getColor(R.color.grey));
-            this.setState(NeumorphicFrameLayout.State.FLAT);
         }
     }
 }

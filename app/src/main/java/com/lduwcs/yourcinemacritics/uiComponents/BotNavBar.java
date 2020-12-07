@@ -2,6 +2,7 @@ package com.lduwcs.yourcinemacritics.uiComponents;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,6 +43,7 @@ public class BotNavBar extends ConstraintLayout {
     }
 
     public void setHomeOnClick(OnClickListener onClickListener) {
+        Log.d("alo", "setHomeOnClick: bruhuhuhu");
         homeButton.setOnClickListener(v -> {
             onClickListener.onClick(v);
             homeButton.setOnActive(true);

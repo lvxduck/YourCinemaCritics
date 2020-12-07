@@ -4,20 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:background="@color/background_white"
+    android:background="@color/main_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_white"
+        android:background="@color/main_background"
         android:clipChildren="false">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnProfileLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/button_background"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="16dp"
@@ -30,7 +31,7 @@
                 android:layout_height="28dp"
                 android:layout_margin="12dp"
                 android:background="@drawable/ic_logout"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/icon_inactive"
                 android:contentDescription="@string/logout" />
         </androidx.cardview.widget.CardView>
 
@@ -50,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textSize="24sp"
-            android:textColor="@color/grey"
+            android:textColor="@color/text_color"
             android:text="@string/hello"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -62,11 +63,21 @@
             android:layout_marginStart="8dp"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/text_color"
             android:text="@string/thuan_gmail_com"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtProfileEmail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
