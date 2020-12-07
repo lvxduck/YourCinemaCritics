@@ -38,13 +38,19 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
-    ArrayList<Movie> favoriteMovies;
+    public static ArrayList<Movie> favoriteMovies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
     private ApiUtils utils;
     FirebaseUser user;
     CustomProgressDialog myProgressDialog;
+    public static HomeAdapter instance;
+
+    public static HomeAdapter getInstance() {
+        return instance;
+    }
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
+        instance = this;
         user = FirebaseAuth.getInstance().getCurrentUser();
         favoriteMovies = new ArrayList<>();
         this.context = context;
@@ -72,6 +78,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 notifyDataSetChanged();
             }
         });
+        initFirebaseListener();
+    }
+
+    public void initFirebaseListener(){
+        notifyDataSetChanged();
         FirebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
@@ -128,19 +139,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title", movies.get(position).getTitle());
-                bundle.putString("img_path", movies.get(position).getPosterPath());
-                String releaseDay = movies.get(position).getReleaseDay();
-                String[] releaseDayArray = releaseDay.split("-");
-                String reversedReleaseDay = "";
-                for (int i = 2; i >= 0; i--) {
-                    reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-                    if (i != 0) reversedReleaseDay += "/";
-                }
-                bundle.putString("release_day", reversedReleaseDay);
-                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-                bundle.putString("movie_id", movies.get(position).getId() + "");
+                bundle.putSerializable("movie", movies.get(position));
+//                bundle.putString("title", movies.get(position).getTitle());
+//                bundle.putString("img_path", movies.get(position).getPosterPath());
+//                String releaseDay = movies.get(position).getReleaseDay();
+
+//                bundle.putString("release_day", reversedReleaseDay);
+//                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
+//                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+//                bundle.putString("movie_id", movies.get(position).getId() + "");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -203,7 +210,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         context.startActivity(intent);
     }
 
-    public boolean isInFavoriteMovies(Movie movie) {
+    public static boolean isInFavoriteMovies(Movie movie) {
         for (Movie m : favoriteMovies) {
             if (movie.getId() == m.getId()) return true;
         }

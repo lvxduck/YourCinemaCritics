@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.lduwcs.yourcinemacritics.R;
 
 public class FavoriteFragment extends Fragment {
+
     public FavoriteFragment() {
         // Required empty public constructor
     }
