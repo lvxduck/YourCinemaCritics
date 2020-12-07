@@ -22,4 +22,5 @@
     <color name="no_color">#00FFFFFF</color>
     <color name="button_highlight_color">#8B535353</color>
     <color name="button_shadow_color">#E41C1F27</color>
+    <color name="super_black">#000000</color>
 </resources>

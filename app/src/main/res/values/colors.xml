@@ -22,4 +22,5 @@
     <color name="no_color">#00FFFFFF</color>
     <color name="button_highlight_color">#FFFFFF</color>
     <color name="button_shadow_color">#B9D5D5D5</color>
+    <color name="super_black">#000000</color>
 </resources>

@@ -73,6 +73,7 @@ public class CommentActivity extends AppCompatActivity {
         ImageView imgCmtBackground = findViewById(R.id.imgCmtBackground);
         TextView txtDetailTitle = findViewById(R.id.txtDetailTitle);
         TextView txtDetailReleaseDate = findViewById(R.id.txtDetailReleaseDate);
+        TextView txtDetailOverview = findViewById(R.id.txtDetailOverview);
         TextView txtDetailRating = findViewById(R.id.txtDetailRating);
         TextView txtDetailGenre = findViewById(R.id.txtDetailGenre);
         commentRecView = findViewById(R.id.detailRecView);
@@ -93,6 +94,7 @@ public class CommentActivity extends AppCompatActivity {
                 .into(imgCmtBackground);
         txtDetailTitle.setText(bundle.getString("title"));
         txtDetailReleaseDate.setText("Release Day: " + bundle.getString("release_day"));
+        txtDetailOverview.setText(bundle.getString("overview"));
         txtDetailGenre.setText("Genres: "+ bundle.getString("genres"));
         txtDetailRating.setText("Rating: "+ bundle.getString("rating"));
         movie_id = bundle.getString("movie_id");
