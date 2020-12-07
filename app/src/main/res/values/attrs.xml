@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    neu button-->
+    <declare-styleable name="NeuButton">
+        <attr name="nbSrc" format="reference" />
+        <attr name="nbIconSize" format="dimension" />
+        <attr name="nbSize" format="dimension" />
+        <attr name="nbShadowPadding" format="dimension" />
+        <attr name="nbShadowAlt" format="boolean" />
+    </declare-styleable>
+
+    <!--    star rating-->
+    <declare-styleable name="StarRate">
+        <attr name="srRate" format="float" />
+        <attr name="srIconSize" format="dimension" />
+    </declare-styleable>
+</resources>
