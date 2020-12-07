@@ -79,6 +79,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 Bundle bundle = new Bundle();
                 bundle.putString("title", movies.get(position).getTitle());
                 bundle.putString("img_path", movies.get(position).getPosterPath());
+                bundle.putString("overview", movies.get(position).getOverview());
                 bundle.putString("release_day", finalReversedReleaseDay);
                 bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
                 bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));

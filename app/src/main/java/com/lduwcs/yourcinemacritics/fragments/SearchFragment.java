@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,6 +42,7 @@ import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
 import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.Genres;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,14 +50,18 @@ import java.util.Date;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = "DEBUG1";
+    //private static MaterialCheckBox checkBox1, checkBox2, checkBox3, checkBox4,checkBox5, checkBox6,checkBox7, checkBox8, checkBox9, checkBox10,checkBox11, checkBox12,checkBox13, checkBox14, checkBox15, checkBox16,checkBox17, checkBox18
 
     private RecyclerView searchRecView;
     static ArrayList<Movie> movies;
+    static ArrayList<Movie> allResultMovies;
+    static ArrayList<Integer> checkedGenres;
+    static ArrayList<MaterialCheckBox> checkBoxes;
+    @SuppressLint("StaticFieldLeak")
     private static TextView txtNoResult;
     private SearchView searchView;
     private CardView btnFilter;
     private CardView btnSort;
-    private ArrayList<MaterialCheckBox> checkBoxes;
     private boolean isDescendingSorted = true;
 
     private ApiUtils utils;
@@ -86,48 +93,12 @@ public class SearchFragment extends Fragment {
         btnFilter = view.findViewById(R.id.btnFilter);
         btnSort = view.findViewById(R.id.btnSort);
         txtNoResult = view.findViewById(R.id.txtNoResult);
-        checkBoxes = new ArrayList<MaterialCheckBox>();
-//        MaterialCheckBox checkBox1 = view.findViewById(R.id.cb12);
-//        MaterialCheckBox checkBox2 = view.findViewById(R.id.cb14);
-//        MaterialCheckBox checkBox3 = view.findViewById(R.id.cb16);
-//        MaterialCheckBox checkBox4 = view.findViewById(R.id.cb18);
-//        MaterialCheckBox checkBox5 = view.findViewById(R.id.cb27);
-//        MaterialCheckBox checkBox6 = view.findViewById(R.id.cb28);
-//        MaterialCheckBox checkBox7 = view.findViewById(R.id.cb35);
-//        MaterialCheckBox checkBox8 = view.findViewById(R.id.cb36);
-//        MaterialCheckBox checkBox9 = view.findViewById(R.id.cb37);
-//        MaterialCheckBox checkBox10 = view.findViewById(R.id.cb53);
-//        MaterialCheckBox checkBox11 = view.findViewById(R.id.cb80);
-//        MaterialCheckBox checkBox12 = view.findViewById(R.id.cb99);
-//        MaterialCheckBox checkBox13 = view.findViewById(R.id.cb878);
-//        MaterialCheckBox checkBox14 = view.findViewById(R.id.cb9648);
-//        MaterialCheckBox checkBox15 = view.findViewById(R.id.cb10402);
-//        MaterialCheckBox checkBox16 = view.findViewById(R.id.cb10749);
-//        MaterialCheckBox checkBox17 = view.findViewById(R.id.cb10751);
-//        MaterialCheckBox checkBox18 = view.findViewById(R.id.cb10752);
-//        MaterialCheckBox checkBox19 = view.findViewById(R.id.cb10770);
-//        checkBoxes.add(checkBox1);
-//        checkBoxes.add(checkBox2);
-//        checkBoxes.add(checkBox3);
-//        checkBoxes.add(checkBox4);
-//        checkBoxes.add(checkBox5);
-//        checkBoxes.add(checkBox6);
-//        checkBoxes.add(checkBox7);
-//        checkBoxes.add(checkBox8);
-//        checkBoxes.add(checkBox9);
-//        checkBoxes.add(checkBox10);
-//        checkBoxes.add(checkBox11);
-//        checkBoxes.add(checkBox12);
-//        checkBoxes.add(checkBox13);
-//        checkBoxes.add(checkBox14);
-//        checkBoxes.add(checkBox15);
-//        checkBoxes.add(checkBox16);
-//        checkBoxes.add(checkBox17);
-//        checkBoxes.add(checkBox18);
-//        checkBoxes.add(checkBox19);
 
         utils = new ApiUtils(getContext());
         movies = new ArrayList<>();
+        allResultMovies = new ArrayList<Movie>();
+        checkedGenres = new ArrayList<Integer>();
+        checkBoxes = new ArrayList<MaterialCheckBox>();
 
         adapter = new SearchAdapter(view.getContext(), movies);
         searchRecView.setAdapter(adapter);
@@ -141,8 +112,16 @@ public class SearchFragment extends Fragment {
                 return false;
             }
 
+            //TODO: DUC sua phan nay gium
             @Override
             public boolean onQueryTextChange(String s) {
+                if(s.length() > 0 && s.substring(s.length()-1).equals(" ")){
+                    utils.getAllMovies(s);
+                }
+                else if(s.length() == 0){
+                    utils.getAllMovies("a");
+                }
+                isDescendingSorted = true;
                 return false;
             }
         });
@@ -154,14 +133,84 @@ public class SearchFragment extends Fragment {
                 View layout= null;
                 LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 layout = inflater.inflate(R.layout.filter, null);
-                final ArrayList<MaterialCheckBox> checkedGenres = new ArrayList<>();
                 builder.setTitle("Choose genres");
                 builder.setView(layout);
+                checkBoxes.clear();
 
+                MaterialCheckBox checkBox1 = layout.findViewById(R.id.cb12);
+                checkBoxes.add(checkBox1);
+                MaterialCheckBox checkBox2 = layout.findViewById(R.id.cb14);
+                checkBoxes.add(checkBox2);
+                MaterialCheckBox checkBox3 = layout.findViewById(R.id.cb16);
+                checkBoxes.add(checkBox3);
+                MaterialCheckBox checkBox4 = layout.findViewById(R.id.cb18);
+                checkBoxes.add(checkBox4);
+                MaterialCheckBox checkBox5 = layout.findViewById(R.id.cb27);
+                checkBoxes.add(checkBox5);
+                MaterialCheckBox checkBox6 = layout.findViewById(R.id.cb28);
+                checkBoxes.add(checkBox6);
+                MaterialCheckBox checkBox7 = layout.findViewById(R.id.cb35);
+                checkBoxes.add(checkBox7);
+                MaterialCheckBox checkBox8 = layout.findViewById(R.id.cb36);
+                checkBoxes.add(checkBox8);
+                MaterialCheckBox checkBox9 = layout.findViewById(R.id.cb37);
+                checkBoxes.add(checkBox9);
+                MaterialCheckBox checkBox10 = layout.findViewById(R.id.cb53);
+                checkBoxes.add(checkBox10);
+                MaterialCheckBox checkBox11 = layout.findViewById(R.id.cb80);
+                checkBoxes.add(checkBox11);
+                MaterialCheckBox checkBox12 = layout.findViewById(R.id.cb99);
+                checkBoxes.add(checkBox12);
+                MaterialCheckBox checkBox13 = layout.findViewById(R.id.cb878);
+                checkBoxes.add(checkBox13);
+                MaterialCheckBox checkBox14 = layout.findViewById(R.id.cb9648);
+                checkBoxes.add(checkBox14);
+                MaterialCheckBox checkBox15 = layout.findViewById(R.id.cb10402);
+                checkBoxes.add(checkBox15);
+                MaterialCheckBox checkBox16 = layout.findViewById(R.id.cb10749);
+                checkBoxes.add(checkBox16);
+                MaterialCheckBox checkBox17 = layout.findViewById(R.id.cb10751);
+                checkBoxes.add(checkBox17);
+                MaterialCheckBox checkBox18 = layout.findViewById(R.id.cb10752);
+                checkBoxes.add(checkBox18);
+                MaterialCheckBox checkBox19 = layout.findViewById(R.id.cb10770);
+                checkBoxes.add(checkBox19);
+
+                for(MaterialCheckBox checkBox : checkBoxes){
+                    if(checkedGenres.contains(Genres.changeNameToGenre(checkBox.getText().toString()))){
+                        checkBox.setChecked(true);
+                    }
+                }
                 // Add the buttons
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        checkedGenres.clear();
+                        for(MaterialCheckBox checkBox : checkBoxes){
+                            if(checkBox.isChecked()){
+                                checkedGenres.add(Genres.changeNameToGenre(checkBox.getText().toString()));
+                            }
+                        }
 
+                        //Debug
+                        System.out.println(checkedGenres.size());
+                        for(Integer item : checkedGenres){
+                            System.out.println(item + " ");
+                        }
+
+                        ArrayList<Movie> filteredMovies = new ArrayList<Movie>();
+                        for(Movie movie : allResultMovies){
+                            if(movie.getGenres().containsAll(checkedGenres)){
+                                filteredMovies.add(movie);
+                            }
+                        }
+                        movies.clear();
+                        movies.addAll(filteredMovies);
+                        adapter.notifyDataSetChanged();
+                        txtNoResult.setVisibility(View.INVISIBLE);
+                        if(movies.size() == 0){
+                            txtNoResult.setVisibility(View.VISIBLE);
+                        }
+                        Toast.makeText(getContext(), "Filtered by genres", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -217,7 +266,10 @@ public class SearchFragment extends Fragment {
 
     public static void onSearchingDone(ArrayList<Movie> data, Context context) {
         movies.clear();
+        allResultMovies.clear();
         movies.addAll(data);
+        allResultMovies.addAll(movies);
+        checkedGenres.clear();
         adapter.notifyDataSetChanged();
         txtNoResult.setVisibility(View.INVISIBLE);
         if(movies.size() == 0){
@@ -225,5 +277,4 @@ public class SearchFragment extends Fragment {
         }
         Log.d(TAG, "onSearchingDone: success");
     }
-
 }
