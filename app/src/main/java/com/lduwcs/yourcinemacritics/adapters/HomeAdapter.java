@@ -21,13 +21,16 @@ import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,15 +42,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     String base_url_image = "https://image.tmdb.org/t/p/w500";
     private ApiUtils utils;
     FirebaseUser user;
+    CustomProgressDialog myProgressDialog;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         user = FirebaseAuth.getInstance().getCurrentUser();
         favoriteMovies = new ArrayList<>();
         this.context = context;
-        if (movies != null)
-            this.movies = movies;
-        else
-            this.movies = new ArrayList<>();
+        this.movies = movies!=null?movies:new ArrayList<>();
+        myProgressDialog = new CustomProgressDialog(context);
         utils = new ApiUtils();
         utils.setApiUtilsTrailerListener(new ApiUtilsTrailerListener() {
             @Override
@@ -65,6 +67,34 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onGetFavoriteDone(ArrayList<Movie> movies) {
                 favoriteMovies.addAll(movies);
+            }
+        });
+        FirebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @Override
+            public void onSuccess(int position) {
+                    favoriteMovies.add(movies.get(position));
+                    Toast.makeText(context,"Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+                    myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context,"ERROR: "+err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
+        FirebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+            @Override
+            public void onSuccess(int position) {
+                favoriteMovies.remove(position);
+                Toast.makeText(context,"Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context,"ERROR: "+err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
             }
         });
     }
@@ -120,22 +150,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myProgressDialog.show();
                 if(isInFavoriteMovies(movies.get(position))){
-                    FirebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId());
-                    favoriteMovies.remove(position);
-                    Toast.makeText(context,"Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                    FirebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId(),position);
                 } else {
-                    FirebaseUtils.addToFavMovies(user.getUid(), movies.get(position).getId(),
+                    FirebaseUtils.addToFavMovies(position,user.getUid(), movies.get(position).getId(),
                             movies.get(position).getTitle(),movies.get(position).getReleaseDay(),
                             movies.get(position).getGenres(),movies.get(position).getPosterPath(),
                             movies.get(position).getOverview(), movies.get(position).getVoteAverage());
-                    favoriteMovies.add(movies.get(position));
-                    Toast.makeText(context,"Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
+
+    @Override
+    public int getItemCount() {
+        return this.movies.size();
+    }
+
+    //-----------------------------//
 
     private String getLimitOverview(String overview, int max){
         if(overview.length()>max){
@@ -145,11 +178,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             return overview.substring(0,max)+"...";
         }
         return overview;
-    }
-
-    @Override
-    public int getItemCount() {
-        return this.movies.size();
     }
 
     public void setContacts(ArrayList<Movie> movies) {
@@ -163,16 +191,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         intent.putExtra("key", id);
         context.startActivity(intent);
     }
-//
-//    public void onVideoRequestSuccess(String key){
-//        watchYoutubeVideo(context, key);
-//    }
+
     public boolean isInFavoriteMovies(Movie movie){
         for(Movie m : favoriteMovies){
             if(movie.getId() == m.getId()) return true;
         }
         return false;
     }
+
+    //------------------------------------//
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;
         private final ImageView btnAddToFavorite;

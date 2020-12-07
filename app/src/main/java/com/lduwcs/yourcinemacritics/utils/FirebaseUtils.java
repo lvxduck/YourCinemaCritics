@@ -9,8 +9,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +22,20 @@ public class FirebaseUtils {
 
     static FireBaseUtilsCommentListener fireBaseUtilsCommentListener;
     static FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener;
+    static FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener;
+    static FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener;
+
+    public static void setFireBaseUtilsAddFavoriteListener(FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener) {
+        FirebaseUtils.fireBaseUtilsAddFavoriteListener = fireBaseUtilsAddFavoriteListener;
+    }
+
+    public static void setFireBaseUtilsRemoveFavoriteListener(FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener) {
+        FirebaseUtils.fireBaseUtilsRemoveFavoriteListener = fireBaseUtilsRemoveFavoriteListener;
+    }
 
     public static void setFireBaseUtilsFavoriteMoviesListener(FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener) {
         FirebaseUtils.fireBaseUtilsFavoriteMoviesListener = fireBaseUtilsFavoriteMoviesListener;
     }
-
 
     public static void setFireBaseUtilsCommentListener(FireBaseUtilsCommentListener fireBaseUtilsCommentListener) {
         FirebaseUtils.fireBaseUtilsCommentListener = fireBaseUtilsCommentListener;
@@ -66,7 +77,7 @@ public class FirebaseUtils {
         return listComment;
     }
 
-    public static void addToFavMovies(String userId, int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage){
+    public static void addToFavMovies(int position, String userId, int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
         DatabaseReference movieRef = userRef.child("" + id);
@@ -81,9 +92,10 @@ public class FirebaseUtils {
         movieRef.child("poster").setValue(posterPath);
         movieRef.child("vote_average").setValue(voteAverage);
         movieRef.child("over_view").setValue(overview);
+        fireBaseUtilsAddFavoriteListener.onSuccess(position);
     }
 
-    public static void deleteFromFavMovie(String userId, int id){
+    public static void deleteFromFavMovie(String userId, int id,int position){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
         ValueEventListener eventListener = new ValueEventListener() {
@@ -92,11 +104,15 @@ public class FirebaseUtils {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     if(ds.getKey().equals("" + id)){
                         ds.getRef().removeValue();
+                        fireBaseUtilsRemoveFavoriteListener.onSuccess(position);
+                        return;
                     }
                 };
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+                fireBaseUtilsRemoveFavoriteListener.onError(databaseError.getMessage());
+            }
         };
         userRef.addListenerForSingleValueEvent(eventListener);
     }
@@ -137,7 +153,3 @@ public class FirebaseUtils {
         userRef.addListenerForSingleValueEvent(eventListener);
     }
 }
-
-//interface FirebaseUtilsListener {
-//    public  onGetCommentDone();
-//}
