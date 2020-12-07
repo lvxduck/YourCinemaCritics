@@ -74,6 +74,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", movies.get(position).getTitle());
                 bundle.putString("img_path", movies.get(position).getPosterPath());
+                bundle.putString("overview", movies.get(position).getOverview());
                 String releaseDay = movies.get(position).getReleaseDay();
                 String[] releaseDayArray = releaseDay.split("-");
                 String reversedReleaseDay = "";

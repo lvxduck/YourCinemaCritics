@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Action"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb28"
+        app:layout_constraintTop_toBottomOf="@+id/cb28"
+        android:text="Adventure"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb12"
+        app:layout_constraintTop_toBottomOf="@+id/cb12"
+        android:text="Animation"
+        android:textSize="18sp"/>
+
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb16"
+        app:layout_constraintTop_toBottomOf="@+id/cb16"
+        android:text="Comedy"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb35"
+        app:layout_constraintTop_toBottomOf="@+id/cb35"
+        android:text="Crime"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb99"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb80"
+        app:layout_constraintTop_toBottomOf="@+id/cb80"
+        android:text="Documentary"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cb99"
+        app:layout_constraintStart_toEndOf="@+id/cb99"
+        app:layout_constraintTop_toTopOf="@+id/cb99" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb99"
+        app:layout_constraintTop_toBottomOf="@+id/cb99"
+        android:text="Drama"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb10751"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb18"
+        app:layout_constraintTop_toBottomOf="@+id/cb18"
+        android:text="Family"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb10751"
+        app:layout_constraintTop_toBottomOf="@+id/cb10751"
+        android:text="Fantasy"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb14"
+        app:layout_constraintTop_toBottomOf="@+id/cb14"
+        android:text="History"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toEndOf="@+id/textView22"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Horror"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb10402"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb27"
+        app:layout_constraintTop_toBottomOf="@+id/cb27"
+        android:text="Music"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb9648"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb10402"
+        app:layout_constraintTop_toBottomOf="@+id/cb10402"
+        android:text="Mystery"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb10749"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb9648"
+        app:layout_constraintTop_toBottomOf="@+id/cb9648"
+        android:text="Romance"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb878"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb10749"
+        app:layout_constraintTop_toBottomOf="@+id/cb10749"
+        android:text="Science fiction"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb10770"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb878"
+        app:layout_constraintTop_toBottomOf="@+id/cb878"
+        android:text="TV Movie"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb53"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb10770"
+        app:layout_constraintTop_toBottomOf="@+id/cb10770"
+        android:text="Thriller"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb10752"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb53"
+        app:layout_constraintTop_toBottomOf="@+id/cb53"
+        android:text="War"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/orange"
+        app:layout_constraintStart_toStartOf="@+id/cb10752"
+        app:layout_constraintTop_toBottomOf="@+id/cb10752"
+        android:text="Western"
+        android:textSize="18sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Genres {
     public static HashMap<Integer, String> genreList;
@@ -40,5 +41,14 @@ public class Genres {
             result = result.substring(0, result.length()-2);
         }
         return result;
+    }
+
+    public static int changeNameToGenre(String name){
+        for(HashMap.Entry<Integer, String> entry : genreList.entrySet()){
+            if(entry.getValue().equals(name)){
+                return entry.getKey();
+            }
+        }
+        return -1;
     }
 }
