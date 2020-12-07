@@ -63,6 +63,7 @@ public class SearchFragment extends Fragment {
     private CardView btnFilter;
     private CardView btnSort;
     private boolean isDescendingSorted = true;
+    private long previousMillis;
 
     private ApiUtils utils;
 
@@ -94,6 +95,7 @@ public class SearchFragment extends Fragment {
         btnSort = view.findViewById(R.id.btnSort);
         txtNoResult = view.findViewById(R.id.txtNoResult);
 
+        previousMillis = System.currentTimeMillis();
         utils = new ApiUtils(getContext());
         movies = new ArrayList<>();
         allResultMovies = new ArrayList<Movie>();
@@ -115,13 +117,16 @@ public class SearchFragment extends Fragment {
             //TODO: DUC sua phan nay gium
             @Override
             public boolean onQueryTextChange(String s) {
-                if(s.length() > 0 && s.substring(s.length()-1).equals(" ")){
+                Log.d(TAG, "onQueryTextChange: "+s+" "+System.currentTimeMillis());
+                long currentMillis = System.currentTimeMillis();
+                if(s.length() > 0 && currentMillis-previousMillis>500){
                     utils.getAllMovies(s);
                 }
                 else if(s.length() == 0){
                     utils.getAllMovies("a");
                 }
                 isDescendingSorted = true;
+                previousMillis = currentMillis;
                 return false;
             }
         });
