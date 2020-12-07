@@ -162,7 +162,6 @@ public class CommentActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeAdapter.getInstance().initFirebaseListener();
                 onBackPressed();
             }
         });

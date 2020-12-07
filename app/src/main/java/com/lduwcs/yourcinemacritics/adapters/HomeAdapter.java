@@ -43,14 +43,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private ApiUtils utils;
     FirebaseUser user;
     CustomProgressDialog myProgressDialog;
-    public static HomeAdapter instance;
 
-    public static HomeAdapter getInstance() {
-        return instance;
-    }
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
-        instance = this;
         user = FirebaseAuth.getInstance().getCurrentUser();
         favoriteMovies = new ArrayList<>();
         this.context = context;

@@ -130,4 +130,11 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         Log.d(TAG, "onLoadTrendingDone: success");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.initFirebaseListener();
+        Log.d(TAG, "onResume: "+"dfghjdfghjdfgh");
+    }
 }
