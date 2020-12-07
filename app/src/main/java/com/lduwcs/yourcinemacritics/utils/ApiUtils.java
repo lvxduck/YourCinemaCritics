@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
-import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
@@ -28,7 +27,7 @@ public class ApiUtils {
     }
 
     public void getAllMovies(String content){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        ArrayList<Movie> movies = new ArrayList<>();
         apiService = new MovieApiService();
         apiService.getMovies(content)
                 .subscribeOn(Schedulers.newThread())
@@ -36,8 +35,6 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                         Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
-                         Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
                          movies.addAll(movieData.getResults());
                          SearchFragment.onSearchingDone(movies, mContext);
                     }
@@ -58,16 +55,15 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
-                        String key = trailer.getResults().get(0).getKey();
-                        if(key.isEmpty() || key == null){
-                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT);
-                        }
-                        else {
-                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
+                        if (trailer.getResults() != null && trailer.getResults().size() > 0) {
+                            String key = trailer.getResults().get(0).getKey();
+                            if (mContext.getClass().getSimpleName().equals("MainActivity")) {
                                 HomeFragment.adapter.onVideoRequestSuccess(key);
-                            }else{
+                            } else {
                                 CommentActivity.getInstance().onVideoRequestSuccess(key);
                             }
+                        } else {
+                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
@@ -79,7 +75,7 @@ public class ApiUtils {
 
 
     public void getTrending(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        ArrayList<Movie> movies = new ArrayList<>();
         apiService = new MovieApiService();
         apiService.getTrending()
                 .subscribeOn(Schedulers.newThread())

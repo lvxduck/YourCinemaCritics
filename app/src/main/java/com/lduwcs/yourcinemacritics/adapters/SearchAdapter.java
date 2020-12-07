@@ -28,7 +28,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private ApiUtils utils;
+    private final ApiUtils utils;
 
     public SearchAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         this.context = context;
@@ -53,39 +53,37 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         holder.txtTitleSmall.setText(movies.get(position).getTitle());
 
-        String reversedReleaseDay = "";
+        StringBuilder reversedReleaseDay = new StringBuilder();
         String releaseDay = movies.get(position).getReleaseDay();
-        if(releaseDay != null){
+        if(releaseDay != null) {
             String[] releaseDayArray = releaseDay.split("-");
-            for(int i = releaseDayArray.length - 1; i >= 0; i--){
-                reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-                if(i != 0) reversedReleaseDay += "/";
+            for (int i = releaseDayArray.length - 1; i >= 0; i--) {
+                reversedReleaseDay.append(releaseDayArray[i]);
+                if (i != 0) reversedReleaseDay.append("/");
             }
         }
-        holder.txtDateSmall.setText(reversedReleaseDay);
+        holder.txtDateSmall.setText(reversedReleaseDay.toString());
 
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
                 .placeholder(R.drawable.no_preview)
                 .into(holder.imgPosterSmall);
-        holder.srSmall.setStarsRate((float)movies.get(position).getVoteAverage());
+        holder.srSmall.setStarsRate((float) movies.get(position).getVoteAverage());
 
-        String finalReversedReleaseDay = reversedReleaseDay;
-        holder.searchItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CommentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", movies.get(position).getTitle());
-                bundle.putString("img_path", movies.get(position).getPosterPath());
-                bundle.putString("release_day", finalReversedReleaseDay);
-                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-                bundle.putString("movie_id",movies.get(position).getId()+"");
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
+        String finalReversedReleaseDay = reversedReleaseDay.toString();
+        holder.searchItem.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("title", movies.get(position).getTitle());
+            bundle.putString("img_path", movies.get(position).getPosterPath());
+            bundle.putString("overview", movies.get(position).getOverview());
+            bundle.putString("release_day", finalReversedReleaseDay);
+            bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
+            bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+            bundle.putString("movie_id", movies.get(position).getId() + "");
+            intent.putExtras(bundle);
+            context.startActivity(intent);
         });
     }
 

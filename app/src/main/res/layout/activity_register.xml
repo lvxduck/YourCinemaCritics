@@ -21,52 +21,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/neumorphicFrameLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="24dp"
-        app:neomorph_view_type="rectangular"
-        app:neomorph_shadow_type="outer"
-        app:neomorph_elevation="8dp"
-        app:neomorph_corner_radius="16dp"
-        app:neomorph_background_color="@color/main_background"
-        app:neomorph_shadow_color="@color/neomorph_shadow_color"
-        app:neomorph_highlight_color="@color/neomorph_highlight_color"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="40dp"
+        android:padding="8dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp">
 
         <EditText
             android:id="@+id/txtRegEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:padding="12dp"
-            android:textColor="@color/text_color"
             android:background="@null"
             android:hint="@string/email"
-            android:textSize="20sp"
-            android:inputType="textEmailAddress" />
-    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/passwordContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        app:neomorph_view_type="rectangular"
-        app:neomorph_shadow_type="outer"
-        app:neomorph_elevation="8dp"
-        app:neomorph_corner_radius="16dp"
-        app:neomorph_background_color="@color/main_background"
-        app:neomorph_shadow_color="@color/neomorph_shadow_color"
-        app:neomorph_highlight_color="@color/neomorph_highlight_color"
-        android:clickable="true"
-        android:focusable="true"
+        android:padding="8dp"
+        android:layout_marginTop="24dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/neumorphicFrameLayout2"
         app:layout_constraintStart_toStartOf="@+id/neumorphicFrameLayout2"
         app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2">
@@ -76,28 +90,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:padding="12dp"
             android:background="@null"
-            android:textSize="20sp"
-            android:textColor="@color/text_color"
             android:hint="@string/password"
-            android:inputType="textPassword" />
-    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <com.chinodev.androidneomorphframelayout.NeomorphFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/reEnterPasswordContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        app:neomorph_view_type="rectangular"
-        app:neomorph_shadow_type="outer"
-        app:neomorph_elevation="8dp"
-        app:neomorph_corner_radius="16dp"
-        app:neomorph_background_color="@color/main_background"
-        app:neomorph_shadow_color="@color/neomorph_shadow_color"
-        app:neomorph_highlight_color="@color/neomorph_highlight_color"
-        android:clickable="true"
-        android:focusable="true"
+        android:padding="8dp"
+        android:layout_marginTop="24dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/passwordContainer"
         app:layout_constraintStart_toStartOf="@+id/passwordContainer"
         app:layout_constraintTop_toBottomOf="@+id/passwordContainer">
@@ -108,20 +129,34 @@
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:background="@null"
-            android:textSize="20sp"
-            android:padding="12dp"
-            android:textColor="@color/text_color"
             android:hint="@string/re_enter_password"
-            android:inputType="textPassword" />
-    </com.chinodev.androidneomorphframelayout.NeomorphFrameLayout>
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:layout_marginTop="32dp"
-        app:cardBackgroundColor="@color/orange"
-        app:cardCornerRadius="28dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/orange"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="12dp"
         app:layout_constraintEnd_toEndOf="@+id/reEnterPasswordContainer"
         app:layout_constraintStart_toStartOf="@+id/reEnterPasswordContainer"
         app:layout_constraintTop_toBottomOf="@+id/reEnterPasswordContainer">
@@ -129,13 +164,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="92dp"
-            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="72dp"
             android:text="@string/sign_up"
             android:textColor="@color/text_color_alt"
             android:textSize="20sp"
             android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

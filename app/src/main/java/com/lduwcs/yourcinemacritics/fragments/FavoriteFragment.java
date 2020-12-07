@@ -8,14 +8,14 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 
 public class FavoriteFragment extends Fragment {
-    private CardView btnFilter, btnSort;
+    private NeuButton btnFilter, btnSort;
     private SearchView edtSearch;
     private RecyclerView favRecView;
 

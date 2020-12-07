@@ -6,28 +6,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.LoginActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
+import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 
 
 public class ProfileFragment extends Fragment {
-    Button btnTest;
-    private CardView btnLogout;
+    SwitchMaterial swDarkMode;
+    private NeuButton btnLogout;
     private TextView txtProfileEmail;
     FirebaseUser user;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -75,8 +76,10 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        btnTest = view.findViewById(R.id.btnTest);
-        btnTest.setOnClickListener(v -> {
+        swDarkMode = view.findViewById(R.id.btnDarkMode);
+        if (MainActivity.isDarkMode)
+            swDarkMode.setChecked(true);
+        swDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (MainActivity.isDarkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 MainActivity.editor.putBoolean("isDarkMode", false);

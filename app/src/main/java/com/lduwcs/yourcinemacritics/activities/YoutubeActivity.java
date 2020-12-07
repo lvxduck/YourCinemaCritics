@@ -1,11 +1,8 @@
 package com.lduwcs.yourcinemacritics.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -24,7 +21,7 @@ public class YoutubeActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_youtube);
         Intent intent = getIntent();
         String key = intent.getStringExtra("key");
-        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+        youTubePlayerView = findViewById(R.id.youtube_player);
 
         youTubePlayerView.initialize(API_KEY, new YouTubePlayer.OnInitializedListener(){
 

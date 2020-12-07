@@ -9,16 +9,18 @@
     app:enableShadow="true"
     app:shadowColor="@color/button_shadow_color"
     app:shadowRadius="16dp"
-    app:shadowDy="4dp"
-    app:shadowDx="4dp"
+    app:shadowDy="3dp"
+    app:shadowDx="3dp"
     app:enableHighlight="true"
     app:highlightColor="@color/button_highlight_color"
     app:highlightRadius="16dp"
-    app:highlightDx="-4dp"
-    app:highlightDy="-4dp"
+    app:highlightDx="-3dp"
+    app:highlightDy="-3dp"
     android:padding="16dp"
     app:verticalPadding="16dp"
     app:horizontalPadding="16dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     app:enable_preview="true">
 
     <ImageView

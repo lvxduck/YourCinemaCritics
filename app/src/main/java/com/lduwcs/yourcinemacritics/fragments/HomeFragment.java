@@ -64,13 +64,10 @@ public class HomeFragment extends Fragment {
 
         //Swipe to refresh
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                reloadTrending();
-                pullToRefresh.setRefreshing(false);
-                Toast.makeText(getContext(),"Reloading",Toast.LENGTH_SHORT).show();
-            }
+        pullToRefresh.setOnRefreshListener(() -> {
+            reloadTrending();
+            pullToRefresh.setRefreshing(false);
+            Toast.makeText(getContext(), "Reloading", Toast.LENGTH_SHORT).show();
         });
 
         //Connect to database

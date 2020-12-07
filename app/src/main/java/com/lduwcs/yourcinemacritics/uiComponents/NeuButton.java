@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -13,8 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.lduwcs.yourcinemacritics.R;
+import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 public class NeuButton extends RelativeLayout {
+    private NeumorphicCardView neoFrame;
     private ImageView icon;
 
     public NeuButton(@NonNull Context context) {
@@ -43,6 +47,21 @@ public class NeuButton extends RelativeLayout {
                 Drawable dr = AppCompatResources.getDrawable(getContext(), drawableId);
                 icon.setImageDrawable(dr);
             }
+
+            neoFrame = findViewById(R.id.neu_button_frame);
+            int buttonSize = ta.getDimensionPixelSize(R.styleable.NeuButton_nbSize, 16);
+            neoFrame.setVerticalPadding(dpToPixel(getContext(), buttonSize));
+            neoFrame.setHorizontalPadding(dpToPixel(getContext(), buttonSize));
+
+            boolean isShadowAlt = ta.getBoolean(R.styleable.NeuButton_nbShadowAlt, false);
+            if (isShadowAlt) {
+                neoFrame.setShadowColor(R.color.black);
+                neoFrame.setHighlightColor(R.color.grey);
+            }
+
+            int shadowPadding = ta.getDimensionPixelOffset(R.styleable.NeuButton_nbShadowPadding, 16);
+            setMargin(getContext(), icon, shadowPadding);
+
         } finally {
             ta.recycle();
         }
@@ -54,5 +73,22 @@ public class NeuButton extends RelativeLayout {
         } else {
             icon.setColorFilter(getContext().getResources().getColor(R.color.grey));
         }
+    }
+
+    public void setMargin(Context con, View view, int dp) {
+        // convert the DP into pixel
+        int pixel = (int) dpToPixel(con, dp);
+
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(pixel, pixel, pixel, pixel);
+            view.requestLayout();
+        }
+    }
+
+    private float dpToPixel(Context con, int dp) {
+        final float scale = con.getResources().getDisplayMetrics().density;
+        // convert the DP into pixel
+        return (dp * scale + 0.5f);
     }
 }

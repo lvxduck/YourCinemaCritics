@@ -30,7 +30,6 @@ android {
 
 dependencies {
     //neumorphism
-    implementation 'com.github.4inodev:Neomorphic-FrameLayout-Android:1.03'
     implementation 'com.github.thelumiereguy:NeumorphismView-Android:1.5'
 
     implementation 'com.google.android.material:material:1.2.1'
