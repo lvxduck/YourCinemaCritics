@@ -21,13 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
+import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 5543;
     private EditText txtEmail, txtPassword;
     private TextView btnCreateAccount;
-    private NeuButton btnSignIn, btnSignInWithGoogle;
+    private NeumorphicCardView btnSignIn, btnSignInWithGoogle;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 

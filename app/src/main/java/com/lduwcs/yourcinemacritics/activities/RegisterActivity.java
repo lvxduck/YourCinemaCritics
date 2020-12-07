@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
+import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText txtRegEmail, txtRegPassword, txtRegReEnterPassword;
-    private NeuButton btnSignUp;
+    private NeumorphicCardView btnSignUp;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -57,6 +57,7 @@
             android:inputType="textEmailAddress"
             android:padding="8dp"
             android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             android:textSize="20sp" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
@@ -95,6 +96,7 @@
             android:inputType="textPassword"
             android:padding="8dp"
             android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             android:textSize="20sp" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
@@ -133,6 +135,7 @@
             android:inputType="textPassword"
             android:padding="8dp"
             android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             android:textSize="20sp" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
