@@ -1,5 +1,7 @@
 package com.lduwcs.yourcinemacritics.utils.listeners;
 
+import android.view.View;
+
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 
 import java.lang.reflect.Array;

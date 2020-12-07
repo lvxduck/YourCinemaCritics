@@ -1,6 +1,7 @@
 package com.lduwcs.yourcinemacritics.utils;
 
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,25 +78,27 @@ public class FirebaseUtils {
         return listComment;
     }
 
-    public static void addToFavMovies(int position, String userId, int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage){
+    public static void addToFavMovies(int position, String userId, Movie movie, View view){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
-        DatabaseReference movieRef = userRef.child("" + id);
+        DatabaseReference movieRef = userRef.child("" + movie.getId());
+        ArrayList<Integer> genres = new ArrayList<>();
+        genres.addAll(movie.getGenres());
         String genresConvert = "";
         genresConvert = "" + genres.get(0);
-        for(int i=1; i<genres.size(); i++){
+        for(int i=1; i< genres.size(); i++){
             genresConvert += "," + genres.get(i);
         }
-        movieRef.child("title").setValue(title);
-        movieRef.child("release_day").setValue(releaseDay);
+        movieRef.child("title").setValue(movie.getTitle());
+        movieRef.child("release_day").setValue(movie.getReleaseDay());
         movieRef.child("genres").setValue(genresConvert);
-        movieRef.child("poster").setValue(posterPath);
-        movieRef.child("vote_average").setValue(voteAverage);
-        movieRef.child("over_view").setValue(overview);
-        fireBaseUtilsAddFavoriteListener.onSuccess(position);
+        movieRef.child("poster").setValue(movie.getPosterPath());
+        movieRef.child("vote_average").setValue(movie.getVoteAverage());
+        movieRef.child("over_view").setValue(movie.getOverview());
+        fireBaseUtilsAddFavoriteListener.onSuccess(position, view);
     }
 
-    public static void deleteFromFavMovie(String userId, int id,int position){
+    public static void deleteFromFavMovie(String userId, int id,int position, View view){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
         ValueEventListener eventListener = new ValueEventListener() {
@@ -104,7 +107,7 @@ public class FirebaseUtils {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     if(ds.getKey().equals("" + id)){
                         ds.getRef().removeValue();
-                        fireBaseUtilsRemoveFavoriteListener.onSuccess(position);
+                        fireBaseUtilsRemoveFavoriteListener.onSuccess(position, view);
                         return;
                     }
                 };
