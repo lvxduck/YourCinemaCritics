@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
+    android:clipToPadding="false"
     android:background="@color/black"
     tools:context=".activities.CommentActivity">
 
@@ -17,164 +18,184 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/poster_demo" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btnDetailBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnDetailCommentBox"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginVertical="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_baseline_arrow_back_ios_24"
-            android:contentDescription="@string/back" />
-    </androidx.cardview.widget.CardView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtDetailTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/movie_name"
+                android:textColor="@color/text_color_alt"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:paddingTop="72dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtDetailReleaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_23_11_2020"
+                android:textColor="@color/text_color_alt"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtDetailTitle"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
+
+            <TextView
+                android:id="@+id/txtDetailRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/imdb_6_7_10"
+                android:textColor="@color/text_color_alt"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/txtDetailReleaseDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txtDetailTitle"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
+
+            <TextView
+                android:id="@+id/txtDetailGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_comedy"
+                android:textColor="@color/text_color_alt"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtDetailReleaseDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txtDetailRating"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailRating" />
+
+            <TextView
+                android:id="@+id/txtDetailOverview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/this_is_a_short_overview_of_this_movie"
+                android:textColor="@color/text_color_alt"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtDetailReleaseDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txtDetailGenre"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailGenre" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/detailRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailOverview"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:itemCount="3"
+                tools:listitem="@layout/comment_item" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
+        android:id="@+id/btnDetailBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:nbShadowAlt="true"
+        app:nbShadowPadding="3dp"
+        app:nbSize="3dp"
+        app:nbSrc="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <ImageView
         android:id="@+id/btnDetailFav"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/orange"
         android:background="@drawable/ic_round_favorite_24"
+        android:backgroundTint="@color/orange"
+        android:contentDescription="@string/add_to_favorite"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDetailTrailer"
         app:layout_constraintEnd_toStartOf="@+id/btnDetailTrailer"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/add_to_favorite" />
+        app:layout_constraintTop_toTopOf="@+id/btnDetailTrailer" />
 
-    <androidx.cardview.widget.CardView
+    <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
         android:id="@+id/btnDetailTrailer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:nbShadowAlt="true"
+        app:nbShadowPadding="3dp"
+        app:nbSize="3dp"
+        app:nbSrc="@drawable/ic_round_play_arrow_24" />
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/ic_round_play_arrow_24"
-            android:contentDescription="@string/play_trailer" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/txtDetailTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/movie_name"
-        android:textColor="@color/button_white"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDetailBack" />
-
-    <TextView
-        android:id="@+id/txtDetailReleaseDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/_23_11_2020"
-        android:textColor="@color/button_white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/txtDetailTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
-
-    <TextView
-        android:id="@+id/txtDetailRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/imdb_6_7_10"
-        android:textColor="@color/button_white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/txtDetailReleaseDate"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtDetailTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
-
-    <TextView
-        android:id="@+id/txtDetailGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_comedy"
-        android:textColor="@color/button_white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/txtDetailReleaseDate"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtDetailRating"
-        app:layout_constraintTop_toBottomOf="@+id/txtDetailRating" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detailRecView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="210dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDetailGenre"
-        app:layout_constraintVertical_bias="0.0"
-        tools:itemCount="3"
-        tools:listitem="@layout/comment_item" />
-
-    <androidx.cardview.widget.CardView
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/btnDetailCommentBox"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:padding="8dp"
+        app:cardRadius="40"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/grey"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDetailSendComment"
+        app:layout_constraintEnd_toStartOf="@+id/btnDetailSendComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnDetailSendComment"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/black"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="14dp">
 
         <EditText
             android:id="@+id/edtDetailComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginVertical="10sp"
             android:autofillHints=""
             android:background="@null"
-            android:inputType="text"
             android:hint="@string/type_something"
+            android:inputType="text"
+            android:textColorHint="@color/text_color"
+            android:textColor="@color/text_color"
             android:textSize="18sp" />
-    </androidx.cardview.widget.CardView>
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
         android:id="@+id/btnDetailSendComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnDetailCommentBox">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/ic_round_send_24"
-            android:backgroundTint="@color/orange"
-            android:contentDescription="@string/send_comment" />
-    </androidx.cardview.widget.CardView>
+        app:nbShadowAlt="true"
+        app:nbShadowPadding="2dp"
+        app:nbSize="3dp"
+        app:nbSrc="@drawable/ic_round_send_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

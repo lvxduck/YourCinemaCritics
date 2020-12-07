@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
-    android:background="@color/background_white"
+    android:background="@color/main_background"
     android:clipChildren="false">
 
     <FrameLayout
         android:id="@+id/frameContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_white"
+        android:background="@color/main_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/botNavBar"
         app:layout_constraintEnd_toEndOf="parent"

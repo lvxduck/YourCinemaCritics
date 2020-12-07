@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.borutsky.neumorphism.NeumorphicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:clipChildren="false"
+<com.thelumiereguy.neumorphicview.views.NeumorphicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/neu_button_frame"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    app:cardRadius="40"
+    app:neu_backgroundColor="@color/button_background"
+    app:enableShadow="true"
+    app:shadowColor="@color/button_shadow_color"
+    app:shadowRadius="16dp"
+    app:shadowDy="3dp"
+    app:shadowDx="3dp"
+    app:enableHighlight="true"
+    app:highlightColor="@color/button_highlight_color"
+    app:highlightRadius="16dp"
+    app:highlightDx="-3dp"
+    app:highlightDy="-3dp"
     android:padding="16dp"
-    app:background_color="@color/button_white"
-    app:corner_radius="16dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:shape="rectangle"
-    app:state="flat">
+    app:verticalPadding="16dp"
+    app:horizontalPadding="16dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    app:enable_preview="true">
 
     <ImageView
         android:id="@+id/neu_button_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:layout_margin="16dp"
         android:contentDescription="@string/button_icon"
         android:src="@drawable/ic_round_person_24"
-        app:tint="@color/grey" />
+        app:tint="@color/icon_inactive" />
 
-</com.borutsky.neumorphism.NeumorphicFrameLayout>
+</com.thelumiereguy.neumorphicview.views.NeumorphicCardView>

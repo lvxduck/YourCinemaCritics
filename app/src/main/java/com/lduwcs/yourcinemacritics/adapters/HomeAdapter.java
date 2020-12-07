@@ -1,9 +1,7 @@
 package com.lduwcs.yourcinemacritics.adapters;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.ArrayUtils;
 import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
+import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
@@ -26,16 +23,13 @@ import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private ApiUtils utils;
+    private final ApiUtils utils;
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         this.context = context;
@@ -60,42 +54,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         //TODO: model to view
 //        holder.imgHomePoster.setImageDrawable();
         holder.txtTittle.setText(movies.get(position).getTitle());
-        holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
+        holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(), 200));
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
                 .placeholder(R.drawable.no_preview)
                 .into(holder.imgHomePoster);
-        holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
-        holder.btnComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CommentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", movies.get(position).getTitle());
-                bundle.putString("img_path", movies.get(position).getPosterPath());
-                bundle.putString("overview", movies.get(position).getOverview());
-                String releaseDay = movies.get(position).getReleaseDay();
-                String[] releaseDayArray = releaseDay.split("-");
-                String reversedReleaseDay = "";
-                for(int i = 2; i >= 0; i--){
-                    reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-                    if(i != 0) reversedReleaseDay += "/";
-                }
-                bundle.putString("release_day", reversedReleaseDay);
-                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-                bundle.putString("movie_id",movies.get(position).getId()+"");
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+        holder.srHome.setStarsRate((float) movies.get(position).getVoteAverage());
+        holder.btnComment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("title", movies.get(position).getTitle());
+            bundle.putString("img_path", movies.get(position).getPosterPath());
+            bundle.putString("overview", movies.get(position).getOverview());
+            String releaseDay = movies.get(position).getReleaseDay();
+            String[] releaseDayArray = releaseDay.split("-");
+            StringBuilder reversedReleaseDay = new StringBuilder();
+            for (int i = 2; i >= 0; i--) {
+                reversedReleaseDay.append(releaseDayArray[i]);
+                if (i != 0) reversedReleaseDay.append("/");
             }
+            bundle.putString("release_day", reversedReleaseDay.toString());
+            bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
+            bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+            bundle.putString("movie_id", movies.get(position).getId() + "");
+            intent.putExtras(bundle);
+            context.startActivity(intent);
         });
-        holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = String.valueOf(movies.get(position).getId());
-                utils.getTrailer(id);
-            }
+        holder.btnTrailer.setOnClickListener(view -> {
+            String id = String.valueOf(movies.get(position).getId());
+            utils.getTrailer(id);
         });
 //        ...
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
+    android:background="@color/main_background"
     android:clipChildren="false"
     tools:context=".activities.RegisterActivity">
 
@@ -14,25 +14,38 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/register"
-        android:textSize="40sp"
+        android:textColor="@color/text_color"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/neumorphicFrameLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="24dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        app:corner_radius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="40dp"
+        android:padding="8dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:state="flat">
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp">
 
         <EditText
             android:id="@+id/txtRegEmail"
@@ -41,22 +54,37 @@
             android:autofillHints=""
             android:background="@null"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/passwordContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        app:corner_radius="20dp"
+        android:padding="8dp"
+        android:layout_marginTop="24dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/neumorphicFrameLayout2"
         app:layout_constraintStart_toStartOf="@+id/neumorphicFrameLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2"
-        app:state="flat">
+        app:layout_constraintTop_toBottomOf="@+id/neumorphicFrameLayout2">
 
         <EditText
             android:id="@+id/txtRegPassword"
@@ -65,22 +93,37 @@
             android:autofillHints=""
             android:background="@null"
             android:hint="@string/password"
-            android:inputType="textPassword" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <com.borutsky.neumorphism.NeumorphicFrameLayout
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/reEnterPasswordContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        app:corner_radius="20dp"
+        android:padding="8dp"
+        android:layout_marginTop="24dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/button_background"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/passwordContainer"
         app:layout_constraintStart_toStartOf="@+id/passwordContainer"
-        app:layout_constraintTop_toBottomOf="@+id/passwordContainer"
-        app:state="flat">
+        app:layout_constraintTop_toBottomOf="@+id/passwordContainer">
 
         <EditText
             android:id="@+id/txtRegReEnterPassword"
@@ -89,16 +132,34 @@
             android:autofillHints=""
             android:background="@null"
             android:hint="@string/re_enter_password"
-            android:inputType="textPassword" />
-    </com.borutsky.neumorphism.NeumorphicFrameLayout>
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:textSize="20sp" />
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:layout_marginTop="32dp"
-        app:cardBackgroundColor="@color/orange"
-        app:cardCornerRadius="28dp"
+        app:cardRadius="50"
+        app:enableHighlight="true"
+        app:enableShadow="true"
+        app:enable_preview="true"
+        app:highlightColor="@color/button_highlight_color"
+        app:highlightDx="-4dp"
+        app:highlightDy="-4dp"
+        app:highlightRadius="16dp"
+        app:horizontalPadding="16dp"
+        app:neu_backgroundColor="@color/orange"
+        app:shadowColor="@color/button_shadow_color"
+        app:shadowDx="4dp"
+        app:shadowDy="4dp"
+        app:shadowRadius="16dp"
+        app:verticalPadding="12dp"
         app:layout_constraintEnd_toEndOf="@+id/reEnterPasswordContainer"
         app:layout_constraintStart_toStartOf="@+id/reEnterPasswordContainer"
         app:layout_constraintTop_toBottomOf="@+id/reEnterPasswordContainer">
@@ -106,13 +167,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="72dp"
             android:text="@string/sign_up"
-            android:textColor="@color/background_white"
-            android:textSize="28sp"
+            android:textColor="@color/text_color_alt"
+            android:textSize="20sp"
             android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
+    </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

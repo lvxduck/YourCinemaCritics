@@ -18,7 +18,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/main_background">
 
         <ImageView
             android:id="@+id/imgPosterSmall"
@@ -50,7 +51,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:text="@string/movie_name"
-            android:textColor="@color/grey"
+            android:textColor="@color/text_color"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +78,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/_23_11_2020"
-            android:textColor="@color/grey"
+            android:textColor="@color/text_color"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

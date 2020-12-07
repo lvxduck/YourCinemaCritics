@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
-import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
@@ -28,7 +27,7 @@ public class ApiUtils {
     }
 
     public void getAllMovies(String content){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        ArrayList<Movie> movies = new ArrayList<>();
         apiService = new MovieApiService();
         apiService.getMovies(content)
                 .subscribeOn(Schedulers.newThread())
@@ -56,16 +55,14 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
                         Log.d("DEBUG1", "Success");
-                        if(trailer.getResults() != null && trailer.getResults().size() > 0){
+                        if (trailer.getResults() != null && trailer.getResults().size() > 0) {
                             String key = trailer.getResults().get(0).getKey();
-                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
+                            if (mContext.getClass().getSimpleName().equals("MainActivity")) {
                                 HomeFragment.adapter.onVideoRequestSuccess(key);
-                            }
-                            else{
+                            } else {
                                 CommentActivity.getInstance().onVideoRequestSuccess(key);
                             }
-                        }
-                        else{
+                        } else {
                             Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -78,7 +75,7 @@ public class ApiUtils {
 
 
     public void getTrending(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        ArrayList<Movie> movies = new ArrayList<>();
         apiService = new MovieApiService();
         apiService.getTrending()
                 .subscribeOn(Schedulers.newThread())
