@@ -11,6 +11,8 @@ import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 
 import java.util.ArrayList;
 
@@ -21,10 +23,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ApiUtils {
     MovieApiService apiService;
-    Context mContext;
 
-    public ApiUtils(Context context) {
-        this.mContext=context;
+    ApiUtilsCommentListener apiUtilsCommentListener;
+    ApiUtilsTrailerListener apiUtilsTrailerListener;
+
+    public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
+        this.apiUtilsCommentListener = apiUtilsCommentListener;
+    }
+
+    public void setApiUtilsTrailerListener(ApiUtilsTrailerListener apiUtilsTrailerListener) {
+        this.apiUtilsTrailerListener = apiUtilsTrailerListener;
+    }
+
+    public ApiUtils() {
     }
 
     public void getAllMovies(String content){
@@ -58,14 +69,18 @@ public class ApiUtils {
                         Log.d("DEBUG1", "Success");
                         if(trailer.getResults() != null && trailer.getResults().size() > 0){
                             String key = trailer.getResults().get(0).getKey();
-                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
-                                HomeFragment.adapter.onVideoRequestSuccess(key);
-                            }
-                            else{
-                                CommentActivity.getInstance().onVideoRequestSuccess(key);
-                            }
+//                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
+//                                HomeFragment.adapter.onVideoRequestSuccess(key);
+//                            }
+//                            else{
+//                                CommentActivity.getInstance().onVideoRequestSuccess(key);
+//                            }
+                            apiUtilsTrailerListener.onGetTrailerDone(key);
+
                         }
                         else{
+                            apiUtilsTrailerListener.onGetTrailerError("Key is null");
+
                             Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -86,15 +101,16 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
-                        movies.addAll(movieData.getResults());
-                        HomeFragment.onLoadTrendingDone(movies,mContext);
+                        apiUtilsCommentListener.onGetTrendingDone((ArrayList<Movie>) movieData.getResults());
                         Log.d("DEBUG1", "Success");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("DEBUG1", "Error!"+e.getMessage());
+                        apiUtilsCommentListener.onGetTrendingError(e.getMessage());
                     }
                 });
     }
 }
+

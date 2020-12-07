@@ -15,15 +15,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.ArrayUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
@@ -34,16 +41,76 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
+    public static ArrayList<Movie> favoriteMovies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
     private ApiUtils utils;
+    FirebaseUser user;
+    CustomProgressDialog myProgressDialog;
+
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        favoriteMovies = new ArrayList<>();
         this.context = context;
-        if (movies != null)
-            this.movies = movies;
-        else
-            this.movies = new ArrayList<>();
-        utils = new ApiUtils(context);
+        this.movies = movies != null ? movies : new ArrayList<>();
+        myProgressDialog = new CustomProgressDialog(context);
+        utils = new ApiUtils();
+        utils.setApiUtilsTrailerListener(new ApiUtilsTrailerListener() {
+            @Override
+            public void onGetTrailerDone(String key) {
+                watchYoutubeVideo(context, key);
+            }
+
+            @Override
+            public void onGetTrailerError(String err) {
+
+            }
+        });
+        myProgressDialog.show();
+        FirebaseUtils.getFavMovies(user.getUid());
+        FirebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
+            @Override
+            public void onGetFavoriteDone(ArrayList<Movie> movies) {
+                favoriteMovies.addAll(movies);
+                myProgressDialog.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+        initFirebaseListener();
+    }
+
+    public void initFirebaseListener(){
+        notifyDataSetChanged();
+        FirebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                ((NeuButton) view).setOnActive(true);
+                favoriteMovies.add(movies.get(position));
+                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
+        FirebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                ((NeuButton) view).setOnActive(false);
+                favoriteMovies.remove(movies.get(position));
+                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
     }
 
     @NonNull
@@ -72,20 +139,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title", movies.get(position).getTitle());
-                bundle.putString("img_path", movies.get(position).getPosterPath());
-                bundle.putString("overview", movies.get(position).getOverview());
-                String releaseDay = movies.get(position).getReleaseDay();
-                String[] releaseDayArray = releaseDay.split("-");
-                String reversedReleaseDay = "";
-                for(int i = 2; i >= 0; i--){
-                    reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-                    if(i != 0) reversedReleaseDay += "/";
-                }
-                bundle.putString("release_day", reversedReleaseDay);
-                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-                bundle.putString("movie_id",movies.get(position).getId()+"");
+                bundle.putSerializable("movie", movies.get(position));
+//                bundle.putString("title", movies.get(position).getTitle());
+//                bundle.putString("img_path", movies.get(position).getPosterPath());
+//                String releaseDay = movies.get(position).getReleaseDay();
+
+//                bundle.putString("release_day", reversedReleaseDay);
+//                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
+//                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
+//                bundle.putString("movie_id", movies.get(position).getId() + "");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -97,7 +159,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 utils.getTrailer(id);
             }
         });
-//        ...
+        if(isInFavoriteMovies(movies.get(position))){
+            holder.btnAddToFavorite.setOnActive(true);
+        } else {
+            holder.btnAddToFavorite.setOnActive(false);
+        }
+        holder.btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myProgressDialog.show();
+                if (isInFavoriteMovies(movies.get(position))) {
+                    FirebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId(), position, holder.btnAddToFavorite);
+                } else {
+                    Movie movie = new Movie(movies.get(position).getId(),
+                            movies.get(position).getTitle(), movies.get(position).getReleaseDay(),
+                            movies.get(position).getGenres(), movies.get(position).getPosterPath(),
+                            movies.get(position).getOverview(), movies.get(position).getVoteAverage());
+                    FirebaseUtils.addToFavMovies(position, user.getUid(), movie, holder.btnAddToFavorite);
+                }
+            }
+        });
     }
 
     private String getLimitOverview(String overview, int max){
@@ -121,16 +202,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public static void watchYoutubeVideo(Context context, String id){
-//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("http://www.youtube.com/watch?v=" + id));
-//        try {
-//            context.startActivity(appIntent);
-//        } catch (ActivityNotFoundException ex) {
-//            context.startActivity(webIntent);
-//        }
-
+    private void watchYoutubeVideo(Context context, String id) {
         Intent intent = new Intent(context, YoutubeActivity.class);
         intent.putExtra("key", id);
         context.startActivity(intent);
@@ -139,6 +211,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onVideoRequestSuccess(String key){
         watchYoutubeVideo(context, key);
     }
+
+    public static boolean isInFavoriteMovies(Movie movie) {
+        for (Movie m : favoriteMovies) {
+            if (movie.getId() == m.getId()) return true;
+        }
+        return false;
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;

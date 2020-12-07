@@ -38,17 +38,15 @@
             android:contentDescription="@string/back" />
     </androidx.cardview.widget.CardView>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/btnDetailFav"
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/orange"
         android:background="@drawable/ic_round_favorite_24"
         app:layout_constraintEnd_toStartOf="@+id/btnDetailTrailer"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/add_to_favorite" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnDetailTrailer"

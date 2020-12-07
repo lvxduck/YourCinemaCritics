@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 
 import java.util.Objects;
 
@@ -57,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
+        CustomProgressDialog mProgressDialog;
+        mProgressDialog = new CustomProgressDialog(this);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,10 +82,13 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                mProgressDialog.show();
+
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                mProgressDialog.dismiss();
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
