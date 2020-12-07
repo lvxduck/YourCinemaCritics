@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -222,7 +223,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;
-        private final ImageView btnAddToFavorite;
+        private final NeuButton btnAddToFavorite;
         private final NeuButton btnTrailer;
         private final NeuButton btnComment;
         private final TextView txtTittle;

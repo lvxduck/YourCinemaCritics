@@ -43,6 +43,7 @@ import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsGetAllMoviesListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class SearchFragment extends Fragment {
         txtNoResult = view.findViewById(R.id.txtNoResult);
 
         previousMillis = System.currentTimeMillis();
-        utils = new ApiUtils(getContext());
+        utils = new ApiUtils();
         movies = new ArrayList<>();
         allResultMovies = new ArrayList<Movie>();
         checkedGenres = new ArrayList<Integer>();
@@ -106,6 +107,17 @@ public class SearchFragment extends Fragment {
         searchRecView.setAdapter(adapter);
         searchRecView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
 
+        utils.setApiUtilsGetAllMoviesListener(new ApiUtilsGetAllMoviesListener() {
+            @Override
+            public void onGetAllMoviesDone(ArrayList<Movie> movies) {
+                onSearchingDone(movies);
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(),error,Toast.LENGTH_LONG).show();
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -269,7 +281,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    public static void onSearchingDone(ArrayList<Movie> data, Context context) {
+    private void onSearchingDone(ArrayList<Movie> data) {
         movies.clear();
         allResultMovies.clear();
         movies.addAll(data);

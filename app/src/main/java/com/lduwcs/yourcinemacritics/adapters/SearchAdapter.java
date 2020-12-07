@@ -18,7 +18,6 @@ import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
-import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +27,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private ApiUtils utils;
 
     public SearchAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         this.context = context;
@@ -36,7 +34,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             this.movies = movies;
         else
             this.movies = new ArrayList<>();
-        utils = new ApiUtils(context);
     }
 
     @NonNull
@@ -77,13 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title", movies.get(position).getTitle());
-                bundle.putString("img_path", movies.get(position).getPosterPath());
-                bundle.putString("overview", movies.get(position).getOverview());
-                bundle.putString("release_day", finalReversedReleaseDay);
-                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-                bundle.putString("movie_id",movies.get(position).getId()+"");
+                bundle.putSerializable("movie",movies.get(position));
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

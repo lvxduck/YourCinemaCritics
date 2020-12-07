@@ -12,6 +12,7 @@ import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsGetAllMoviesListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ public class ApiUtils {
 
     ApiUtilsCommentListener apiUtilsCommentListener;
     ApiUtilsTrailerListener apiUtilsTrailerListener;
+    ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener;
+
+    public void setApiUtilsGetAllMoviesListener(ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener) {
+        this.apiUtilsGetAllMoviesListener = apiUtilsGetAllMoviesListener;
+    }
 
     public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
         this.apiUtilsCommentListener = apiUtilsCommentListener;
@@ -48,11 +54,13 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
                          movies.addAll(movieData.getResults());
-                         SearchFragment.onSearchingDone(movies, mContext);
+                        // SearchFragment.onSearchingDone(movies, mContext);
+                        apiUtilsGetAllMoviesListener.onGetAllMoviesDone(movies);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("DEBUG1", "Error!");
+                     //   Log.d("DEBUG1", "Error!");
+                        apiUtilsGetAllMoviesListener.onError(e.getMessage());
                     }
                 });
     }
@@ -79,9 +87,9 @@ public class ApiUtils {
 
                         }
                         else{
-                            apiUtilsTrailerListener.onGetTrailerError("Key is null");
+                            apiUtilsTrailerListener.onGetTrailerError("No trailer available!");
 
-                            Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
