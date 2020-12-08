@@ -82,7 +82,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:theme="@style/SearchViewCustomTheme"
                 android:background="@null"
-                android:hint="@string/type_something"
+                android:queryHint="@string/type_something"
                 android:inputType="text"
                 android:textSize="20sp" />
         </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -105,7 +105,7 @@
             android:id="@+id/txtNoResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No search result"
+            android:text="@string/no_result"
             android:textAlignment="center"
             android:textSize="24sp"
             android:visibility="invisible"

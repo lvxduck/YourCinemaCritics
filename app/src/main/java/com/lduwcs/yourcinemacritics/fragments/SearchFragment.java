@@ -93,12 +93,12 @@ public class SearchFragment extends Fragment {
                 return false;
             }
 
-            //TODO: DUC sua phan nay gium
             @Override
             public boolean onQueryTextChange(String s) {
-                if (s.length() > 0 && s.endsWith(" ")) {
+                if(s.length() > 0){
                     utils.getAllMovies(s);
-                } else if (s.length() == 0) {
+                }
+                else if(s.length() == 0){
                     utils.getAllMovies("a");
                 }
                 isDescendingSorted = true;
