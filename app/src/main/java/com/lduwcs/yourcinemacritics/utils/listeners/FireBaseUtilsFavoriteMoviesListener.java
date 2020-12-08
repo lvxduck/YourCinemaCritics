@@ -6,7 +6,8 @@ import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface FireBaseUtilsFavoriteMoviesListener {
-    public void onGetFavoriteDone(ArrayList<Movie> movies);
+    public void onGetFavoriteDone();
 }

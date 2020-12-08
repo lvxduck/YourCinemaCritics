@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,21 +38,22 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
-    public static ArrayList<Movie> favoriteMovies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
     private ApiUtils utils;
     FirebaseUser user;
     CustomProgressDialog myProgressDialog;
+    FirebaseUtils firebaseUtils;
 
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        favoriteMovies = new ArrayList<>();
+        firebaseUtils = FirebaseUtils.getInstance();
         this.context = context;
         this.movies = movies != null ? movies : new ArrayList<>();
         myProgressDialog = new CustomProgressDialog(context);
@@ -68,12 +70,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             }
         });
         myProgressDialog.show();
-        FirebaseUtils.getFavMovies(user.getUid());
-        FirebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
+        //firebaseUtils.getFavMovies(user.getUid());
+        firebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
             @Override
-            public void onGetFavoriteDone(ArrayList<Movie> movies) {
-                favoriteMovies.addAll(movies);
+            public void onGetFavoriteDone() {
                 myProgressDialog.dismiss();
+                Log.d("DEBUG2", "onGetFavoriteDone: "+"co roi nha");
                 notifyDataSetChanged();
             }
         });
@@ -82,11 +84,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public void initFirebaseListener(){
         notifyDataSetChanged();
-        FirebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+        firebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
                 ((NeuButton) view).setOnActive(true);
-                favoriteMovies.add(movies.get(position));
+          //      favoriteMovies.add(movies.get(position));
+                firebaseUtils.hashMapFavorite.put(movies.get(position).getId(),true);
                 Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }
@@ -97,11 +100,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 myProgressDialog.dismiss();
             }
         });
-        FirebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
                 ((NeuButton) view).setOnActive(false);
-                favoriteMovies.remove(movies.get(position));
+               // favoriteMovies.remove(movies.get(position));
+                firebaseUtils.hashMapFavorite.remove(movies.get(position).getId());
                 Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }
@@ -125,8 +129,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //change item's content; choose what item does
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        //TODO: model to view
-//        holder.imgHomePoster.setImageDrawable();
         holder.txtTittle.setText(movies.get(position).getTitle());
         holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
         Picasso.get()
@@ -141,14 +143,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 Intent intent = new Intent(context, CommentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movies.get(position));
-//                bundle.putString("title", movies.get(position).getTitle());
-//                bundle.putString("img_path", movies.get(position).getPosterPath());
-//                String releaseDay = movies.get(position).getReleaseDay();
-
-//                bundle.putString("release_day", reversedReleaseDay);
-//                bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-//                bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-//                bundle.putString("movie_id", movies.get(position).getId() + "");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -160,7 +154,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 utils.getTrailer(id);
             }
         });
-        if(isInFavoriteMovies(movies.get(position))){
+        if(firebaseUtils.isFavoriteMovie(movies.get(position).getId())){
             holder.btnAddToFavorite.setOnActive(true);
         } else {
             holder.btnAddToFavorite.setOnActive(false);
@@ -169,14 +163,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 myProgressDialog.show();
-                if (isInFavoriteMovies(movies.get(position))) {
-                    FirebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId(), position, holder.btnAddToFavorite);
+                if (firebaseUtils.isFavoriteMovie(movies.get(position).getId())) {
+                    firebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId(), position, holder.btnAddToFavorite);
                 } else {
-                    Movie movie = new Movie(movies.get(position).getId(),
-                            movies.get(position).getTitle(), movies.get(position).getReleaseDay(),
-                            movies.get(position).getGenres(), movies.get(position).getPosterPath(),
-                            movies.get(position).getOverview(), movies.get(position).getVoteAverage());
-                    FirebaseUtils.addToFavMovies(position, user.getUid(), movie, holder.btnAddToFavorite);
+                    firebaseUtils.addToFavMovies(position, user.getUid(), movies.get(position), holder.btnAddToFavorite);
                 }
             }
         });
@@ -212,14 +202,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onVideoRequestSuccess(String key){
         watchYoutubeVideo(context, key);
     }
-
-    public static boolean isInFavoriteMovies(Movie movie) {
-        for (Movie m : favoriteMovies) {
-            if (movie.getId() == m.getId()) return true;
-        }
-        return false;
-    }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;

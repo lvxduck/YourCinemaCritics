@@ -294,4 +294,11 @@ public class SearchFragment extends Fragment {
         }
         Log.d(TAG, "onSearchingDone: success");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.initFirebaseListener();
+        adapter.notifyDataSetChanged();
+    }
 }

@@ -30,17 +30,15 @@
             app:srcCompat="@drawable/no_preview"
             android:contentDescription="@string/movie_poster" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imgIsFav"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/add_to_favorite"
-            android:src="@drawable/ic_round_favorite_24"
+            android:background="@drawable/ic_round_favorite_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/orange" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtTitleSmall"

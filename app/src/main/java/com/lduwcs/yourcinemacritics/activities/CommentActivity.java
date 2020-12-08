@@ -2,23 +2,14 @@ package com.lduwcs.yourcinemacritics.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,22 +21,20 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.adapters.CommentAdapter;
-import com.lduwcs.yourcinemacritics.adapters.HomeAdapter;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
-import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
@@ -62,11 +51,10 @@ public class CommentActivity extends AppCompatActivity {
     private RecyclerView commentRecView;
     private CardView btnBack, btnTrailer, btnSendComment;
     private ImageButton btnAddToFavMovies;
-    private ImageView btnFav;
     private EditText edtCmt;
     private ApiUtils utils;
 
-    private String base_url_image = "https://image.tmdb.org/t/p/w500";
+    private final String base_url_image = "https://image.tmdb.org/t/p/w500";
     private String movie_id = "";
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
@@ -74,6 +62,8 @@ public class CommentActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Movie movie;
     CustomProgressDialog mProgressDialog;
+
+    private  FirebaseUtils firebaseUtils;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint({"SetTextI18n", "ResourceType", "UseCompatLoadingForColorStateLists"})
@@ -94,7 +84,6 @@ public class CommentActivity extends AppCompatActivity {
         commentRecView = findViewById(R.id.detailRecView);
         btnBack = findViewById(R.id.btnDetailBack);
         btnTrailer = findViewById(R.id.btnDetailTrailer);
-        btnFav = findViewById(R.id.btnDetailFav);
         btnSendComment = findViewById(R.id.btnDetailSendComment);
         edtCmt = findViewById(R.id.edtDetailComment);
         btnAddToFavMovies = findViewById(R.id.btnDetailFav);
@@ -123,19 +112,20 @@ public class CommentActivity extends AppCompatActivity {
         txtDetailRating.setText("Rating: "+ movie.getVoteAverage());
         movie_id = "" + movie.getId();
         mAuth = FirebaseAuth.getInstance();
-        if(HomeAdapter.isInFavoriteMovies(movie)){
-            btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
-        } else {
-            btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
-        }
 
         //---------adapter-----------
         comments = new ArrayList<>();
         commentAdapter = new CommentAdapter(comments,this);
         commentRecView.setAdapter(commentAdapter);
-        FirebaseUtils.getComments(movie_id);
+        firebaseUtils = FirebaseUtils.getInstance();
+        firebaseUtils.getComments(movie_id);
 
         //---------Listener--------
+        if(firebaseUtils.isFavoriteMovie(movie.getId())){
+            btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
+        } else {
+            btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
+        }
         utils.setApiUtilsTrailerListener(new ApiUtilsTrailerListener() {
             @Override
             public void onGetTrailerDone(String key) {
@@ -146,7 +136,7 @@ public class CommentActivity extends AppCompatActivity {
 
             }
         });
-        FirebaseUtils.setFireBaseUtilsCommentListener(new FireBaseUtilsCommentListener() {
+        firebaseUtils.setFireBaseUtilsCommentListener(new FireBaseUtilsCommentListener() {
             @Override
             public void onGetCommentDone(ArrayList<Comment> data) {
                 comments.addAll(data);
@@ -157,6 +147,47 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onGetCommentError(String err) {
 
+            }
+        });
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
+                firebaseUtils.hashMapFavorite.remove(movie.getId());
+                mProgressDialog.dismiss();
+                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String err) {
+
+            }
+        });
+        firebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
+                firebaseUtils.hashMapFavorite.put(movie.getId(),true);
+                mProgressDialog.dismiss();
+                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String err) {
+
+            }
+        });
+        btnAddToFavMovies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressDialog.show();
+                if (firebaseUtils.isFavoriteMovie(movie.getId())) {
+                    firebaseUtils.deleteFromFavMovie(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie.getId(), 0, btnAddToFavMovies);
+                } else {
+                    firebaseUtils.addToFavMovies(0, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie,btnAddToFavMovies);
+                }
             }
         });
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -178,54 +209,10 @@ public class CommentActivity extends AppCompatActivity {
                 handleSendComment();
             }
         });
-        FirebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
-            @Override
-            public void onSuccess(int position, View view) {
-                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
-                for(Movie m: HomeAdapter.favoriteMovies){
-                    if(m.getId() == movie.getId()){
-                        HomeAdapter.favoriteMovies.remove(m);
-                        break;
-                    }
-                }
-                mProgressDialog.dismiss();
-                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(String err) {
-
-            }
-        });
-        FirebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
-            @Override
-            public void onSuccess(int position, View view) {
-                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
-                HomeAdapter.favoriteMovies.add(movie);
-                mProgressDialog.dismiss();
-                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(String err) {
-
-            }
-        });
-        btnAddToFavMovies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mProgressDialog.show();
-                if (HomeAdapter.isInFavoriteMovies(movie)) {
-                    FirebaseUtils.deleteFromFavMovie(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            movie.getId(), 0, btnAddToFavMovies);
-                } else {
-                    FirebaseUtils.addToFavMovies(0, FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            movie,btnAddToFavMovies);
-                }
-            }
-        });
     }
 
+
+    @SuppressLint("InflateParams")
     private void handleSendComment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
         View layout= null;
@@ -249,7 +236,7 @@ public class CommentActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
                     try{
-                        FirebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
+                        firebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
                         if (isComment(user.getEmail()) != -1) {
                             comments.remove(isComment(user.getEmail()));
                         }
@@ -266,16 +253,12 @@ public class CommentActivity extends AppCompatActivity {
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(context,"CANCEL",Toast.LENGTH_LONG).show();
             }
         });
 
         builder.show();
     }
-
-//    private void onGetCommentDone(ArrayList<Comment> data){
-//        comments.addAll(data);
-//        commentAdapter.notifyDataSetChanged();
-//    }
 
     private int isComment(String email){
         for(int i = 0; i < comments.size(); i++){
@@ -303,4 +286,5 @@ public class CommentActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
+
 }

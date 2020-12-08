@@ -3,6 +3,7 @@ package com.lduwcs.yourcinemacritics.utils;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +18,9 @@ import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteL
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseUtils {
 
@@ -25,31 +28,46 @@ public class FirebaseUtils {
     static FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener;
     static FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener;
     static FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener;
+    private static FirebaseUtils instance;
+    public HashMap<Integer,Boolean> hashMapFavorite ;
 
-    public static void setFireBaseUtilsAddFavoriteListener(FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener) {
+
+    public static FirebaseUtils getInstance(){
+        if(instance==null){
+            instance = new FirebaseUtils();
+        }
+        return instance;
+    }
+
+    private FirebaseUtils(){
+        getFavMovies(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+    }
+
+
+    public void setFireBaseUtilsAddFavoriteListener(FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener) {
         FirebaseUtils.fireBaseUtilsAddFavoriteListener = fireBaseUtilsAddFavoriteListener;
     }
 
-    public static void setFireBaseUtilsRemoveFavoriteListener(FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener) {
+    public void setFireBaseUtilsRemoveFavoriteListener(FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener) {
         FirebaseUtils.fireBaseUtilsRemoveFavoriteListener = fireBaseUtilsRemoveFavoriteListener;
     }
 
-    public static void setFireBaseUtilsFavoriteMoviesListener(FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener) {
+    public void setFireBaseUtilsFavoriteMoviesListener(FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener) {
         FirebaseUtils.fireBaseUtilsFavoriteMoviesListener = fireBaseUtilsFavoriteMoviesListener;
     }
 
-    public static void setFireBaseUtilsCommentListener(FireBaseUtilsCommentListener fireBaseUtilsCommentListener) {
+    public void setFireBaseUtilsCommentListener(FireBaseUtilsCommentListener fireBaseUtilsCommentListener) {
         FirebaseUtils.fireBaseUtilsCommentListener = fireBaseUtilsCommentListener;
     }
 
-    public static void writeComment(String userId, String movieId, String email, String content, String date, Float rating){
+    public void writeComment(String userId, String movieId, String email, String content, String date, Float rating){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("movies");
         DatabaseReference commentRef = rootRef.child(movieId);
         Comment comment = new Comment(email,content, rating, date);
         commentRef.child(userId).setValue(comment);
     }
 
-    public static ArrayList<Comment> getComments(String movieId){
+    public ArrayList<Comment> getComments(String movieId){
         ArrayList<Comment> listComment = new ArrayList<>();
         Comment comment;
         comment = new Comment();
@@ -66,7 +84,6 @@ public class FirebaseUtils {
                     Float rating = ds.child("rating").getValue(Float.class);
                     comments.add(new Comment(email, content,rating,date));
                 };
-                //CommentActivity.getInstance().onGetCommentDone(comments);
                 fireBaseUtilsCommentListener.onGetCommentDone(comments);
             }
             @Override
@@ -78,7 +95,7 @@ public class FirebaseUtils {
         return listComment;
     }
 
-    public static void addToFavMovies(int position, String userId, Movie movie, View view){
+    public void addToFavMovies(int position, String userId, Movie movie, View view){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
         DatabaseReference movieRef = userRef.child("" + movie.getId());
@@ -98,7 +115,7 @@ public class FirebaseUtils {
         fireBaseUtilsAddFavoriteListener.onSuccess(position, view);
     }
 
-    public static void deleteFromFavMovie(String userId, int id,int position, View view){
+    public void deleteFromFavMovie(String userId, int id,int position, View view){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
         DatabaseReference userRef = rootRef.child(userId);
         ValueEventListener eventListener = new ValueEventListener() {
@@ -121,38 +138,48 @@ public class FirebaseUtils {
     }
 
 
-    public static void getFavMovies(String userId) {
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
-        DatabaseReference userRef = rootRef.child(userId);
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Movie> listFavMovies = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String id;
-                    id = ds.getKey();
-                    int movieId = Integer.parseInt(id);
-                    String genres = ds.child("genres").getValue(String.class);
-                    List<String> arrayList = new ArrayList<String>(Arrays.asList(genres.split(",")));
-                    ArrayList<Integer> genresList = new ArrayList<Integer>();
-                    for(String g:arrayList){
-                        genresList.add(Integer.parseInt(g.trim()));
-                    }
-                    String overView = ds.child("over_view").getValue(String.class);
-                    String poster = ds.child("poster").getValue(String.class);
-                    String releaseDay = ds.child("release_day").getValue(String.class);
-                    String title = ds.child("title").getValue(String.class);
-                    Double voteAverage = ds.child("vote_average").getValue(Double.class);
-                    Movie movie = new Movie(movieId,title,releaseDay,genresList,poster,overView,voteAverage);
-                    listFavMovies.add(new Movie(movieId,title,releaseDay,genresList,poster,overView,voteAverage));
-                };
-                fireBaseUtilsFavoriteMoviesListener.onGetFavoriteDone(listFavMovies);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("TAG111", "err");
-            }
-        };
-        userRef.addListenerForSingleValueEvent(eventListener);
+    private void getFavMovies(String userId) {
+        if (hashMapFavorite!=null){
+            Log.d("DEBUG2", "getFavMovies: "+"co roi nha");
+            fireBaseUtilsFavoriteMoviesListener.onGetFavoriteDone();
+        }else{
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
+            DatabaseReference userRef = rootRef.child(userId);
+            ValueEventListener eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    hashMapFavorite = new HashMap<Integer, Boolean>();
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String id;
+                        id = ds.getKey();
+                        int movieId = Integer.parseInt(id);
+                        String genres = ds.child("genres").getValue(String.class);
+                        List<String> arrayList = new ArrayList<String>(Arrays.asList(genres.split(",")));
+                        ArrayList<Integer> genresList = new ArrayList<Integer>();
+                        for(String g:arrayList){
+                            genresList.add(Integer.parseInt(g.trim()));
+                        }
+                        String overView = ds.child("over_view").getValue(String.class);
+                        String poster = ds.child("poster").getValue(String.class);
+                        String releaseDay = ds.child("release_day").getValue(String.class);
+                        String title = ds.child("title").getValue(String.class);
+                        Double voteAverage = ds.child("vote_average").getValue(Double.class);
+                        Movie movie = new Movie(movieId,title,releaseDay,genresList,poster,overView,voteAverage);
+                        hashMapFavorite.put(movie.getId(),true);
+                    };
+                    fireBaseUtilsFavoriteMoviesListener.onGetFavoriteDone();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("TAG111", "err");
+                }
+            };
+            userRef.addListenerForSingleValueEvent(eventListener);
+        }
+    }
+
+    public boolean isFavoriteMovie(int id){
+        if(hashMapFavorite!=null) return hashMapFavorite.containsKey(id);
+        return false;
     }
 }
