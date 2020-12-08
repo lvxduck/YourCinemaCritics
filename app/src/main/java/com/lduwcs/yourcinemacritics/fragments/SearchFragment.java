@@ -2,52 +2,32 @@ package com.lduwcs.yourcinemacritics.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.MediaRouteButton;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-import androidx.room.Room;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.activities.CommentActivity;
-import com.lduwcs.yourcinemacritics.adapters.HomeAdapter;
 import com.lduwcs.yourcinemacritics.adapters.SearchAdapter;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
-import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
-import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
-import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
+import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
-import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsGetAllMoviesListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = "DEBUG1";
@@ -61,10 +41,9 @@ public class SearchFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private static TextView txtNoResult;
     private SearchView searchView;
-    private CardView btnFilter;
-    private CardView btnSort;
+    private NeuButton btnFilter;
+    private NeuButton btnSort;
     private boolean isDescendingSorted = true;
-    private long previousMillis;
 
     private ApiUtils utils;
 
@@ -87,6 +66,7 @@ public class SearchFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -96,12 +76,11 @@ public class SearchFragment extends Fragment {
         btnSort = view.findViewById(R.id.btnSort);
         txtNoResult = view.findViewById(R.id.txtNoResult);
 
-        previousMillis = System.currentTimeMillis();
-        utils = new ApiUtils();
+        utils = new ApiUtils(getContext());
         movies = new ArrayList<>();
-        allResultMovies = new ArrayList<Movie>();
-        checkedGenres = new ArrayList<Integer>();
-        checkBoxes = new ArrayList<MaterialCheckBox>();
+        allResultMovies = new ArrayList<>();
+        checkedGenres = new ArrayList<>();
+        checkBoxes = new ArrayList<>();
 
         adapter = new SearchAdapter(view.getContext(), movies);
         searchRecView.setAdapter(adapter);
@@ -126,33 +105,27 @@ public class SearchFragment extends Fragment {
                 return false;
             }
 
-            //TODO: DUC sua phan nay gium
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.d(TAG, "onQueryTextChange: "+s+" "+System.currentTimeMillis());
-                long currentMillis = System.currentTimeMillis();
-                if(s.length() > 0 && currentMillis-previousMillis>500){
+                if(s.length() > 0){
                     utils.getAllMovies(s);
                 }
                 else if(s.length() == 0){
                     utils.getAllMovies("a");
                 }
                 isDescendingSorted = true;
-                previousMillis = currentMillis;
                 return false;
             }
         });
 
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                View layout= null;
-                LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                layout = inflater.inflate(R.layout.filter, null);
-                builder.setTitle("Choose genres");
-                builder.setView(layout);
-                checkBoxes.clear();
+        btnFilter.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            View layout;
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            layout = inflater.inflate(R.layout.filter, null);
+            builder.setTitle("Choose genres");
+            builder.setView(layout);
+            checkBoxes.clear();
 
                 MaterialCheckBox checkBox1 = layout.findViewById(R.id.cb12);
                 checkBoxes.add(checkBox1);
@@ -281,7 +254,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void onSearchingDone(ArrayList<Movie> data) {
+    public static void onSearchingDone(ArrayList<Movie> data, Context context) {
         movies.clear();
         allResultMovies.clear();
         movies.addAll(data);

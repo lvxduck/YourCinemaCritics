@@ -9,7 +9,7 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:progressTint="@color/yellow_start"
+        android:progressTint="@color/yellow_stars"
         android:secondaryProgressTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

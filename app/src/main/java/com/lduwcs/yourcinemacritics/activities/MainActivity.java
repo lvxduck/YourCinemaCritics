@@ -1,67 +1,54 @@
 package com.lduwcs.yourcinemacritics.activities;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.fragments.FavoriteFragment;
 import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.fragments.ProfileFragment;
 import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
-import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
-import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
-import com.lduwcs.yourcinemacritics.models.roomModels.AppDatabase;
-import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.uiComponents.BotNavBar;
-import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DEBUG1";
     private FirebaseAuth mAuth;
     FirebaseDatabase database;
+
+    public static SharedPreferences.Editor editor;
+    public static Boolean isDarkMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        updateTheme();
+
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser() == null){
+        if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
-        }
-        else {
+        } else {
             initBotNavBar();
         }
         Genres.setData();
     }
-
-
 
     //thuan_loki
     private void initBotNavBar() {
@@ -74,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(fragment[0]);
         });
         botNavBar.setSearchOnClick(v -> {
+            Log.d("alo", "initBotNavBar: bruh");
             fragment[0] = new SearchFragment();
             loadFragment(fragment[0]);
         });
@@ -92,5 +80,18 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frameContainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private void updateTheme() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
+        editor = sharedPreferences.edit();
+        isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
+
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }

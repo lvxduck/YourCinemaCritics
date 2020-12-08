@@ -24,24 +24,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ApiUtils {
     MovieApiService apiService;
+    Context mContext;
 
-    ApiUtilsCommentListener apiUtilsCommentListener;
-    ApiUtilsTrailerListener apiUtilsTrailerListener;
-    ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener;
-
-    public void setApiUtilsGetAllMoviesListener(ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener) {
-        this.apiUtilsGetAllMoviesListener = apiUtilsGetAllMoviesListener;
-    }
-
-    public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
-        this.apiUtilsCommentListener = apiUtilsCommentListener;
-    }
-
-    public void setApiUtilsTrailerListener(ApiUtilsTrailerListener apiUtilsTrailerListener) {
-        this.apiUtilsTrailerListener = apiUtilsTrailerListener;
-    }
-
-    public ApiUtils() {
+    public ApiUtils(Context context) {
+        this.mContext=context;
     }
 
     public void getAllMovies(String content){
@@ -54,13 +40,11 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
                          movies.addAll(movieData.getResults());
-                        // SearchFragment.onSearchingDone(movies, mContext);
-                        apiUtilsGetAllMoviesListener.onGetAllMoviesDone(movies);
+                         SearchFragment.onSearchingDone(movies, mContext);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
-                     //   Log.d("DEBUG1", "Error!");
-                        apiUtilsGetAllMoviesListener.onError(e.getMessage());
+                        Log.d("DEBUG1", "Error!");
                     }
                 });
     }
@@ -116,9 +100,70 @@ public class ApiUtils {
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("DEBUG1", "Error!"+e.getMessage());
-                        apiUtilsCommentListener.onGetTrendingError(e.getMessage());
+                        apiUtilsCommentListener.onGetTrendingError(e.getMessage());  }
+                });
+    }
+
+    public void getLatest(){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        apiService = new MovieApiService();
+        apiService.getLatest()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MovieData>() {
+                    @Override
+                    public void onSuccess(@NonNull MovieData movieData) {
+//                        movies.addAll(movieData.getResults());
+//                        HomeFragment.onLoadTrendingDone(movies,mContext);
+                        Log.d("DEBUG1", "Success");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("DEBUG1", "Error!"+e.getMessage());
+                    }
+                });
+    }
+
+    public void getTopRated(){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        apiService = new MovieApiService();
+        apiService.getTopRated()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MovieData>() {
+                    @Override
+                    public void onSuccess(@NonNull MovieData movieData) {
+//                        movies.addAll(movieData.getResults());
+//                        HomeFragment.onLoadTrendingDone(movies,mContext);
+                        Log.d("DEBUG1", "Success");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("DEBUG1", "Error!"+e.getMessage());
+                    }
+                });
+    }
+
+    public void getUpcoming(){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        apiService = new MovieApiService();
+        apiService.getUpcoming()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MovieData>() {
+                    @Override
+                    public void onSuccess(@NonNull MovieData movieData) {
+//                        movies.addAll(movieData.getResults());
+//                        HomeFragment.onLoadTrendingDone(movies,mContext);
+                        Log.d("DEBUG1", "Success");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("DEBUG1", "Error!"+e.getMessage());
                     }
                 });
     }
 }
-

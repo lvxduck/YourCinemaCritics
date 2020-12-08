@@ -24,4 +24,7 @@ public class MovieApiService {
     public Single<MovieData> getMovies(String content){ return api.getMovies(content);}
     public Single<Trailer> getMovieTrailer(String id){ return api.getMovieTrailer(id);}
     public Single<MovieData> getTrending(){ return api.getTrending();}
+    public Single<MovieData> getLatest(){ return api.getLatest();}
+    public Single<MovieData> getTopRated(){ return api.getTopRated();}
+    public Single<MovieData> getUpcoming(){ return api.getUpcoming();}
 }

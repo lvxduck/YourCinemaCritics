@@ -91,7 +91,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     //change item's content; choose what item does
-    @SuppressLint("UseCompatLoadingForColorStateLists")
     @Override
     public void onBindViewHolder(@NonNull final SearchAdapter.ViewHolder holder, final int position) {
 

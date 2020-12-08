@@ -35,7 +35,6 @@ import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesL
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -130,7 +129,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.txtTittle.setText(movies.get(position).getTitle());
-        holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(),200));
+        holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(), 200));
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
@@ -147,12 +146,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
-        holder.btnTrailer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = String.valueOf(movies.get(position).getId());
-                utils.getTrailer(id);
-            }
+        holder.btnTrailer.setOnClickListener(view -> {
+            String id = String.valueOf(movies.get(position).getId());
+            utils.getTrailer(id);
         });
         if(firebaseUtils.isFavoriteMovie(movies.get(position).getId())){
             holder.btnAddToFavorite.setOnActive(true);

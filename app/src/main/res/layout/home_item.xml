@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:background="@color/background_white"
-    android:layout_marginTop="52dp"
+    android:clipToPadding="false"
+    android:background="@color/main_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/homePosterContainer"
         android:layout_width="240dp"
         android:layout_height="360dp"
+        android:layout_marginTop="48dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         android:elevation="8dp"
@@ -31,14 +32,15 @@
         android:id="@+id/txtHomeTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:text="movie_ kj fds kj ovie_ kj fds kj"
         android:gravity="center"
         android:textAllCaps="true"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:textColor="@color/text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homePosterContainer" />
@@ -47,7 +49,7 @@
         android:id="@+id/srHomeRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtHomeTittle"
@@ -57,19 +59,19 @@
         android:id="@+id/btnHomeTrailer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toStartOf="@+id/btnHomeFav"
         app:layout_constraintTop_toBottomOf="@+id/srHomeRate"
         app:nbSrc="@drawable/ic_round_play_arrow_24" />
 
     <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
         android:id="@+id/btnHomeFav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginVertical="32dp"
+        android:contentDescription="@string/add_to_favorite"
+        android:src="@drawable/ic_round_favorite_24"
         android:layout_marginEnd="24dp"
-        app:nbSrc="@drawable/ic_round_favorite_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/srHomeRate" />
@@ -78,8 +80,7 @@
         android:id="@+id/btnHomeComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         app:layout_constraintStart_toEndOf="@+id/btnHomeFav"
         app:layout_constraintTop_toBottomOf="@+id/srHomeRate"
         app:nbSrc="@drawable/ic_round_mode_comment_24" />
@@ -89,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -110,6 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
                 android:text="this_is_a_ short_overview_of_this_movie this_is_a _short_overvie w_of_this_moviethis_is_a_short_overview_of_this_movie" />
         </LinearLayout>
 

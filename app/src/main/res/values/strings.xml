@@ -36,7 +36,8 @@
     <string name="action_comedy">Action, Comedy</string>
     <string name="play_trailer">play trailer</string>
     <string name="back">back</string>
-    <string name="type_something">Type something…</string>
+    <string name="type_something">Search…</string>
+    <string name="no_result">No search result</string>
     <string name="send_comment">send comment</string>
     <string name="logout">logout</string>
     <string name="oauth2ids">440106815243-jf163qfvtvmf41o8vakgerdna6edr3ti.apps.googleusercontent.com</string>
