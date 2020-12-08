@@ -3,6 +3,7 @@ package com.lduwcs.yourcinemacritics.fragments;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,7 +77,7 @@ public class SearchFragment extends Fragment {
         btnSort = view.findViewById(R.id.btnSort);
         txtNoResult = view.findViewById(R.id.txtNoResult);
 
-        utils = new ApiUtils(getContext());
+        utils = new ApiUtils();
         movies = new ArrayList<>();
         allResultMovies = new ArrayList<>();
         checkedGenres = new ArrayList<>();
@@ -210,7 +211,6 @@ public class SearchFragment extends Fragment {
                 });
 
                 builder.show();
-            }
         });
 
         btnSort.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +254,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    public static void onSearchingDone(ArrayList<Movie> data, Context context) {
+    public static void onSearchingDone(ArrayList<Movie> data) {
         movies.clear();
         allResultMovies.clear();
         movies.addAll(data);

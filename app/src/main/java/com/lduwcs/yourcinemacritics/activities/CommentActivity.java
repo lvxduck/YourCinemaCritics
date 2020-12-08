@@ -3,6 +3,7 @@ package com.lduwcs.yourcinemacritics.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -49,7 +51,7 @@ public class CommentActivity extends AppCompatActivity {
     //-------UI variable------------
     private RecyclerView commentRecView;
     private NeuButton btnBack, btnTrailer, btnSendComment;
-    private ImageView btnFav;
+    private ImageView btnAddToFavMovies;
     private EditText edtCmt;
     private ApiUtils utils;
 
@@ -59,6 +61,9 @@ public class CommentActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
     private Context context;
     private FirebaseAuth mAuth;
+    private CustomProgressDialog mProgressDialog;
+    private Movie movie;
+    private FirebaseUtils firebaseUtils;
 
 
     //------Instance----------
@@ -70,7 +75,7 @@ public class CommentActivity extends AppCompatActivity {
         return instance;
     }
 
-    @SuppressLint({"SetTextI18n", "InflateParams"})
+    @SuppressLint({"SetTextI18n", "InflateParams", "UseCompatLoadingForColorStateLists"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,11 +111,18 @@ public class CommentActivity extends AppCompatActivity {
                 .centerCrop()
                 .placeholder(R.drawable.no_preview)
                 .into(imgCmtBackground);
-        txtDetailTitle.setText(bundle.getString("title"));
-        txtDetailReleaseDate.setText("Release Day: " + bundle.getString("release_day"));
-        txtDetailGenre.setText("Genres: "+ bundle.getString("genres"));
-        txtDetailRating.setText("Rating: "+ bundle.getString("rating"));
-        movie_id = bundle.getString("movie_id");
+        txtDetailTitle.setText(movie.getTitle());
+        txtDetailOverview.setText(movie.getOverview());
+        String[] releaseDayArray = movie.getReleaseDay().split("-");
+        String reversedReleaseDay = "";
+        for (int i = 2; i >= 0; i--) {
+            reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
+            if (i != 0) reversedReleaseDay += "/";
+        }
+        txtDetailReleaseDate.setText("Release Day: " + reversedReleaseDay);
+        txtDetailGenre.setText("Genres: "+ Genres.changeGenresIdToName(movie.getGenres()));
+        txtDetailRating.setText("Rating: "+ movie.getVoteAverage());
+        movie_id = "" + movie.getId();
         mAuth = FirebaseAuth.getInstance();
 
         //---------adapter-----------
@@ -137,17 +149,56 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
         firebaseUtils.setFireBaseUtilsCommentListener(new FireBaseUtilsCommentListener() {
+              @Override
+              public void onGetCommentDone(ArrayList<Comment> data) {
+                  comments.addAll(data);
+                  commentAdapter.notifyDataSetChanged();
+                  mProgressDialog.dismiss();
+              }
+
+              @Override
+              public void onGetCommentError(String err) {
+              }
+            });
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
             @Override
-            public void onGetCommentDone(ArrayList<Comment> data) {
-                comments.addAll(data);
-                commentAdapter.notifyDataSetChanged();
+            public void onSuccess(int position, View view) {
+                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
                 mProgressDialog.dismiss();
+                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onGetCommentError(String err) {
+            public void onError(String err) {
 
-        //---------UI--------
+            }
+        });
+        firebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
+                mProgressDialog.dismiss();
+                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String err) {
+
+            }
+        });
+        btnAddToFavMovies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressDialog.show();
+                if (firebaseUtils.isFavoriteMovie(movie.getId())) {
+                    firebaseUtils.deleteFromFavMovie(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie.getId(), 0, btnAddToFavMovies);
+                } else {
+                    firebaseUtils.addToFavMovies(0, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie,btnAddToFavMovies);
+                }
+            }
+        });
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,47 +215,56 @@ public class CommentActivity extends AppCompatActivity {
         btnSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
-                View layout= null;
-                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                layout = inflater.inflate(R.layout.user_rate, null);
-                final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
-                builder.setTitle("Rate this movie");
-                builder.setView(layout);
+                handleSendComment();
+            }
+        });
+    }
 
-            // Add the buttons
-            builder.setPositiveButton(R.string.ok, (dialog, id) -> {
+    private void handleSendComment(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
+        View layout= null;
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.user_rate, null);
+        final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+        builder.setTitle("Rate this movie");
+        builder.setView(layout);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 String content = edtCmt.getText().toString();
-                if (content.trim().isEmpty()) {
-                    Toast.makeText(getBaseContext(), "Please Enter Proper Comment!", Toast.LENGTH_LONG).show();
+                if(content.trim().isEmpty()){
+                    Toast.makeText(getBaseContext(),"Please Enter Proper Comment!",Toast.LENGTH_LONG).show();
                 } else {
                     Date date = new Date();
                     @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     String dateComment = simpleDateFormat.format(date);
-                    Float rating = ratingBar.getRating() * 2;
+                    Float rating = ratingBar.getRating()*2;
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Comment comment = new Comment(user.getEmail(), content, rating, dateComment);
-                    try {
-                        FirebaseUtils.writeComment(user.getUid(), movie_id, user.getEmail(), content, dateComment, rating);
+                    Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
+                    try{
+                        firebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
                         if (isComment(user.getEmail()) != -1) {
                             comments.remove(isComment(user.getEmail()));
                         }
                         comments.add(comment);
                         commentAdapter.notifyDataSetChanged();
                         edtCmt.getText().clear();
-                        Toast.makeText(getBaseContext(), "Your comment has been posted!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),"Your comment has been posted!",Toast.LENGTH_LONG).show();
                         hideSoftKeyBoard();
-                    } catch (Exception e) {
-                        Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }catch (Exception e){
+                        Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
-            });
-            builder.setNegativeButton(R.string.cancel, (dialog, id) -> {
-            });
-
-                builder.show();
             }
         });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(context,"CANCEL",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.show();
     }
 
     private int isComment(String email){

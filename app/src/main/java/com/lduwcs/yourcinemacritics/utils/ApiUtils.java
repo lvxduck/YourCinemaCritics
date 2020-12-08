@@ -2,11 +2,6 @@ package com.lduwcs.yourcinemacritics.utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.lduwcs.yourcinemacritics.activities.CommentActivity;
-import com.lduwcs.yourcinemacritics.activities.MainActivity;
-import com.lduwcs.yourcinemacritics.fragments.HomeFragment;
 import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
@@ -24,10 +19,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ApiUtils {
     MovieApiService apiService;
-    Context mContext;
+    private ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener;
+    private ApiUtilsTrailerListener apiUtilsTrailerListener;
+    private ApiUtilsCommentListener apiUtilsCommentListener;
 
-    public ApiUtils(Context context) {
-        this.mContext=context;
+    public void setApiUtilsGetAllMoviesListener(ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener) {
+        this.apiUtilsGetAllMoviesListener = apiUtilsGetAllMoviesListener;
+    }
+
+    public void setApiUtilsTrailerListener(ApiUtilsTrailerListener apiUtilsTrailerListener) {
+        this.apiUtilsTrailerListener = apiUtilsTrailerListener;
+    }
+
+    public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
+        this.apiUtilsCommentListener = apiUtilsCommentListener;
+    }
+
+    public ApiUtils() {
+
     }
 
     public void getAllMovies(String content){
@@ -40,11 +49,11 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
                          movies.addAll(movieData.getResults());
-                         SearchFragment.onSearchingDone(movies, mContext);
+                         apiUtilsGetAllMoviesListener.onGetAllMoviesDone(movies);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("DEBUG1", "Error!");
+                        apiUtilsGetAllMoviesListener.onError(e.getMessage());
                     }
                 });
     }
@@ -58,27 +67,15 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<Trailer>() {
                     @Override
                     public void onSuccess(@NonNull Trailer trailer) {
-                        Log.d("DEBUG1", "Success");
                         if(trailer.getResults() != null && trailer.getResults().size() > 0){
                             String key = trailer.getResults().get(0).getKey();
-//                            if(mContext.getClass().getSimpleName().equals("MainActivity")){
-//                                HomeFragment.adapter.onVideoRequestSuccess(key);
-//                            }
-//                            else{
-//                                CommentActivity.getInstance().onVideoRequestSuccess(key);
-//                            }
                             apiUtilsTrailerListener.onGetTrailerDone(key);
-
                         }
-                        else{
-                            apiUtilsTrailerListener.onGetTrailerError("No trailer available!");
-
-                           // Toast.makeText(mContext, "No trailer available!", Toast.LENGTH_SHORT).show();
-                        }
+                        else apiUtilsTrailerListener.onGetTrailerError("No trailer available!");
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("DEBUG1", "Error!");
+                        apiUtilsTrailerListener.onGetTrailerError(e.getMessage());
                     }
                 });
     }
@@ -94,12 +91,10 @@ public class ApiUtils {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
                         apiUtilsCommentListener.onGetTrendingDone((ArrayList<Movie>) movieData.getResults());
-                        Log.d("DEBUG1", "Success");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("DEBUG1", "Error!"+e.getMessage());
                         apiUtilsCommentListener.onGetTrendingError(e.getMessage());  }
                 });
     }

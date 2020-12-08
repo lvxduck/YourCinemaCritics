@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
         utils = new ApiUtils();
         movies = new ArrayList<>();
 
-        adapter = new HomeAdapter(view.getContext(), movies);
+        adapter = new HomeAdapter(getContext(), movies);
         homeRecView.setAdapter(adapter);
         homeRecView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
 

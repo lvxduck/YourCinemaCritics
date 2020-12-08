@@ -68,13 +68,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             }
         });
-        myProgressDialog.show();
-        //firebaseUtils.getFavMovies(user.getUid());
+        Log.d("DEBUG2", "HomeAdapter: "+firebaseUtils.hashMapFavorite);
+        if(firebaseUtils.hashMapFavorite==null) myProgressDialog.show();
         firebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
             @Override
             public void onGetFavoriteDone() {
-                myProgressDialog.dismiss();
                 Log.d("DEBUG2", "onGetFavoriteDone: "+"co roi nha");
+                myProgressDialog.dismiss();
                 notifyDataSetChanged();
             }
         });
@@ -87,8 +87,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onSuccess(int position, View view) {
                 ((NeuButton) view).setOnActive(true);
-          //      favoriteMovies.add(movies.get(position));
-                firebaseUtils.hashMapFavorite.put(movies.get(position).getId(),true);
                 Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }
@@ -103,8 +101,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onSuccess(int position, View view) {
                 ((NeuButton) view).setOnActive(false);
-               // favoriteMovies.remove(movies.get(position));
-                firebaseUtils.hashMapFavorite.remove(movies.get(position).getId());
                 Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }

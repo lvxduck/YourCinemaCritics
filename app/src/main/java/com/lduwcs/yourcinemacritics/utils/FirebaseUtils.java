@@ -1,7 +1,10 @@
 package com.lduwcs.yourcinemacritics.utils;
 
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +32,9 @@ public class FirebaseUtils {
     static FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener;
     static FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener;
     private static FirebaseUtils instance;
+
     public HashMap<Integer,Boolean> hashMapFavorite ;
+    public ArrayList<Movie> movies;
 
 
     public static FirebaseUtils getInstance(){
@@ -112,6 +117,7 @@ public class FirebaseUtils {
         movieRef.child("poster").setValue(movie.getPosterPath());
         movieRef.child("vote_average").setValue(movie.getVoteAverage());
         movieRef.child("over_view").setValue(movie.getOverview());
+        addFavMovie(movie);
         fireBaseUtilsAddFavoriteListener.onSuccess(position, view);
     }
 
@@ -124,6 +130,7 @@ public class FirebaseUtils {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     if(ds.getKey().equals("" + id)){
                         ds.getRef().removeValue();
+                        removeFavMovie(id);
                         fireBaseUtilsRemoveFavoriteListener.onSuccess(position, view);
                         return;
                     }
@@ -135,6 +142,21 @@ public class FirebaseUtils {
             }
         };
         userRef.addListenerForSingleValueEvent(eventListener);
+    }
+
+    private void removeFavMovie(int id){
+        hashMapFavorite.remove(id);
+        for (Movie movie:movies) {
+            if(movie.getId()==id){
+                movies.remove(movie);
+                return;
+            }
+        }
+    }
+
+    private void addFavMovie(Movie movie){
+        hashMapFavorite.put(movie.getId(),true);
+        movies.add(movie);
     }
 
 
@@ -149,6 +171,7 @@ public class FirebaseUtils {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     hashMapFavorite = new HashMap<Integer, Boolean>();
+                    movies = new ArrayList<>();
                     for(DataSnapshot ds : dataSnapshot.getChildren()) {
                         String id;
                         id = ds.getKey();
@@ -165,6 +188,8 @@ public class FirebaseUtils {
                         String title = ds.child("title").getValue(String.class);
                         Double voteAverage = ds.child("vote_average").getValue(Double.class);
                         Movie movie = new Movie(movieId,title,releaseDay,genresList,poster,overView,voteAverage);
+
+                        movies.add(movie);
                         hashMapFavorite.put(movie.getId(),true);
                     };
                     fireBaseUtilsFavoriteMoviesListener.onGetFavoriteDone();

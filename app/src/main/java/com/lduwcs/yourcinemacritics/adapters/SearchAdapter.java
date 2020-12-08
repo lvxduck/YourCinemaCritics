@@ -55,7 +55,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onSuccess(int position, View view) {
                 ((ImageButton) view).setBackgroundTintList(context.getResources().getColorStateList( R.color.orange));
-                firebaseUtils.hashMapFavorite.put(movies.get(position).getId(),true);
                 Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }
@@ -70,7 +69,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onSuccess(int position, View view) {
                 ((ImageButton) view).setBackgroundTintList(context.getResources().getColorStateList( R.color.white));
-                firebaseUtils.hashMapFavorite.remove(movies.get(position).getId());
                 Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
                 myProgressDialog.dismiss();
             }

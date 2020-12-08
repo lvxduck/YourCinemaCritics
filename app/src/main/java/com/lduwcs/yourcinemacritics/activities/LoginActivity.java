@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
+import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 import java.util.Objects;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private NeumorphicCardView btnSignIn, btnSignInWithGoogle;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+    private CustomProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                }
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
