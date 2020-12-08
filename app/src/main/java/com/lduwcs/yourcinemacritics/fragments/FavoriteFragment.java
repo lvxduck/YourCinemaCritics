@@ -241,7 +241,7 @@ public class FavoriteFragment extends Fragment {
     private ArrayList<Movie> filterFilm(String title){
         ArrayList<Movie> movies = new ArrayList<>();
         for (Movie movie: firebaseUtils.movies){
-            if(movie.getTitle().contains(title)){
+            if(movie.getTitle().toLowerCase().contains(title.toLowerCase())){
                 movies.add(movie);
             }
         }

@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        mProgressDialog = new CustomProgressDialog(this);
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtRegReEnterPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
