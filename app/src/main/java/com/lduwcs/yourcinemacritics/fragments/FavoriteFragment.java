@@ -70,7 +70,7 @@ public class FavoriteFragment extends Fragment {
         btnSort = view.findViewById(R.id.btnSort);
         edtSearch = view.findViewById(R.id.edtSearch);
         favRecView = view.findViewById(R.id.favoriteRecView);
-//        txtNoResult = view.findViewById(R.id.txtNoResult);
+        txtNoResult = view.findViewById(R.id.txtNoResult);
 
         firebaseUtils = FirebaseUtils.getInstance();
 
@@ -181,10 +181,10 @@ public class FavoriteFragment extends Fragment {
                     movies.clear();
                     movies.addAll(filteredMovies);
                     adapter.notifyDataSetChanged();
-//                    txtNoResult.setVisibility(View.INVISIBLE);
-//                    if(movies.size() == 0){
-//                        txtNoResult.setVisibility(View.VISIBLE);
-//                    }
+                    txtNoResult.setVisibility(View.INVISIBLE);
+                    if(movies.size() == 0){
+                        txtNoResult.setVisibility(View.VISIBLE);
+                    }
                     Toast.makeText(getContext(), "Filtered by genres", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -241,7 +241,7 @@ public class FavoriteFragment extends Fragment {
     private ArrayList<Movie> filterFilm(String title){
         ArrayList<Movie> movies = new ArrayList<>();
         for (Movie movie: firebaseUtils.movies){
-            if(movie.getTitle().toLowerCase().contains(title.toLowerCase())){
+            if(movie.getTitle().toLowerCase().contains(title.toLowerCase().trim())){
                 movies.add(movie);
             }
         }
@@ -255,10 +255,10 @@ public class FavoriteFragment extends Fragment {
         allResultMovies.addAll(movies);
         checkedGenres.clear();
         adapter.notifyDataSetChanged();
-//        txtNoResult.setVisibility(View.INVISIBLE);
-//        if(movies.size() == 0){
-//            txtNoResult.setVisibility(View.VISIBLE);
-//        }
+        txtNoResult.setVisibility(View.INVISIBLE);
+        if(movies.size() == 0){
+            txtNoResult.setVisibility(View.VISIBLE);
+        }
         Log.d(TAG, "onSearchingDone: success");
     }
 
