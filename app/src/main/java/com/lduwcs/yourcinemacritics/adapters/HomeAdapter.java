@@ -69,7 +69,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             }
         });
         Log.d("DEBUG2", "HomeAdapter: "+firebaseUtils.hashMapFavorite);
-        if(firebaseUtils.hashMapFavorite==null) myProgressDialog.show();
+        myProgressDialog.show();
+        firebaseUtils.getFavMovies(FirebaseAuth.getInstance().getUid());
         firebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
             @Override
             public void onGetFavoriteDone() {

@@ -80,12 +80,12 @@ public class FavoriteFragment extends Fragment {
         checkBoxes = new ArrayList<>();
         adapter = new SearchAdapter(view.getContext(), movies);
         favRecView.setAdapter(adapter);
-        onSearchingDone(firebaseUtils.movies);
+        onSearchingDone(firebaseUtils.getMovies());
         favRecView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         edtSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                onSearchingDone(firebaseUtils.movies);
+                onSearchingDone(firebaseUtils.getMovies());
                 isDescendingSorted = true;
                 return false;
             }
@@ -240,7 +240,7 @@ public class FavoriteFragment extends Fragment {
 
     private ArrayList<Movie> filterFilm(String title){
         ArrayList<Movie> movies = new ArrayList<>();
-        for (Movie movie: firebaseUtils.movies){
+        for (Movie movie: firebaseUtils.getMovies()){
             if(movie.getTitle().toLowerCase().contains(title.toLowerCase().trim())){
                 movies.add(movie);
             }
