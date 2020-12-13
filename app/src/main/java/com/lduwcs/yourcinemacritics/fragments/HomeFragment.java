@@ -1,6 +1,9 @@
 package com.lduwcs.yourcinemacritics.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,10 +35,10 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "DEBUG1";
 
     private RecyclerView homeRecView;
-    static ArrayList<Movie> movies;
+    private ArrayList<Movie> movies;
 
     private ApiUtils utils;
-    static MoviesDao moviesDao;
+    private MoviesDao moviesDao;
 
     @SuppressLint("StaticFieldLeak")
     static public HomeAdapter adapter;
@@ -108,8 +111,11 @@ public class HomeFragment extends Fragment {
     private void reloadTrending() {
         movies.clear();
         adapter.notifyDataSetChanged();
-        moviesDao.deleteAll();
-        utils.getTrending();
+        if(isConnectWifi()) {
+            moviesDao.deleteAll();
+            utils.getTrending();
+        }
+        else loadTrendingFromRoom();
     }
 
     private void loadTrendingFromRoom(){
@@ -133,5 +139,11 @@ public class HomeFragment extends Fragment {
         super.onResume();
         adapter.initFirebaseListener();
         Log.d(TAG, "onResume: "+"dfghjdfghjdfgh");
+    }
+
+    private boolean isConnectWifi(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
 }
