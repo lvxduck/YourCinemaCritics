@@ -41,9 +41,8 @@ public class Movie implements Serializable {
     @SerializedName("vote_average")
     private double voteAverage;
 
-    public Movie(){
-
-    }
+    @ColumnInfo(name = "film_type")
+    private int type;
 
     public Movie(int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage) {
         this.id = id;
@@ -110,5 +109,9 @@ public class Movie implements Serializable {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
+
+    public int getType(){ return type; }
+
+    public void setType(int type){ this.type = type; }
 }
 

@@ -14,6 +14,9 @@ public interface MoviesApi {
     @GET("movie/{id}/videos?api_key="+API_KEY)
     Single<Trailer> getMovieTrailer(@Path("id") String id);
 
+    @GET("movie/{id}/images?api_key="+API_KEY)
+    Single<Images> getImages(@Path("id") String id);
+
     @GET("trending/movie/week?api_key="+API_KEY)
     Single<MovieData> getTrending();
 

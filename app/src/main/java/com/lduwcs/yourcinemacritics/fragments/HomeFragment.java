@@ -30,6 +30,9 @@ import com.lduwcs.yourcinemacritics.models.roomModels.MoviesDao;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsLatestListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTopRatedListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsUpcomingListener;
 
 import java.util.ArrayList;
 
@@ -151,10 +154,62 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        utils.setApiUtilsLatestListener(new ApiUtilsLatestListener() {
+            @Override
+            public void onGetLatestDone(ArrayList<Movie> movies) {
+                onLoadLatestDone(movies);
+            }
+
+            @Override
+            public void onGetLatestError(String err) {
+            }
+        });
+
+        utils.setApiUtilsTopRatedListener(new ApiUtilsTopRatedListener() {
+            @Override
+            public void onGetTopRatedDone(ArrayList<Movie> movies) {
+                onLoadTopRatedDone(movies);
+            }
+
+            @Override
+            public void onGetTopRatedError(String err) {
+            }
+        });
+
+        utils.setApiUtilsUpcomingListener(new ApiUtilsUpcomingListener() {
+            @Override
+            public void onGetUpcomingDone(ArrayList<Movie> movies) {
+                onLoadUpcomingDone(movies);
+            }
+
+            @Override
+            public void onGetUpcomingError(String err) {
+            }
+        });
+
         //Load trending
         if(moviesDao.getTrending().size()>0){
             loadTrendingFromRoom();
-        }else reloadTrending();
+        }
+        else reloadTrending();
+
+//        //Load latest
+//        if(moviesDao.getLatest().size() > 0){
+//            loadLatestFromRoom();
+//        }
+//        else reloadLatest();
+//
+//        //Load Top Rated
+//        if(moviesDao.getTopRated().size() > 0){
+//            loadTopRatedFromRoom();
+//        }
+//        else reloadTopRated();
+//
+//        //Load upcoming
+//        if(moviesDao.getUpcoming().size() > 0){
+//            loadUpcomingFromRoom();
+//        }
+//        else reloadUpcoming();
     }
 
     //Human_duck
@@ -162,10 +217,40 @@ public class HomeFragment extends Fragment {
         movies.clear();
         adapter.notifyDataSetChanged();
         if(isConnectWifi()) {
-            moviesDao.deleteAll();
+            moviesDao.deleteAll(0);
             utils.getTrending();
         }
         else loadTrendingFromRoom();
+    }
+
+    private void reloadLatest(){
+        movies.clear();
+        adapter.notifyDataSetChanged();
+        if(isConnectWifi()) {
+            moviesDao.deleteAll(1);
+            utils.getLatest();
+        }
+        else loadLatestFromRoom();
+    }
+
+    private void reloadTopRated(){
+        movies.clear();
+        adapter.notifyDataSetChanged();
+        if(isConnectWifi()) {
+            moviesDao.deleteAll(2);
+            utils.getTopRated();
+        }
+        else loadTopRatedFromRoom();
+    }
+
+    private void reloadUpcoming(){
+        movies.clear();
+        adapter.notifyDataSetChanged();
+        if(isConnectWifi()) {
+            moviesDao.deleteAll(3);
+            utils.getUpcoming();
+        }
+        else loadUpcomingFromRoom();
     }
 
     private void loadTrendingFromRoom(){
@@ -174,14 +259,66 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    private void loadLatestFromRoom(){
+        movies.clear();
+        movies.addAll(moviesDao.getLatest());
+        adapter.notifyDataSetChanged();
+    }
+
+    private void loadTopRatedFromRoom(){
+        movies.clear();
+        movies.addAll(moviesDao.getTopRated());
+        adapter.notifyDataSetChanged();
+    }
+
+    private void loadUpcomingFromRoom(){
+        movies.clear();
+        movies.addAll(moviesDao.getUpcoming());
+        adapter.notifyDataSetChanged();
+    }
+
     private void onLoadTrendingDone(ArrayList<Movie> data) {
         movies.clear();
         movies.addAll(data);
         for (Movie movie : data) {
+            movie.setType(0);
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();
         Log.d(TAG, "onLoadTrendingDone: success");
+    }
+
+    private void onLoadLatestDone(ArrayList<Movie> data){
+        movies.clear();
+        movies.addAll(data);
+        for (Movie movie : data) {
+            movie.setType(1);
+            moviesDao.insert(movie);
+        }
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "onLoadLatestDone: success");
+    }
+
+    private void onLoadTopRatedDone(ArrayList<Movie> data){
+        movies.clear();
+        movies.addAll(data);
+        for (Movie movie : data) {
+            movie.setType(2);
+            moviesDao.insert(movie);
+        }
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "onLoadTopRatedDone: success");
+    }
+
+    private void onLoadUpcomingDone(ArrayList<Movie> data){
+        movies.clear();
+        movies.addAll(data);
+        for (Movie movie : data) {
+            movie.setType(3);
+            moviesDao.insert(movie);
+        }
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "onLoadUpcomingDone: success");
     }
 
     @Override
