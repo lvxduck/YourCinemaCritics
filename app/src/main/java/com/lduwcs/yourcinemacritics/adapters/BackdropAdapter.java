@@ -19,7 +19,7 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
 
     ArrayList<Image> images;
     Context context;
-    String base_url_image = "https://image.tmdb.org/t/p/origial";
+    String base_url_image = "https://image.tmdb.org/t/p/original";
 
     public BackdropAdapter(ArrayList<Image> images, Context context) {
         this.images = images;
@@ -36,6 +36,7 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
     public void onBindViewHolder(@NonNull BackdropAdapter.BackdropViewHolder holder, int position) {
         Picasso.get()
                 .load(base_url_image + images.get(position).getFilePath())
+                .centerCrop()
                 .fit()
                 .placeholder(R.drawable.no_preview)
                 .into(holder.ivBackdrop);
@@ -47,7 +48,7 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
     }
 
     public class BackdropViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivBackdrop;
+        private final ImageView ivBackdrop;
 
         public BackdropViewHolder(@NonNull View itemView) {
             super(itemView);
