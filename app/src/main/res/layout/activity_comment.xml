@@ -128,9 +128,10 @@
                     android:id="@+id/txtCommentOption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
                     android:background="@null"
                     android:gravity="center"
-                    android:text="Comment"
+                    android:text="Comments"
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
             </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -164,9 +165,10 @@
                     android:id="@+id/txtPhotoOption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
                     android:background="@null"
                     android:gravity="center"
-                    android:text="Photo"
+                    android:text="Photos"
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
             </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
