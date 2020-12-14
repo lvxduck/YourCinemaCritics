@@ -32,8 +32,6 @@ import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = "DEBUG1";
-    //private static MaterialCheckBox checkBox1, checkBox2, checkBox3, checkBox4,checkBox5, checkBox6,checkBox7, checkBox8, checkBox9, checkBox10,checkBox11, checkBox12,checkBox13, checkBox14, checkBox15, checkBox16,checkBox17, checkBox18
-
     private RecyclerView searchRecView;
     static ArrayList<Movie> movies;
     static ArrayList<Movie> allResultMovies;
