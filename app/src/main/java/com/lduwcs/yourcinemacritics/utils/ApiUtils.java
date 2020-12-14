@@ -3,11 +3,13 @@ package com.lduwcs.yourcinemacritics.utils;
 import android.content.Context;
 import android.util.Log;
 import com.lduwcs.yourcinemacritics.fragments.SearchFragment;
+import com.lduwcs.yourcinemacritics.models.apiModels.Images;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsCommentListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsGetAllMoviesListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsImagesListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsLatestListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTopRatedListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
@@ -24,6 +26,7 @@ public class ApiUtils {
     MovieApiService apiService;
     private ApiUtilsGetAllMoviesListener apiUtilsGetAllMoviesListener;
     private ApiUtilsTrailerListener apiUtilsTrailerListener;
+    private ApiUtilsImagesListener apiUtilsImagesListener;
     private ApiUtilsCommentListener apiUtilsCommentListener;
     private ApiUtilsLatestListener apiUtilsLatestListener;
     private ApiUtilsTopRatedListener apiUtilsTopRatedListener;
@@ -35,6 +38,10 @@ public class ApiUtils {
 
     public void setApiUtilsTrailerListener(ApiUtilsTrailerListener apiUtilsTrailerListener) {
         this.apiUtilsTrailerListener = apiUtilsTrailerListener;
+    }
+
+    public void setApiUtilsImagesListener(ApiUtilsImagesListener apiUtilsImagesListener){
+        this.apiUtilsImagesListener = apiUtilsImagesListener;
     }
 
     public void setApiUtilsCommentListener(ApiUtilsCommentListener apiUtilsCommentListener) {
@@ -53,9 +60,7 @@ public class ApiUtils {
         this.apiUtilsUpcomingListener = apiUtilsUpcomingListener;
     }
 
-    public ApiUtils() {
-
-    }
+    public ApiUtils() {}
 
     public void getAllMovies(String content){
         ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -98,6 +103,24 @@ public class ApiUtils {
                 });
     }
 
+    public void getMovieImages(String id){
+        apiService = new MovieApiService();
+        apiService.getImages(id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<Images>() {
+                    @Override
+                    public void onSuccess(@NonNull Images images) {
+                        if(images.getBackdrops() != null && images.getBackdrops().size() > 0){
+                            apiUtilsImagesListener.onGetImagesDone(images.getBackdrops());
+                        }
+                    }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        apiUtilsImagesListener.onGetImagesError(e.getMessage());
+                    }
+                });
+    }
 
     public void getTrending(){
         ArrayList<Movie> movies = new ArrayList<Movie>();

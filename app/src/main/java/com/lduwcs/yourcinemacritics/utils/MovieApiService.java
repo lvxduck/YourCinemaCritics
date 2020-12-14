@@ -1,5 +1,6 @@
 package com.lduwcs.yourcinemacritics.utils;
 
+import com.lduwcs.yourcinemacritics.models.apiModels.Images;
 import com.lduwcs.yourcinemacritics.models.apiModels.MovieData;
 import com.lduwcs.yourcinemacritics.models.apiModels.MoviesApi;
 import com.lduwcs.yourcinemacritics.models.apiModels.Trailer;
@@ -23,6 +24,7 @@ public class MovieApiService {
     }
     public Single<MovieData> getMovies(String content){ return api.getMovies(content);}
     public Single<Trailer> getMovieTrailer(String id){ return api.getMovieTrailer(id);}
+    public Single<Images> getImages(String id){ return api.getImages(id);}
     public Single<MovieData> getTrending(){ return api.getTrending();}
     public Single<MovieData> getLatest(){ return api.getLatest();}
     public Single<MovieData> getTopRated(){ return api.getTopRated();}

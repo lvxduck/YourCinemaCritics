@@ -177,6 +177,7 @@ public class HomeFragment extends Fragment {
         movies.clear();
         adapter.notifyDataSetChanged();
         if(isConnectWifi()) {
+            moviesDao.deleteAll(1);
             utils.getLatest();
         }
         else loadLatestFromRoom();
@@ -186,6 +187,7 @@ public class HomeFragment extends Fragment {
         movies.clear();
         adapter.notifyDataSetChanged();
         if(isConnectWifi()) {
+            moviesDao.deleteAll(2);
             utils.getTopRated();
         }
         else loadTopRatedFromRoom();
@@ -195,6 +197,7 @@ public class HomeFragment extends Fragment {
         movies.clear();
         adapter.notifyDataSetChanged();
         if(isConnectWifi()) {
+            moviesDao.deleteAll(3);
             utils.getUpcoming();
         }
         else loadUpcomingFromRoom();
