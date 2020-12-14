@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment {
         btnTrending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: update adapter
                 contentMode = IS_TRENDING;
                 loadMode();
             }
@@ -95,7 +94,6 @@ public class HomeFragment extends Fragment {
         btnLatest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: update adapter
                 contentMode = IS_LATEST;
                 loadMode();
             }
@@ -103,7 +101,6 @@ public class HomeFragment extends Fragment {
         btnTopRated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: update adapter
                 contentMode = IS_TOP_RATED;
                 loadMode();
             }
@@ -111,7 +108,6 @@ public class HomeFragment extends Fragment {
         btnComingUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: update adapter
                 contentMode = IS_COMING_UP;
                 loadMode();
             }
@@ -129,8 +125,10 @@ public class HomeFragment extends Fragment {
         //Connect to database
         AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
         moviesDao = appDatabase.getMoviesDao();
+        reloadTrending();
 
         utils = new ApiUtils();
         movies = new ArrayList<>();
@@ -186,30 +184,6 @@ public class HomeFragment extends Fragment {
             public void onGetUpcomingError(String err) {
             }
         });
-
-        //Load trending
-        if(moviesDao.getTrending().size()>0){
-            loadTrendingFromRoom();
-        }
-        else reloadTrending();
-
-//        //Load latest
-//        if(moviesDao.getLatest().size() > 0){
-//            loadLatestFromRoom();
-//        }
-//        else reloadLatest();
-//
-//        //Load Top Rated
-//        if(moviesDao.getTopRated().size() > 0){
-//            loadTopRatedFromRoom();
-//        }
-//        else reloadTopRated();
-//
-//        //Load upcoming
-//        if(moviesDao.getUpcoming().size() > 0){
-//            loadUpcomingFromRoom();
-//        }
-//        else reloadUpcoming();
     }
 
     //Human_duck
@@ -342,6 +316,9 @@ public class HomeFragment extends Fragment {
                 btnTopRated.setOnActive(false);
                 btnLatest.setOnActive(false);
                 txtHomeContentMode.setText(R.string.trending);
+                if (moviesDao.getTrending().size() > 0) {
+                    loadTrendingFromRoom();
+                } else reloadTrending();
                 break;
             case IS_LATEST:
                 btnTrending.setOnActive(false);
@@ -349,6 +326,9 @@ public class HomeFragment extends Fragment {
                 btnTopRated.setOnActive(false);
                 btnLatest.setOnActive(true);
                 txtHomeContentMode.setText(R.string.latest);
+                if (moviesDao.getLatest().size() > 0) {
+                    loadLatestFromRoom();
+                } else reloadLatest();
                 break;
             case IS_TOP_RATED:
                 btnTrending.setOnActive(false);
@@ -356,6 +336,9 @@ public class HomeFragment extends Fragment {
                 btnTopRated.setOnActive(true);
                 btnLatest.setOnActive(false);
                 txtHomeContentMode.setText(R.string.top_rated);
+                if (moviesDao.getTopRated().size() > 0) {
+                    loadTopRatedFromRoom();
+                } else reloadTopRated();
                 break;
             case IS_COMING_UP:
                 btnTrending.setOnActive(false);
@@ -363,6 +346,9 @@ public class HomeFragment extends Fragment {
                 btnTopRated.setOnActive(false);
                 btnLatest.setOnActive(false);
                 txtHomeContentMode.setText(R.string.coming_up);
+                if (moviesDao.getUpcoming().size() > 0) {
+                    loadUpcomingFromRoom();
+                } else reloadUpcoming();
                 break;
         }
     }
