@@ -11,15 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,13 +30,11 @@ import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
-import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
-import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,7 +155,7 @@ public class CommentActivity extends AppCompatActivity {
               public void onGetCommentError(String err) {
               }
             });
-        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
                 btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));

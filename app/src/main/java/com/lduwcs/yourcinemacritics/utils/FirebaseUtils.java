@@ -1,13 +1,7 @@
 package com.lduwcs.yourcinemacritics.utils;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
-
-import androidx.annotation.RequiresApi;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,20 +14,21 @@ import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
-import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class FirebaseUtils {
 
     static FireBaseUtilsCommentListener fireBaseUtilsCommentListener;
     static FireBaseUtilsFavoriteMoviesListener fireBaseUtilsFavoriteMoviesListener;
     static FireBaseUtilsAddFavoriteListener fireBaseUtilsAddFavoriteListener;
-    static FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener;
+    static FirebaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener;
+    static FirebaseUtilsGetUserInfoListener firebaseUtilsGetUserNameListener;
     private static FirebaseUtils instance;
 
     private String userId = "";
@@ -63,7 +58,7 @@ public class FirebaseUtils {
         FirebaseUtils.fireBaseUtilsAddFavoriteListener = fireBaseUtilsAddFavoriteListener;
     }
 
-    public void setFireBaseUtilsRemoveFavoriteListener(FireBaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener) {
+    public void setFireBaseUtilsRemoveFavoriteListener(FirebaseUtilsRemoveFavoriteListener fireBaseUtilsRemoveFavoriteListener) {
         FirebaseUtils.fireBaseUtilsRemoveFavoriteListener = fireBaseUtilsRemoveFavoriteListener;
     }
 
@@ -73,6 +68,10 @@ public class FirebaseUtils {
 
     public void setFireBaseUtilsCommentListener(FireBaseUtilsCommentListener fireBaseUtilsCommentListener) {
         FirebaseUtils.fireBaseUtilsCommentListener = fireBaseUtilsCommentListener;
+    }
+
+    public void setFirebaseUtilsGetUserNameListener(FirebaseUtilsGetUserInfoListener firebaseUtilsGetUserNameListener){
+        FirebaseUtils.firebaseUtilsGetUserNameListener = firebaseUtilsGetUserNameListener;
     }
 
     public void writeComment(String userId, String movieId, String email, String content, String date, Float rating) {
@@ -147,9 +146,7 @@ public class FirebaseUtils {
                         return;
                     }
                 }
-                ;
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 fireBaseUtilsRemoveFavoriteListener.onError(databaseError.getMessage());
@@ -215,12 +212,45 @@ public class FirebaseUtils {
             }
         };
         userRef.addListenerForSingleValueEvent(eventListener);
-        //}
+
     }
 
     public boolean isFavoriteMovie(int id) {
         if (hashMapFavorite != null) return hashMapFavorite.containsKey(id);
         return false;
+    }
+
+    public void updateUser(String userId, String displayName, String avatarPath){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user_profiles");
+        DatabaseReference userRef = rootRef.child(userId);
+
+        userRef.child("display_name").setValue(displayName);
+        userRef.child("avatar_path").setValue(avatarPath);
+    }
+
+    public void getUserInfo(String userId){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user_profiles");
+        DatabaseReference userRef = rootRef.child(userId);
+        final String[] displayName = new String[1];
+        final String[] avatarPath = new String[1];
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                displayName[0] = dataSnapshot.child("display_name").getValue(String.class);
+                if(displayName[0] == null) displayName[0] = "";
+                Log.d("121212", "onDataChange: " + displayName[0]);
+                avatarPath[0] = dataSnapshot.child("avatar_path").getValue(String.class);
+                if(avatarPath[0] == null) avatarPath[0] = "";
+                firebaseUtilsGetUserNameListener.onGetNameDone(displayName[0], avatarPath[0]);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("TAG111", "err");
+            }
+        };
+        userRef.addListenerForSingleValueEvent(eventListener);
     }
 
 }

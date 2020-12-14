@@ -68,6 +68,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-storage'
 
     //YoutubePlayerAPI
     implementation 'com.google.firebase:firebase-database'
