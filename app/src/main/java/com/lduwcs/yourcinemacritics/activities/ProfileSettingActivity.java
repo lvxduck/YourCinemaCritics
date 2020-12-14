@@ -56,10 +56,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
         if (user != null) {
             email = user.getEmail();
             txtProfileEmail.setText(email);
-            firebaseUtils.getUserInfo(user.getUid());
+            firebaseUtils.getUserInfo(user.getUid(), null,null,0);
             firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
                 @Override
-                public void onGetNameDone(String name, String path) {
+                public void onGetNameDone(String name, String path, ImageView imageView, TextView textView, int position) {
                     displayName = name;
                     edtDisplayName.setText(displayName);
                     if(!path.isEmpty()){

@@ -2,6 +2,8 @@ package com.lduwcs.yourcinemacritics.utils;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +33,7 @@ public class FirebaseUtils {
     static FirebaseUtilsGetUserInfoListener firebaseUtilsGetUserNameListener;
     private static FirebaseUtils instance;
 
-    private String userId = "";
+    public String userId = "";
     public HashMap<Integer, Boolean> hashMapFavorite;
     private ArrayList<Movie> movies;
 
@@ -77,8 +79,11 @@ public class FirebaseUtils {
     public void writeComment(String userId, String movieId, String email, String content, String date, Float rating) {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("movies");
         DatabaseReference commentRef = rootRef.child(movieId);
-        Comment comment = new Comment(email, content, rating, date);
-        commentRef.child(userId).setValue(comment);
+        Comment comment = new Comment(userId, email, content, rating, date);
+        commentRef.child(userId).child("content").setValue(comment.getContent());
+        commentRef.child(userId).child("date").setValue(comment.getDate());
+        commentRef.child(userId).child("email").setValue(comment.getEmail());
+        commentRef.child(userId).child("rating").setValue(comment.getRating());
     }
 
     public ArrayList<Comment> getComments(String movieId) {
@@ -92,11 +97,12 @@ public class FirebaseUtils {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Comment> comments = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String id = ds.getKey();
                     String content = ds.child("content").getValue(String.class);
                     String date = ds.child("date").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
                     Float rating = ds.child("rating").getValue(Float.class);
-                    comments.add(new Comment(email, content, rating, date));
+                    comments.add(new Comment(id, email, content, rating, date));
                 }
                 ;
                 fireBaseUtilsCommentListener.onGetCommentDone(comments);
@@ -223,12 +229,11 @@ public class FirebaseUtils {
     public void updateUser(String userId, String displayName, String avatarPath){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user_profiles");
         DatabaseReference userRef = rootRef.child(userId);
-
         userRef.child("display_name").setValue(displayName);
         userRef.child("avatar_path").setValue(avatarPath);
     }
 
-    public void getUserInfo(String userId){
+    public void getUserInfo(String userId, ImageView imageView, TextView textView, int position){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("user_profiles");
         DatabaseReference userRef = rootRef.child(userId);
         final String[] displayName = new String[1];
@@ -241,7 +246,7 @@ public class FirebaseUtils {
                 Log.d("121212", "onDataChange: " + displayName[0]);
                 avatarPath[0] = dataSnapshot.child("avatar_path").getValue(String.class);
                 if(avatarPath[0] == null) avatarPath[0] = "";
-                firebaseUtilsGetUserNameListener.onGetNameDone(displayName[0], avatarPath[0]);
+                firebaseUtilsGetUserNameListener.onGetNameDone(displayName[0], avatarPath[0], imageView, textView, position);
 
             }
 

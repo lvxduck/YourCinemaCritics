@@ -4,6 +4,7 @@ import androidx.room.Entity;
 
 @Entity
 public class Comment {
+    String id;
     String email;
     String content;
     Float rating;
@@ -11,11 +12,20 @@ public class Comment {
     public Comment(){
 
     }
-    public Comment(String email, String content, Float rating, String date) {
+    public Comment(String id, String email, String content, Float rating, String date) {
+        this.id = id;
         this.email = email;
         this.content = content;
         this.rating = rating;
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {

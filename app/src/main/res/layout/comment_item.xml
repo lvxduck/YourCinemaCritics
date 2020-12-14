@@ -84,7 +84,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_action_name"
-            app:tint="@color/text_color"
             android:contentDescription="@string/avatar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

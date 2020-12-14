@@ -236,7 +236,7 @@ public class CommentActivity extends AppCompatActivity {
                     String dateComment = simpleDateFormat.format(date);
                     Float rating = ratingBar.getRating()*2;
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
+                    Comment comment = new Comment(user.getUid(),user.getEmail(),content,rating,dateComment);
                     try{
                         firebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
                         if (isComment(user.getEmail()) != -1) {

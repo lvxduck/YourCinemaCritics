@@ -68,28 +68,6 @@ public class ProfileFragment extends Fragment {
         txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
         user = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUtils = FirebaseUtils.getInstance();
-        if (user != null) {
-            firebaseUtils.getUserInfo(user.getUid());
-            firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
-                @Override
-                public void onGetNameDone(String name, String path) {
-                    if(!name.isEmpty())
-                    txtProfileEmail.setText(name);
-                    else{
-                        String email = user.getEmail();
-                        txtProfileEmail.setText(email);
-                    }
-                    if(!path.isEmpty()){
-                        Picasso.get()
-                                .load(path)
-                                .fit()
-                                .into(imgAvatar);
-                    }
-                }
-            });
-
-        }
-
         btnLogout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Are you sure want to log out?");
@@ -130,5 +108,29 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+    public void onResume() {
+        Log.d("111", "onResume: ");
+        super.onResume();
+        if (user != null) {
+            firebaseUtils.getUserInfo(user.getUid(), null, null, 0);
+            firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
+                @Override
+                public void onGetNameDone(String name, String path, ImageView imageView, TextView textView, int position) {
+                    if (!name.isEmpty())
+                        txtProfileEmail.setText(name);
+                    else {
+                        String email = user.getEmail();
+                        txtProfileEmail.setText(email);
+                    }
+                    if (!path.isEmpty()) {
+                        Picasso.get()
+                                .load(path)
+                                .fit()
+                                .into(imgAvatar);
+                    }
+                }
+            });
+        }
     }
 }
