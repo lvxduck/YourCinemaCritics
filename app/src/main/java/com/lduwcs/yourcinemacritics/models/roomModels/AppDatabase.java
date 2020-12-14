@@ -7,7 +7,7 @@ import androidx.room.TypeConverters;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 
 
-@Database(entities = {Movie.class}, version = 2)
+@Database(entities = {Movie.class}, version = 3)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MoviesDao getMoviesDao();

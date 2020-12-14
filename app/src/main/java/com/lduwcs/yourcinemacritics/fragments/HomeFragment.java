@@ -83,6 +83,44 @@ public class HomeFragment extends Fragment {
         btnComingUp = view.findViewById(R.id.btnComingUp);
         txtHomeContentMode = view.findViewById(R.id.txtHomeContentMode);
 
+        //Swipe to refresh
+        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
+        pullToRefresh.setOnRefreshListener(() -> {
+            switch (contentMode){
+                case IS_TRENDING:
+                    reloadTrending();
+                    break;
+                case IS_LATEST:
+                    reloadLatest();
+                    break;
+                case IS_TOP_RATED:
+                    reloadTopRated();
+                    break;
+                case IS_COMING_UP:
+                    reloadUpcoming();
+                    break;
+            }
+            pullToRefresh.setRefreshing(false);
+            Toast.makeText(getContext(), "Reloading", Toast.LENGTH_SHORT).show();
+        });
+
+        //Connect to database
+        AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+        moviesDao = appDatabase.getMoviesDao();
+
+        utils = new ApiUtils();
+        movies = new ArrayList<>();
+
+        adapter = new HomeAdapter(getContext(), movies);
+        homeRecView.setAdapter(adapter);
+        homeRecView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(homeRecView);
+
         loadMode();
         btnTrending.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,33 +151,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-        //Swipe to refresh
-        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipe_to_refresh);
-        pullToRefresh.setOnRefreshListener(() -> {
-            reloadTrending();
-            pullToRefresh.setRefreshing(false);
-            Toast.makeText(getContext(), "Reloading", Toast.LENGTH_SHORT).show();
-        });
-
-        //Connect to database
-        AppDatabase appDatabase = Room.databaseBuilder(getContext(), AppDatabase.class, "yourmoviecriticsdb")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build();
-        moviesDao = appDatabase.getMoviesDao();
-        reloadTrending();
-
-        utils = new ApiUtils();
-        movies = new ArrayList<>();
-
-        adapter = new HomeAdapter(getContext(), movies);
-        homeRecView.setAdapter(adapter);
-        homeRecView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
-
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(homeRecView);
-
         //----Add ApiUtils Listener-------------
         utils.setApiUtilsCommentListener(new ApiUtilsCommentListener() {
             @Override
@@ -155,7 +166,9 @@ public class HomeFragment extends Fragment {
         utils.setApiUtilsLatestListener(new ApiUtilsLatestListener() {
             @Override
             public void onGetLatestDone(ArrayList<Movie> movies) {
+                Log.d("DEBUG1", movies.get(0).getTitle().toString());
                 onLoadLatestDone(movies);
+
             }
 
             @Override
@@ -256,6 +269,7 @@ public class HomeFragment extends Fragment {
         movies.addAll(data);
         for (Movie movie : data) {
             movie.setType(0);
+            movie.setPid(movie.getId()*10+movie.getType());
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();
@@ -267,6 +281,7 @@ public class HomeFragment extends Fragment {
         movies.addAll(data);
         for (Movie movie : data) {
             movie.setType(1);
+            movie.setPid(movie.getId()*10+movie.getType());
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();
@@ -278,6 +293,7 @@ public class HomeFragment extends Fragment {
         movies.addAll(data);
         for (Movie movie : data) {
             movie.setType(2);
+            movie.setPid(movie.getId()*10+movie.getType());
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();
@@ -289,6 +305,7 @@ public class HomeFragment extends Fragment {
         movies.addAll(data);
         for (Movie movie : data) {
             movie.setType(3);
+            movie.setPid(movie.getId()*10+movie.getType());
             moviesDao.insert(movie);
         }
         adapter.notifyDataSetChanged();

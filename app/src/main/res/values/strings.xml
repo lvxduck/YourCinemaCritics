@@ -57,5 +57,5 @@
     <string name="turn_on_dark_mode">Turn on Dark mode</string>
     <string name="coming_up">Coming Up</string>
     <string name="top_rated">Top Rated</string>
-    <string name="latest">Latest</string>
+    <string name="latest">Now Playing</string>
 </resources>

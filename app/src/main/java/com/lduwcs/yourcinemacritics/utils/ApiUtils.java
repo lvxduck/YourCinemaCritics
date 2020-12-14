@@ -123,7 +123,6 @@ public class ApiUtils {
     }
 
     public void getTrending(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getTrending()
                 .subscribeOn(Schedulers.newThread())
@@ -142,7 +141,6 @@ public class ApiUtils {
     }
 
     public void getLatest(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getLatest()
                 .subscribeOn(Schedulers.newThread())
@@ -150,18 +148,21 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
+                        Log.d("DEBUG1", "Thanh cong");
+                        Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
+                        Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
                         apiUtilsLatestListener.onGetLatestDone((ArrayList<Movie>) movieData.getResults());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        Log.d("DEBUG1", "That bai");
                         apiUtilsLatestListener.onGetLatestError(e.getMessage());
                     }
                 });
     }
 
     public void getTopRated(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getTopRated()
                 .subscribeOn(Schedulers.newThread())
@@ -169,6 +170,9 @@ public class ApiUtils {
                 .subscribeWith(new DisposableSingleObserver<MovieData>() {
                     @Override
                     public void onSuccess(@NonNull MovieData movieData) {
+                        Log.d("DEBUG1", "Thanh cong");
+                        Log.d("DEBUG1", String.valueOf(movieData.getResults().size()));
+                        Log.d("DEBUG1", movieData.getResults().get(0).getTitle());
                         apiUtilsTopRatedListener.onGetTopRatedDone((ArrayList<Movie>) movieData.getResults());
                     }
 
@@ -180,7 +184,6 @@ public class ApiUtils {
     }
 
     public void getUpcoming(){
-        ArrayList<Movie> movies = new ArrayList<Movie>();
         apiService = new MovieApiService();
         apiService.getUpcoming()
                 .subscribeOn(Schedulers.newThread())

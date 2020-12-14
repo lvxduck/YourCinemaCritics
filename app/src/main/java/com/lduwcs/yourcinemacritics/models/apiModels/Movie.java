@@ -13,6 +13,9 @@ import java.util.List;
 public class Movie implements Serializable {
 
     @PrimaryKey
+    @ColumnInfo(name = "pid")
+    private int pid;
+
     @ColumnInfo(name = "film_id")
     @SerializedName("id")
     private int id;
@@ -53,6 +56,10 @@ public class Movie implements Serializable {
         this.overview = overview;
         this.voteAverage = voteAverage;
     }
+
+    public int getPid() { return pid;}
+
+    public void setPid(int pid) {this.pid = pid;}
 
     public int getId() {
         return id;
@@ -112,6 +119,6 @@ public class Movie implements Serializable {
 
     public int getType(){ return type; }
 
-    public void setType(int type){ this.type = type; }
+    public void setType(int type){ this.type = type;}
 }
 
