@@ -211,6 +211,7 @@ public class FirebaseUtils {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("TAG111", "err");
+                fireBaseUtilsFavoriteMoviesListener.onGetFavoriteError(databaseError.getMessage());
             }
         };
         userRef.addListenerForSingleValueEvent(eventListener);

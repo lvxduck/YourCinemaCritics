@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        updateTheme();
-
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -83,19 +81,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frameContainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    private void updateTheme() {
-        SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
-        editor = sharedPreferences.edit();
-        isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
-
-        if (isDarkMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
     }
 
     private boolean isConnectWifi(){

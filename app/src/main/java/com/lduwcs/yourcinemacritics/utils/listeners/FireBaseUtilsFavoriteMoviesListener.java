@@ -10,4 +10,5 @@ import java.util.HashMap;
 
 public interface FireBaseUtilsFavoriteMoviesListener {
     public void onGetFavoriteDone();
+    public void onGetFavoriteError(String err);
 }

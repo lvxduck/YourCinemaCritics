@@ -95,7 +95,8 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-                Toast.makeText(getContext(),error,Toast.LENGTH_LONG).show();
+                txtNoResult.setVisibility(View.VISIBLE);
+                txtNoResult.setText("No Internet Connection");
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -200,6 +201,7 @@ public class SearchFragment extends Fragment {
                         txtNoResult.setVisibility(View.INVISIBLE);
                         if(movies.size() == 0){
                             txtNoResult.setVisibility(View.VISIBLE);
+                            txtNoResult.setText(R.string.no_result);
                         }
                         Toast.makeText(getContext(), "Filtered by genres", Toast.LENGTH_SHORT).show();
                     }
@@ -264,6 +266,7 @@ public class SearchFragment extends Fragment {
         txtNoResult.setVisibility(View.INVISIBLE);
         if(movies.size() == 0){
             txtNoResult.setVisibility(View.VISIBLE);
+            txtNoResult.setText(R.string.no_result);
         }
         Log.d(TAG, "onSearchingDone: success");
     }

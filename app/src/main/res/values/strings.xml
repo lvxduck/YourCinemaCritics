@@ -52,4 +52,5 @@
     <string name="no">No</string>
     <string name="code_butchers">CodeButchers&#174; 2020</string>
     <string name="app_name_launcher">Your Cinema Critics</string>
+    <string name="no_internet">No Internet connection</string>
 </resources>

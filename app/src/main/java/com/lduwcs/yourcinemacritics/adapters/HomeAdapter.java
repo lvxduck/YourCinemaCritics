@@ -3,6 +3,8 @@ package com.lduwcs.yourcinemacritics.adapters;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,14 +71,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             }
         });
         Log.d("DEBUG2", "HomeAdapter: "+firebaseUtils.hashMapFavorite);
-        myProgressDialog.show();
-        firebaseUtils.getFavMovies(FirebaseAuth.getInstance().getUid());
+        if(isConnectWifi()){
+            myProgressDialog.show();
+            firebaseUtils.getFavMovies(FirebaseAuth.getInstance().getUid());
+        }
         firebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
             @Override
             public void onGetFavoriteDone() {
                 Log.d("DEBUG2", "onGetFavoriteDone: "+"co roi nha");
                 myProgressDialog.dismiss();
                 notifyDataSetChanged();
+            }
+
+            @Override
+            public void onGetFavoriteError(String err) {
+                Log.d("DEBUG2", "Khong có ket noi mang");
+                myProgressDialog.dismiss();
             }
         });
         initFirebaseListener();
@@ -112,6 +122,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 myProgressDialog.dismiss();
             }
         });
+
+    }
+
+    private boolean isConnectWifi(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
 
     @NonNull

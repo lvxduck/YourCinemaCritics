@@ -184,6 +184,7 @@ public class FavoriteFragment extends Fragment {
                     txtNoResult.setVisibility(View.INVISIBLE);
                     if(movies.size() == 0){
                         txtNoResult.setVisibility(View.VISIBLE);
+                        txtNoResult.setText(R.string.no_result);
                     }
                     Toast.makeText(getContext(), "Filtered by genres", Toast.LENGTH_SHORT).show();
                 }
@@ -249,6 +250,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     public void onSearchingDone(ArrayList<Movie> data) {
+        int moviesLength = movies.size();
         movies.clear();
         allResultMovies.clear();
         movies.addAll(data);
@@ -258,6 +260,9 @@ public class FavoriteFragment extends Fragment {
         txtNoResult.setVisibility(View.INVISIBLE);
         if(movies.size() == 0){
             txtNoResult.setVisibility(View.VISIBLE);
+            if(data != null && moviesLength > 0){
+                txtNoResult.setText(R.string.no_result);
+            }
         }
         Log.d(TAG, "onSearchingDone: success");
     }

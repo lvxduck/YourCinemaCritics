@@ -1,9 +1,15 @@
 package com.lduwcs.yourcinemacritics.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.lduwcs.yourcinemacritics.R;
 
@@ -29,6 +35,22 @@ public class SplashActivity extends Activity {
                 SplashActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
+        AsyncTask.execute(new Runnable() {
+            @SuppressLint("CommitPrefEdits")
+            @Override
+            public void run() {
+                SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
+                MainActivity.editor = sharedPreferences.edit();
+                MainActivity.isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
+
+                if (MainActivity.isDarkMode) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+        });
 
     }
 }
