@@ -48,6 +48,8 @@ public class NeuButton extends RelativeLayout {
                 icon.setImageDrawable(dr);
             }
 
+            icon.setColorFilter(getContext().getResources().getColor(R.color.icon_inactive));
+
             neoFrame = findViewById(R.id.neu_button_frame);
             int buttonSize = ta.getDimensionPixelSize(R.styleable.NeuButton_nbSize, 16);
             neoFrame.setVerticalPadding(dpToPixel(getContext(), buttonSize));
@@ -62,6 +64,16 @@ public class NeuButton extends RelativeLayout {
             int shadowPadding = ta.getDimensionPixelOffset(R.styleable.NeuButton_nbShadowPadding, 16);
             setMargin(getContext(), icon, shadowPadding);
 
+            boolean isRound = ta.getBoolean(R.styleable.NeuButton_nbRound, false);
+            if (isRound) {
+                neoFrame.setCardRadius(100);
+            }
+
+            int iconSize = ta.getDimensionPixelSize(R.styleable.NeuButton_nbIconSize, (int) dpToPixel(getContext(), 35));
+            icon.getLayoutParams().height = iconSize;
+            icon.getLayoutParams().width = iconSize;
+            icon.requestLayout();
+
         } finally {
             ta.recycle();
         }
@@ -71,7 +83,7 @@ public class NeuButton extends RelativeLayout {
         if (isOnActive) {
             icon.setColorFilter(getContext().getResources().getColor(R.color.orange));
         } else {
-            icon.setColorFilter(getContext().getResources().getColor(R.color.grey));
+            icon.setColorFilter(getContext().getResources().getColor(R.color.icon_inactive));
         }
     }
 

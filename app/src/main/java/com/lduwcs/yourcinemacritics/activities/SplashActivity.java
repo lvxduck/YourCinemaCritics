@@ -3,11 +3,9 @@ package com.lduwcs.yourcinemacritics.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -40,9 +38,9 @@ public class SplashActivity extends Activity {
             @SuppressLint("CommitPrefEdits")
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
-                MainActivity.editor = sharedPreferences.edit();
-                MainActivity.isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
+                MainActivity.sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
+                MainActivity.editor = MainActivity.sharedPreferences.edit();
+                MainActivity.isDarkMode = MainActivity.sharedPreferences.getBoolean("isDarkMode", false);
 
                 if (MainActivity.isDarkMode) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
