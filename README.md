@@ -21,8 +21,8 @@
 <h3>5.Tính năng bình luận, đánh giá phim</h3>
   Người dùng có thể để lại bình luận, góc nhìn của mình về một bộ phim cụ thể, đồng thời đánh giá bộ phim trên thang điểm 10
 <h3>6.Xem thông tin, trailer, hình ảnh của phim</h3>
-  - Hiển thị cụ thể ra điểm đánh giá phim từ giới phê bình, năm ra mắt, sơ lược nội dung phim, thể loại,...
-  - Xem trailer của phim và hiển thị một số hình ảnh được cắt ra từ phim
+  - Hiển thị cụ thể ra điểm đánh giá phim từ giới phê bình, năm ra mắt, sơ lược nội dung phim, thể loại,... <br>
+  - Xem trailer của phim và hiển thị một số hình ảnh được cắt ra từ phim <br>
 <h2>Nhận xét</h2>
 -NHững điều đã làm được:
   + Sử dụng Api, Firebase, 
