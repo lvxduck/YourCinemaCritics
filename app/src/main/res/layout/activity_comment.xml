@@ -284,7 +284,7 @@
             android:layout_marginHorizontal="24dp"
             android:autofillHints=""
             android:background="@null"
-            android:hint="@string/type_something"
+            android:hint="@string/comment_something"
             android:inputType="text"
             android:textColorHint="@color/text_color"
             android:textColor="@color/text_color"

@@ -71,6 +71,7 @@ public class CommentActivity extends AppCompatActivity {
     private CustomProgressDialog mProgressDialog;
     private Movie movie;
     private FirebaseUtils firebaseUtils;
+    private NeumorphicCardView edtCommentBox;
 
 
     //------Instance----------
@@ -103,6 +104,7 @@ public class CommentActivity extends AppCompatActivity {
         btnTrailer = findViewById(R.id.btnDetailTrailer);
         btnSendComment = findViewById(R.id.btnDetailSendComment);
         edtCmt = findViewById(R.id.edtDetailComment);
+        edtCommentBox = findViewById(R.id.btnDetailCommentBox);
         btnAddToFavMovies = findViewById(R.id.btnDetailFav);
         btnShowComment = findViewById(R.id.btnShowComment);
         btnShowPhoto = findViewById(R.id.btnShowPhoto);
@@ -244,6 +246,9 @@ public class CommentActivity extends AppCompatActivity {
             txtPhotoOption.setTextColor(getResources().getColor(R.color.text_color));
             commentRecView.setVisibility(View.VISIBLE);
             photoRecView.setVisibility(View.GONE);
+            edtCmt.setVisibility(View.VISIBLE);
+            btnSendComment.setVisibility(View.VISIBLE);
+            edtCommentBox.setVisibility(View.VISIBLE);
         } else {
             btnShowComment.setNeuBackgroundColor(getResources().getColor(R.color.button_background));
             btnShowPhoto.setNeuBackgroundColor(getResources().getColor(R.color.orange));
@@ -251,6 +256,9 @@ public class CommentActivity extends AppCompatActivity {
             txtPhotoOption.setTextColor(getResources().getColor(R.color.white));
             commentRecView.setVisibility(View.GONE);
             photoRecView.setVisibility(View.VISIBLE);
+            edtCmt.setVisibility(View.GONE);
+            edtCommentBox.setVisibility(View.GONE);
+            btnSendComment.setVisibility(View.INVISIBLE);
         }
     }
 

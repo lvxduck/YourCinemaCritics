@@ -37,6 +37,7 @@
     <string name="play_trailer">play trailer</string>
     <string name="back">back</string>
     <string name="type_something">Search…</string>
+    <string name="comment_something">Write comment here…</string>
     <string name="no_result">No search result</string>
     <string name="send_comment">send comment</string>
     <string name="logout">logout</string>
