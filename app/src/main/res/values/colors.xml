@@ -10,17 +10,21 @@
     <color name="main_background_alt">#252933</color>
     <color name="main_background">#FAFAFA</color>
     <color name="button_background">#F4F4F4</color>
+    <color name="background_white">#F5F7F9</color>
+    <color name="button_white">#F0F5FF</color>
     <color name="orange">#ED7B52</color>
     <color name="grey">#663A3A3A</color>
     <color name="yellow_stars">#FFC337</color>
     <color name="dark_grey">#A12C2C2C</color>
-    <color name="light_grey">#143A3A3A</color>
     <color name="transparent_background">#D2FFFFFF</color>
     <color name="text_color_alt">#EAEAEA</color>
     <color name="text_color">#1C1A1A</color>
-    <color name="icon_inactive">#7D3A3A3A</color>
+    <color name="icon_inactive">#5A5A5A</color>
     <color name="no_color">#00FFFFFF</color>
     <color name="button_highlight_color">#FFFFFF</color>
     <color name="button_shadow_color">#B9D5D5D5</color>
     <color name="super_black">#000000</color>
+    <color name="light_grey">#343A3A3A</color>
+    <color name="transparent_white">#B9F0F5FF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

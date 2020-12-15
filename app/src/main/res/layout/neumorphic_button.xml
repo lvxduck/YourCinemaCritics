@@ -30,6 +30,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/button_icon"
         android:src="@drawable/ic_round_person_24"
-        app:tint="@color/icon_inactive" />
+        app:tint="@color/icon_inactive"
+        android:tintMode="src_atop" />
 
 </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>

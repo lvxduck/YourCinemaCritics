@@ -1,25 +1,31 @@
 package com.lduwcs.yourcinemacritics.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
-import com.lduwcs.yourcinemacritics.utils.ApiUtils;
-import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -28,15 +34,46 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private final ApiUtils utils;
+    CustomProgressDialog myProgressDialog;
+    private FirebaseUtils firebaseUtils;
 
     public SearchAdapter(Context context, @Nullable ArrayList<Movie> movies) {
         this.context = context;
-        if (movies != null)
-            this.movies = movies;
-        else
-            this.movies = new ArrayList<>();
-        utils = new ApiUtils(context);
+        this.movies = movies != null ? movies : new ArrayList<>();
+        firebaseUtils = FirebaseUtils.getInstance();
+        myProgressDialog = new CustomProgressDialog(context);
+        initFirebaseListener();
+    }
+
+    public void initFirebaseListener(){
+        firebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @SuppressLint("UseCompatLoadingForColorStateLists")
+            @Override
+            public void onSuccess(int position, View view) {
+                ((ImageButton) view).setBackgroundTintList(context.getResources().getColorStateList( R.color.orange));
+                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
+            @SuppressLint("UseCompatLoadingForColorStateLists")
+            @Override
+            public void onSuccess(int position, View view) {
+                ((ImageButton) view).setBackgroundTintList(context.getResources().getColorStateList( R.color.white));
+                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
     }
 
     @NonNull
@@ -53,37 +90,52 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         holder.txtTitleSmall.setText(movies.get(position).getTitle());
 
-        StringBuilder reversedReleaseDay = new StringBuilder();
+        String reversedReleaseDay = "";
         String releaseDay = movies.get(position).getReleaseDay();
-        if(releaseDay != null) {
+        if(releaseDay != null){
             String[] releaseDayArray = releaseDay.split("-");
-            for (int i = releaseDayArray.length - 1; i >= 0; i--) {
-                reversedReleaseDay.append(releaseDayArray[i]);
-                if (i != 0) reversedReleaseDay.append("/");
+            for(int i = releaseDayArray.length - 1; i >= 0; i--){
+                reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
+                if(i != 0) reversedReleaseDay += "/";
             }
         }
-        holder.txtDateSmall.setText(reversedReleaseDay.toString());
+        holder.txtDateSmall.setText(reversedReleaseDay);
 
         Picasso.get()
                 .load(base_url_image + movies.get(position).getPosterPath())
                 .fit()
                 .placeholder(R.drawable.no_preview)
                 .into(holder.imgPosterSmall);
-        holder.srSmall.setStarsRate((float) movies.get(position).getVoteAverage());
+        holder.srSmall.setStarsRate((float)movies.get(position).getVoteAverage());
 
-        String finalReversedReleaseDay = reversedReleaseDay.toString();
-        holder.searchItem.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CommentActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("title", movies.get(position).getTitle());
-            bundle.putString("img_path", movies.get(position).getPosterPath());
-            bundle.putString("overview", movies.get(position).getOverview());
-            bundle.putString("release_day", finalReversedReleaseDay);
-            bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-            bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-            bundle.putString("movie_id", movies.get(position).getId() + "");
-            intent.putExtras(bundle);
-            context.startActivity(intent);
+        String finalReversedReleaseDay = reversedReleaseDay;
+        holder.searchItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movie",movies.get(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+        if(firebaseUtils.isFavoriteMovie(movies.get(position).getId())){
+            holder.imgIsFav.setBackgroundTintList(context.getResources().getColorStateList( R.color.orange));
+        } else {
+            holder.imgIsFav.setBackgroundTintList(context.getResources().getColorStateList( R.color.white));
+        }
+        holder.imgIsFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myProgressDialog.show();
+                if (firebaseUtils.isFavoriteMovie(movies.get(position).getId())) {
+                    firebaseUtils.deleteFromFavMovie(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            movies.get(position).getId(), position, holder.imgIsFav);
+                } else {
+                    firebaseUtils.addToFavMovies(position, FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            movies.get(position), holder.imgIsFav);
+                }
+            }
         });
     }
 
@@ -94,7 +146,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgPosterSmall;
-        private final ImageView imgIsFav;
+        private final ImageButton imgIsFav;
         private final TextView txtTitleSmall;
         private final TextView txtDateSmall;
         private final StarRate srSmall;

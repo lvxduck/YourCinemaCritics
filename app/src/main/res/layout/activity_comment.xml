@@ -40,11 +40,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:paddingTop="72dp"
                 android:text="@string/movie_name"
                 android:textColor="@color/text_color_alt"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:paddingTop="72dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -99,23 +99,122 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtDetailGenre"
                 tools:ignore="RtlSymmetry" />
 
+            <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
+                android:id="@+id/btnShowComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:layout_marginTop="8dp"
+                app:cardRadius="40"
+                app:enableHighlight="true"
+                app:enableShadow="true"
+                app:enable_preview="true"
+                app:highlightColor="@color/grey"
+                app:highlightDx="-4dp"
+                app:highlightDy="-4dp"
+                app:highlightRadius="16dp"
+                app:horizontalPadding="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailOverview"
+                app:neu_backgroundColor="@color/button_background"
+                app:shadowColor="@color/black"
+                app:shadowDx="4dp"
+                app:shadowDy="4dp"
+                app:shadowRadius="16dp"
+                app:verticalPadding="14dp">
+
+                <TextView
+                    android:id="@+id/txtCommentOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:text="Comments"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp" />
+            </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
+
+            <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
+                android:id="@+id/btnShowPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                app:cardRadius="40"
+                app:enableHighlight="true"
+                app:enableShadow="true"
+                app:enable_preview="true"
+                app:highlightColor="@color/grey"
+                app:highlightDx="-4dp"
+                app:highlightDy="-4dp"
+                app:highlightRadius="16dp"
+                app:horizontalPadding="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/btnShowComment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
+                app:layout_constraintTop_toTopOf="@+id/btnShowComment"
+                app:neu_backgroundColor="@color/button_background"
+                app:shadowColor="@color/black"
+                app:shadowDx="4dp"
+                app:shadowDy="4dp"
+                app:shadowRadius="16dp"
+                app:verticalPadding="14dp">
+
+                <TextView
+                    android:id="@+id/txtPhotoOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:text="Photos"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp" />
+            </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detailRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:paddingBottom="16dp"
                 android:nestedScrollingEnabled="false"
+                android:paddingBottom="16dp"
+                android:layout_marginTop="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDetailOverview"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnShowPhoto"
                 app:layout_constraintVertical_bias="0.0"
                 tools:itemCount="3"
                 tools:listitem="@layout/comment_item" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photoRecView"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="16dp"
+                android:paddingHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnShowPhoto"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="205dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -185,7 +284,7 @@
             android:layout_marginHorizontal="24dp"
             android:autofillHints=""
             android:background="@null"
-            android:hint="@string/type_something"
+            android:hint="@string/comment_something"
             android:inputType="text"
             android:textColorHint="@color/text_color"
             android:textColor="@color/text_color"

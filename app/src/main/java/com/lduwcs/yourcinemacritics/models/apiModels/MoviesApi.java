@@ -14,10 +14,13 @@ public interface MoviesApi {
     @GET("movie/{id}/videos?api_key="+API_KEY)
     Single<Trailer> getMovieTrailer(@Path("id") String id);
 
+    @GET("movie/{id}/images?api_key="+API_KEY)
+    Single<Images> getImages(@Path("id") String id);
+
     @GET("trending/movie/week?api_key="+API_KEY)
     Single<MovieData> getTrending();
 
-    @GET("movie/latest?api_key="+API_KEY)
+    @GET("movie/now_playing?api_key="+API_KEY)
     Single<MovieData> getLatest();
 
     @GET("movie/top_rated?api_key="+API_KEY)

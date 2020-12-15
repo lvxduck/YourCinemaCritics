@@ -2,25 +2,36 @@ package com.lduwcs.yourcinemacritics.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
-import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.activities.YoutubeActivity;
+import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
-import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,15 +40,89 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context context;
     ArrayList<Movie> movies;
     String base_url_image = "https://image.tmdb.org/t/p/w500";
-    private final ApiUtils utils;
+    private ApiUtils utils;
+    FirebaseUser user;
+    CustomProgressDialog myProgressDialog;
+    FirebaseUtils firebaseUtils;
+
 
     public HomeAdapter(Context context, @Nullable ArrayList<Movie> movies) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUtils = FirebaseUtils.getInstance();
         this.context = context;
-        if (movies != null)
-            this.movies = movies;
-        else
-            this.movies = new ArrayList<>();
-        utils = new ApiUtils(context);
+        this.movies = movies != null ? movies : new ArrayList<>();
+        myProgressDialog = new CustomProgressDialog(context);
+        utils = new ApiUtils();
+        utils.setApiUtilsTrailerListener(new ApiUtilsTrailerListener() {
+            @Override
+            public void onGetTrailerDone(String key) {
+                watchYoutubeVideo(context, key);
+            }
+
+            @Override
+            public void onGetTrailerError(String err) {
+
+            }
+        });
+        Log.d("DEBUG2", "HomeAdapter: "+firebaseUtils.hashMapFavorite);
+        if(isConnectWifi()){
+            myProgressDialog.show();
+            firebaseUtils.getFavMovies(FirebaseAuth.getInstance().getUid());
+        }
+        firebaseUtils.setFireBaseUtilsFavoriteMoviesListener(new FireBaseUtilsFavoriteMoviesListener() {
+            @Override
+            public void onGetFavoriteDone() {
+                Log.d("DEBUG2", "onGetFavoriteDone: "+"co roi nha");
+                myProgressDialog.dismiss();
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onGetFavoriteError(String err) {
+                Log.d("DEBUG2", "Khong có ket noi mang");
+                myProgressDialog.dismiss();
+            }
+        });
+        initFirebaseListener();
+    }
+
+    public void initFirebaseListener(){
+        notifyDataSetChanged();
+        firebaseUtils.setFireBaseUtilsAddFavoriteListener(new FireBaseUtilsAddFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                ((NeuButton) view).setOnActive(true);
+                Toast.makeText(context, "Added to your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
+            @Override
+            public void onSuccess(int position, View view) {
+                ((NeuButton) view).setOnActive(false);
+                Toast.makeText(context, "Removed from your Favorite Movie", Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(String err) {
+                Toast.makeText(context, "ERROR: " + err, Toast.LENGTH_SHORT).show();
+                myProgressDialog.dismiss();
+            }
+        });
+
+    }
+
+    private boolean isConnectWifi(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
 
     @NonNull
@@ -51,8 +136,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //change item's content; choose what item does
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        //TODO: model to view
-//        holder.imgHomePoster.setImageDrawable();
         holder.txtTittle.setText(movies.get(position).getTitle());
         holder.txtOverview.setText(getLimitOverview(movies.get(position).getOverview(), 200));
         Picasso.get()
@@ -60,32 +143,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .fit()
                 .placeholder(R.drawable.no_preview)
                 .into(holder.imgHomePoster);
-        holder.srHome.setStarsRate((float) movies.get(position).getVoteAverage());
-        holder.btnComment.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CommentActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("title", movies.get(position).getTitle());
-            bundle.putString("img_path", movies.get(position).getPosterPath());
-            bundle.putString("overview", movies.get(position).getOverview());
-            String releaseDay = movies.get(position).getReleaseDay();
-            String[] releaseDayArray = releaseDay.split("-");
-            StringBuilder reversedReleaseDay = new StringBuilder();
-            for (int i = 2; i >= 0; i--) {
-                reversedReleaseDay.append(releaseDayArray[i]);
-                if (i != 0) reversedReleaseDay.append("/");
+        holder.srHome.setStarsRate((float)movies.get(position).getVoteAverage());
+        holder.btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movie", movies.get(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
-            bundle.putString("release_day", reversedReleaseDay.toString());
-            bundle.putString("genres", Genres.changeGenresIdToName(movies.get(position).getGenres()));
-            bundle.putString("rating", String.valueOf(movies.get(position).getVoteAverage()));
-            bundle.putString("movie_id", movies.get(position).getId() + "");
-            intent.putExtras(bundle);
-            context.startActivity(intent);
         });
         holder.btnTrailer.setOnClickListener(view -> {
             String id = String.valueOf(movies.get(position).getId());
             utils.getTrailer(id);
         });
-//        ...
+        if(firebaseUtils.isFavoriteMovie(movies.get(position).getId())){
+            holder.btnAddToFavorite.setOnActive(true);
+        } else {
+            holder.btnAddToFavorite.setOnActive(false);
+        }
+        holder.btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myProgressDialog.show();
+                if (firebaseUtils.isFavoriteMovie(movies.get(position).getId())) {
+                    firebaseUtils.deleteFromFavMovie(user.getUid(), movies.get(position).getId(), position, holder.btnAddToFavorite);
+                } else {
+                    firebaseUtils.addToFavMovies(position, user.getUid(), movies.get(position), holder.btnAddToFavorite);
+                }
+            }
+        });
     }
 
     private String getLimitOverview(String overview, int max){
@@ -109,16 +197,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public static void watchYoutubeVideo(Context context, String id){
-//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-//        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("http://www.youtube.com/watch?v=" + id));
-//        try {
-//            context.startActivity(appIntent);
-//        } catch (ActivityNotFoundException ex) {
-//            context.startActivity(webIntent);
-//        }
-
+    private void watchYoutubeVideo(Context context, String id) {
         Intent intent = new Intent(context, YoutubeActivity.class);
         intent.putExtra("key", id);
         context.startActivity(intent);
@@ -130,7 +209,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgHomePoster;
-        private final ImageView btnAddToFavorite;
+        private final NeuButton btnAddToFavorite;
         private final NeuButton btnTrailer;
         private final NeuButton btnComment;
         private final TextView txtTittle;

@@ -37,6 +37,7 @@
     <string name="play_trailer">play trailer</string>
     <string name="back">back</string>
     <string name="type_something">Search…</string>
+    <string name="comment_something">Write comment here…</string>
     <string name="no_result">No search result</string>
     <string name="send_comment">send comment</string>
     <string name="logout">logout</string>
@@ -50,4 +51,12 @@
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="code_butchers">CodeButchers&#174; 2020</string>
+    <string name="app_name_launcher">Your Cinema Critics</string>
+    <string name="no_internet">No Internet connection</string>
+    <string name="turn_on_light_mode">Turn on Light mode</string>
+    <string name="turn_on_dark_mode">Turn on Dark mode</string>
+    <string name="coming_up">Coming Up</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="latest">Latest</string>
 </resources>

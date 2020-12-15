@@ -64,17 +64,14 @@
         app:layout_constraintTop_toBottomOf="@+id/srHomeRate"
         app:nbSrc="@drawable/ic_round_play_arrow_24" />
 
-    <ImageView
+    <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
         android:id="@+id/btnHomeFav"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginVertical="32dp"
-        android:contentDescription="@string/add_to_favorite"
-        android:src="@drawable/ic_round_favorite_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:nbSrc="@drawable/ic_round_favorite_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/srHomeRate"
-        app:tint="@color/orange" />
+        app:layout_constraintTop_toBottomOf="@+id/srHomeRate" />
 
     <com.lduwcs.yourcinemacritics.uiComponents.NeuButton
         android:id="@+id/btnHomeComment"

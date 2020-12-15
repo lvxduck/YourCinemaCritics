@@ -5,13 +5,17 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Movie {
+public class Movie implements Serializable {
 
     @PrimaryKey
+    @ColumnInfo(name = "pid")
+    private int pid;
+
     @ColumnInfo(name = "film_id")
     @SerializedName("id")
     private int id;
@@ -40,9 +44,8 @@ public class Movie {
     @SerializedName("vote_average")
     private double voteAverage;
 
-    public Movie(){
-
-    }
+    @ColumnInfo(name = "film_type")
+    private int type;
 
     public Movie(int id, String title, String releaseDay, ArrayList<Integer> genres, String posterPath, String overview, double voteAverage) {
         this.id = id;
@@ -53,6 +56,10 @@ public class Movie {
         this.overview = overview;
         this.voteAverage = voteAverage;
     }
+
+    public int getPid() { return pid;}
+
+    public void setPid(int pid) {this.pid = pid;}
 
     public int getId() {
         return id;
@@ -109,5 +116,9 @@ public class Movie {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
+
+    public int getType(){ return type; }
+
+    public void setType(int type){ this.type = type;}
 }
 

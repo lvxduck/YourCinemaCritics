@@ -2,32 +2,51 @@ package com.lduwcs.yourcinemacritics.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.activities.AboutActivity;
 import com.lduwcs.yourcinemacritics.activities.LoginActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
+import com.lduwcs.yourcinemacritics.activities.ProfileSettingActivity;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoListener;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 
 public class ProfileFragment extends Fragment {
     SwitchMaterial swDarkMode;
     private NeuButton btnLogout;
-    private TextView txtProfileEmail;
+    private NeuButton btnEditProfile;
+    private TextView txtProfileEmail, txtDarkModeContent;
+    private ConstraintLayout btnDarkMode, btnAbout;
+    private ImageView iconDarkMode;
+    private ImageView imgAvatar;
     FirebaseUser user;
+    FirebaseUtils firebaseUtils;
+    private CustomProgressDialog mDialog;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -50,13 +69,16 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnLogout = view.findViewById(R.id.btnProfileLogout);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        btnDarkMode = view.findViewById(R.id.btnDarkMode);
+        btnAbout = view.findViewById(R.id.btnAbout);
         txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String email = user.getEmail();
-            txtProfileEmail.setText(email);
-        }
+        txtDarkModeContent = view.findViewById(R.id.txtDarkModeContent);
+        iconDarkMode = view.findViewById(R.id.iconDarkMode);
+        imgAvatar = view.findViewById(R.id.imageView);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUtils = FirebaseUtils.getInstance();
         btnLogout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Are you sure want to log out?");
@@ -75,19 +97,87 @@ public class ProfileFragment extends Fragment {
             builder.show();
         });
 
-
-        swDarkMode = view.findViewById(R.id.btnDarkMode);
-        if (MainActivity.isDarkMode)
-            swDarkMode.setChecked(true);
-        swDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (MainActivity.isDarkMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                MainActivity.editor.putBoolean("isDarkMode", false);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                MainActivity.editor.putBoolean("isDarkMode", true);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAbout();
             }
-            MainActivity.editor.apply();
         });
+
+        mDialog = new CustomProgressDialog(getContext());
+
+
+        if (MainActivity.isDarkMode) {
+            iconDarkMode.setImageResource(R.drawable.ic_round_wb_sunny_24);
+            txtDarkModeContent.setText(R.string.turn_on_light_mode);
+        } else {
+            iconDarkMode.setImageResource(R.drawable.ic_round_nights_stay_24);
+            txtDarkModeContent.setText(R.string.turn_on_dark_mode);
+        }
+
+
+        btnDarkMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MainActivity.isDarkMode) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    MainActivity.editor.putBoolean("isDarkMode", false);
+                    MainActivity.editor.apply();
+                    iconDarkMode.setImageResource(R.drawable.ic_round_nights_stay_24);
+                    txtDarkModeContent.setText(R.string.turn_on_dark_mode);
+
+                    MainActivity.isDarkMode = false;
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    MainActivity.editor.putBoolean("isDarkMode", true);
+                    MainActivity.editor.apply();
+                    iconDarkMode.setImageResource(R.drawable.ic_round_wb_sunny_24);
+                    txtDarkModeContent.setText(R.string.turn_on_light_mode);
+
+                    MainActivity.isDarkMode = true;
+                }
+            }
+        });
+
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+    }
+    public void onResume() {
+        Log.d("111", "onResume: ");
+        super.onResume();
+        if (user != null) {
+            mDialog.show();
+            firebaseUtils.getUserInfo(user.getUid(), null, null, 0);
+            firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
+                @Override
+                public void onGetNameDone(String name, String path, ImageView imageView, TextView textView, int position) {
+                    if (!name.isEmpty())
+                        txtProfileEmail.setText(name);
+                    else {
+                        String email = user.getEmail();
+                        txtProfileEmail.setText(email);
+                    }
+                    if (!path.isEmpty()) {
+                        Picasso.get()
+                                .load(path)
+                                .fit()
+                                .into(imgAvatar);
+                    }
+                    mDialog.dismiss();
+                }
+            });
+        }
+    }
+
+    private void onAbout() {
+        Intent intent = new Intent(getContext(), AboutActivity.class);
+        startActivity(intent);
     }
 }
