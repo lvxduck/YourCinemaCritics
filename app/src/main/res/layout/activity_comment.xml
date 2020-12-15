@@ -13,7 +13,7 @@
         android:id="@+id/imgCmtBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.3"
+        android:alpha="0.25"
         android:contentDescription="@string/comment_background"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/poster_demo" />
@@ -40,10 +40,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/raleway"
                 android:paddingTop="72dp"
                 android:text="@string/movie_name"
                 android:textColor="@color/text_color_alt"
-                android:textSize="22sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +54,7 @@
                 android:id="@+id/txtDetailReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway"
                 android:text="@string/_23_11_2020"
                 android:textColor="@color/text_color_alt"
                 android:textSize="18sp"
@@ -60,10 +62,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
 
             <TextView
-                android:id="@+id/txtDetailRating"
+                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/imdb_6_7_10"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway"
+                android:text="@string/rating"
                 android:textColor="@color/text_color_alt"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/txtDetailReleaseDate"
@@ -72,15 +76,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtDetailTitle" />
 
             <TextView
+                android:id="@+id/txtDetailRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/raleway"
+                android:text="@string/_6_75"
+                android:textColor="@color/yellow_stars"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                app:layout_constraintEnd_toStartOf="@+id/txtDetailReleaseDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView18"
+                app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+            <TextView
                 android:id="@+id/txtDetailGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway"
                 android:text="@string/action_comedy"
                 android:textColor="@color/text_color_alt"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@+id/txtDetailReleaseDate"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/txtDetailRating"
+                app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/txtDetailRating" />
 
             <TextView
@@ -88,11 +109,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/raleway"
                 android:paddingEnd="8dp"
                 android:text="@string/this_is_a_short_overview_of_this_movie"
                 android:textColor="@color/text_color_alt"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,8 +152,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:background="@null"
+                    android:fontFamily="@font/raleway"
                     android:gravity="center"
-                    android:text="Comments"
+                    android:text="@string/comments"
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
             </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -167,8 +190,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:background="@null"
+                    android:fontFamily="@font/raleway"
                     android:gravity="center"
-                    android:text="Photos"
+                    android:text="@string/photos"
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
             </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -284,10 +308,11 @@
             android:layout_marginHorizontal="24dp"
             android:autofillHints=""
             android:background="@null"
+            android:fontFamily="@font/raleway"
             android:hint="@string/comment_something"
             android:inputType="text"
-            android:textColorHint="@color/text_color"
             android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             android:textSize="18sp" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 

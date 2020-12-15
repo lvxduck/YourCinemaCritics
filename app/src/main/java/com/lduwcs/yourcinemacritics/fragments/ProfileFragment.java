@@ -1,8 +1,8 @@
 package com.lduwcs.yourcinemacritics.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
@@ -32,11 +31,8 @@ import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoListener;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-
 
 public class ProfileFragment extends Fragment {
-    SwitchMaterial swDarkMode;
     private NeuButton btnLogout;
     private NeuButton btnEditProfile;
     private TextView txtProfileEmail, txtDarkModeContent;
@@ -156,17 +152,20 @@ public class ProfileFragment extends Fragment {
             mDialog.show();
             firebaseUtils.getUserInfo(user.getUid(), null, null, 0);
             firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onGetNameDone(String name, String path, ImageView imageView, TextView textView, int position) {
                     if (!name.isEmpty())
-                        txtProfileEmail.setText(name);
+                        txtProfileEmail.setText(name + "!");
                     else {
                         String email = user.getEmail();
-                        txtProfileEmail.setText(email);
+                        txtProfileEmail.setText(email + "!");
                     }
                     if (!path.isEmpty()) {
                         Picasso.get()
                                 .load(path)
+                                .placeholder(R.drawable.spinner4)
+                                .centerCrop()
                                 .fit()
                                 .into(imgAvatar);
                     }

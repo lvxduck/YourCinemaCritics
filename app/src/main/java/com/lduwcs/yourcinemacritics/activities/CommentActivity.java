@@ -11,15 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +29,9 @@ import com.lduwcs.yourcinemacritics.models.apiModels.Image;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
+import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
+import com.lduwcs.yourcinemacritics.utils.ApiUtils;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsImagesListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
@@ -39,9 +39,6 @@ import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteList
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
-import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
-import com.lduwcs.yourcinemacritics.utils.ApiUtils;
-import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 import java.text.ParseException;
@@ -81,6 +78,7 @@ public class CommentActivity extends AppCompatActivity {
 
 
     //------Instance----------
+    @SuppressLint("StaticFieldLeak")
     private static CommentActivity instance;
 
 
@@ -134,25 +132,26 @@ public class CommentActivity extends AppCompatActivity {
         loadButton();
     }
 
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     private void loadUI() {
         movie = (Movie) bundle.getSerializable("movie");
         Picasso.get()
                 .load(base_url_image + movie.getPosterPath())
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.no_preview)
+                .placeholder(getResources().getDrawable(R.color.super_black))
                 .into(imgCmtBackground);
         txtDetailTitle.setText(movie.getTitle());
         txtDetailOverview.setText(movie.getOverview());
         String[] releaseDayArray = movie.getReleaseDay().split("-");
-        String reversedReleaseDay = "";
+        StringBuilder reversedReleaseDay = new StringBuilder();
         for (int i = 2; i >= 0; i--) {
-            reversedReleaseDay = reversedReleaseDay + releaseDayArray[i];
-            if (i != 0) reversedReleaseDay += "/";
+            reversedReleaseDay.append(releaseDayArray[i]);
+            if (i != 0) reversedReleaseDay.append("/");
         }
         txtDetailReleaseDate.setText("Release Day: " + reversedReleaseDay);
         txtDetailGenre.setText("Genres: " + Genres.changeGenresIdToName(movie.getGenres()));
-        txtDetailRating.setText("Rating: " + movie.getVoteAverage());
+        txtDetailRating.setText(movie.getVoteAverage() + "/10");
         movie_id = "" + movie.getId();
         mAuth = FirebaseAuth.getInstance();
     }
@@ -268,6 +267,7 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     private void loadListener() {
         if (firebaseUtils.isFavoriteMovie(movie.getId())) {
             btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
@@ -279,24 +279,25 @@ public class CommentActivity extends AppCompatActivity {
             public void onGetTrailerDone(String key) {
                 onVideoRequestSuccess(key);
             }
+
             @Override
             public void onGetTrailerError(String err) {
 
             }
         });
         firebaseUtils.setFireBaseUtilsCommentListener(new FireBaseUtilsCommentListener() {
-              @Override
-              public void onGetCommentDone(ArrayList<Comment> data) {
+            @Override
+            public void onGetCommentDone(ArrayList<Comment> data) {
 
-                  comments.addAll(sortCommentByDate(data));
-                  commentAdapter.notifyDataSetChanged();
-                  mProgressDialog.dismiss();
-              }
+                comments.addAll(sortCommentByDate(data));
+                commentAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
 
-              @Override
-              public void onGetCommentError(String err) {
-              }
-            });
+            @Override
+            public void onGetCommentError(String err) {
+            }
+        });
         firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
@@ -357,10 +358,11 @@ public class CommentActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("InflateParams")
     private void handleSendComment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
-        View layout= null;
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout;
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layout = inflater.inflate(R.layout.user_rate, null);
         final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
         builder.setTitle("Rate this movie");

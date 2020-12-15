@@ -21,7 +21,7 @@
             android:layout_marginTop="120dp"
             android:paddingBottom="110dp"
             android:rotation="-90"
-            android:text="Profile"
+            android:text="@string/profile"
             android:textColor="@color/light_grey"
             android:textSize="72sp"
             android:textStyle="bold"
@@ -50,21 +50,26 @@
             app:nbSize="3dp"
             app:nbSrc="@drawable/ic_logout" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/white"
+            app:civ_circle_background_color="@color/white"
             android:src="@drawable/ic_action_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/avatar" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/raleway"
             android:text="@string/hello"
             android:textColor="@color/text_color"
             android:textSize="24sp"
@@ -76,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/raleway"
             android:text="@string/thuan_gmail_com"
             android:textColor="@color/text_color"
             android:textSize="24sp"
@@ -105,14 +111,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/icon_inactive" />
+                app:tint="@color/icon_inactive"
+                android:contentDescription="@string/turn_on_dark_mode" />
 
             <TextView
                 android:id="@+id/txtDarkModeContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Turn on Dark Theme"
+                android:fontFamily="@font/raleway"
+                android:text="@string/turn_on_dark_mode"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -126,7 +134,7 @@
             android:id="@+id/btnAbout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -143,14 +151,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/icon_inactive" />
+                app:tint="@color/icon_inactive"
+                android:contentDescription="@string/about" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="About"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/raleway"
+                android:text="@string/about"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -168,14 +178,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="0dp">
+            tools:layout_editor_absoluteX="0dp"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Powered by"
+                android:fontFamily="@font/raleway"
+                android:text="@string/powered_by"
                 android:textColor="@color/text_color" />
 
             <ImageView
@@ -183,7 +195,8 @@
                 android:layout_width="205dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_tmdb_primary_long" />
+                android:src="@drawable/ic_tmdb_primary_long"
+                android:contentDescription="@string/the_movie_db" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,9 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/orange"
+            android:fontFamily="@font/raleway"
             android:text="@string/gmail_putin_com"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imgCmtAvatar"
@@ -43,15 +44,17 @@
 
         <TextView
             android:id="@+id/txtCmtContent"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/raleway"
+            android:text="@string/comment_something"
             android:textColor="@color/text_color"
-            android:text="dfd dfkjdfk fdsd kdfs dfs sdfd sdfs sfd fds dfss fdss fsd dfss dfs fds sdf"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtCmtEmail"
             app:layout_constraintTop_toBottomOf="@+id/txtCmtEmail" />
 
         <TextView
@@ -60,8 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:textColor="@color/text_color"
+            android:fontFamily="@font/raleway"
             android:text="@string/_23_11_2020"
+            android:textColor="@color/text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,8 +83,11 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:paddingTop="6dp"
             android:id="@+id/imgCmtAvatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/white"
+            app:civ_circle_background_color="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_action_name"
