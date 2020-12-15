@@ -2,7 +2,9 @@ package com.lduwcs.yourcinemacritics.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +18,40 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.AboutActivity;
 import com.lduwcs.yourcinemacritics.activities.LoginActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
+import com.lduwcs.yourcinemacritics.activities.ProfileSettingActivity;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
+import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoListener;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 
 public class ProfileFragment extends Fragment {
+    SwitchMaterial swDarkMode;
     private NeuButton btnLogout;
     private NeuButton btnEditProfile;
     private TextView txtProfileEmail, txtDarkModeContent;
     private ConstraintLayout btnDarkMode, btnAbout;
     private ImageView iconDarkMode;
+    private ImageView imgAvatar;
     FirebaseUser user;
+    FirebaseUtils firebaseUtils;
+    private CustomProgressDialog mDialog;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -62,11 +82,7 @@ public class ProfileFragment extends Fragment {
         iconDarkMode = view.findViewById(R.id.iconDarkMode);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String email = user.getEmail();
-            txtProfileEmail.setText(email);
-        }
-
+        firebaseUtils = FirebaseUtils.getInstance();
         btnLogout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Are you sure want to log out?");
@@ -98,6 +114,7 @@ public class ProfileFragment extends Fragment {
                 onEdit();
             }
         });
+        mDialog = new CustomProgressDialog(getContext());
 
 
         if (MainActivity.isDarkMode) {
@@ -131,6 +148,43 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+        imgAvatar = view.findViewById(R.id.imageView);
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+    }
+    public void onResume() {
+        Log.d("111", "onResume: ");
+        super.onResume();
+        if (user != null) {
+            mDialog.show();
+            firebaseUtils.getUserInfo(user.getUid(), null, null, 0);
+            firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
+                @Override
+                public void onGetNameDone(String name, String path, ImageView imageView, TextView textView, int position) {
+                    if (!name.isEmpty())
+                        txtProfileEmail.setText(name);
+                    else {
+                        String email = user.getEmail();
+                        txtProfileEmail.setText(email);
+                    }
+                    if (!path.isEmpty()) {
+                        Picasso.get()
+                                .load(path)
+                                .fit()
+                                .into(imgAvatar);
+                    }
+                    mDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void onAbout() {

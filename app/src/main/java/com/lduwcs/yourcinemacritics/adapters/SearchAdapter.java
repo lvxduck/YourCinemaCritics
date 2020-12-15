@@ -22,17 +22,13 @@ import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.CommentActivity;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
-import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
-import com.lduwcs.yourcinemacritics.utils.Genres;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
-import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsFavoriteMoviesListener;
-import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsRemoveFavoriteListener;
+import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsRemoveFavoriteListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     Context context;
@@ -64,7 +60,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 myProgressDialog.dismiss();
             }
         });
-        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
             @SuppressLint("UseCompatLoadingForColorStateLists")
             @Override
             public void onSuccess(int position, View view) {
