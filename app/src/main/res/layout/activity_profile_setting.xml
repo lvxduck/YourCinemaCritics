@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/raleway"
+                android:fontFamily="@font/roboto"
                 android:singleLine="true"
                 android:text="@string/thuan_gmail_com"
                 android:textColor="@color/text_color"
@@ -156,16 +156,16 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_gravity="center"
+               android:layout_marginStart="8dp"
                android:autofillHints=""
                android:background="@null"
-               android:layout_marginStart="8dp"
-               android:fontFamily="@font/raleway"
+               android:fontFamily="@font/roboto"
                android:hint="@string/enter_your_name"
+               android:inputType="text"
                android:singleLine="true"
                android:textColor="@color/text_color"
                android:textColorHint="@color/text_color"
-               android:textSize="18sp"
-               android:inputType="text" />
+               android:textSize="18sp" />
        </LinearLayout>
 
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
