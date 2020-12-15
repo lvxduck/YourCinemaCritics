@@ -31,6 +31,8 @@ import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoList
 import com.squareup.picasso.Picasso;
 import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
+import java.util.Objects;
+
 public class ProfileSettingActivity extends AppCompatActivity {
     ImageView imgAvatar;
     TextView txtProfileEmail;
@@ -51,6 +53,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setting);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
         imgAvatar = findViewById(R.id.imgAvatar);
         edtDisplayName = findViewById(R.id.edtName);
         txtProfileEmail = findViewById(R.id.txtProfileEmail);
@@ -135,7 +139,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     }
 
     public void getUrl(){
-        StorageReference pathReference = storageReference.child( mAuth.getUid());
+        StorageReference pathReference = storageReference.child(Objects.requireNonNull(mAuth.getUid()));
         pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

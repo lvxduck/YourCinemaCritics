@@ -18,14 +18,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.AboutActivity;
 import com.lduwcs.yourcinemacritics.activities.LoginActivity;
@@ -80,6 +75,7 @@ public class ProfileFragment extends Fragment {
         txtProfileEmail = view.findViewById(R.id.txtProfileEmail);
         txtDarkModeContent = view.findViewById(R.id.txtDarkModeContent);
         iconDarkMode = view.findViewById(R.id.iconDarkMode);
+        imgAvatar = view.findViewById(R.id.imageView);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUtils = FirebaseUtils.getInstance();
@@ -108,12 +104,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onEdit();
-            }
-        });
         mDialog = new CustomProgressDialog(getContext());
 
 
@@ -149,8 +139,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        imgAvatar = view.findViewById(R.id.imageView);
-        imgAvatar.setOnClickListener(new View.OnClickListener() {
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ProfileSettingActivity.class);
@@ -190,9 +179,5 @@ public class ProfileFragment extends Fragment {
     private void onAbout() {
         Intent intent = new Intent(getContext(), AboutActivity.class);
         startActivity(intent);
-    }
-
-    private void onEdit() {
-        //do something
     }
 }

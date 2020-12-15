@@ -20,16 +20,20 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
+import com.lduwcs.yourcinemacritics.adapters.BackdropAdapter;
 import com.lduwcs.yourcinemacritics.adapters.CommentAdapter;
+import com.lduwcs.yourcinemacritics.models.apiModels.Image;
 import com.lduwcs.yourcinemacritics.models.apiModels.Movie;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.utils.Genres;
+import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsImagesListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.ApiUtilsTrailerListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsAddFavoriteListener;
 import com.lduwcs.yourcinemacritics.utils.listeners.FireBaseUtilsCommentListener;
@@ -38,6 +42,7 @@ import com.squareup.picasso.Picasso;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
+import com.thelumiereguy.neumorphicview.views.NeumorphicCardView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,21 +55,29 @@ import java.util.Objects;
 public class CommentActivity extends AppCompatActivity {
 
     //-------UI variable------------
-    private RecyclerView commentRecView;
+    private Bundle bundle;
+    private RecyclerView commentRecView, photoRecView;
     private NeuButton btnBack, btnTrailer, btnSendComment;
-    private ImageView btnAddToFavMovies;
+    private ImageView btnAddToFavMovies, imgCmtBackground;
+    private TextView txtDetailTitle, txtDetailReleaseDate, txtDetailOverview, txtDetailRating, txtDetailGenre;
     private EditText edtCmt;
     private ApiUtils utils;
+    private NeumorphicCardView btnShowComment, btnShowPhoto;
+    private TextView txtCommentOption, txtPhotoOption;
+    private boolean isShowComment = true;
 
-    private String base_url_image = "https://image.tmdb.org/t/p/w500";
+    private final String base_url_image = "https://image.tmdb.org/t/p/w500";
     private String movie_id = "";
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
+    private ArrayList<Image> images;
+    private BackdropAdapter photoAdapter;
     private Context context;
     private FirebaseAuth mAuth;
     private CustomProgressDialog mProgressDialog;
     private Movie movie;
     private FirebaseUtils firebaseUtils;
+    private NeumorphicCardView edtCommentBox;
 
 
     //------Instance----------
@@ -81,30 +94,47 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         instance = this;
 
-        Bundle bundle = getIntent().getExtras();
-
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
-        ImageView imgCmtBackground = findViewById(R.id.imgCmtBackground);
-        TextView txtDetailTitle = findViewById(R.id.txtDetailTitle);
-        TextView txtDetailReleaseDate = findViewById(R.id.txtDetailReleaseDate);
-        TextView txtDetailOverview = findViewById(R.id.txtDetailOverview);
-        TextView txtDetailRating = findViewById(R.id.txtDetailRating);
-        TextView txtDetailGenre = findViewById(R.id.txtDetailGenre);
+        bundle = getIntent().getExtras();
+        imgCmtBackground = findViewById(R.id.imgCmtBackground);
+        txtDetailTitle = findViewById(R.id.txtDetailTitle);
+        txtDetailReleaseDate = findViewById(R.id.txtDetailReleaseDate);
+        txtDetailOverview = findViewById(R.id.txtDetailOverview);
+        txtDetailRating = findViewById(R.id.txtDetailRating);
+        txtDetailGenre = findViewById(R.id.txtDetailGenre);
         commentRecView = findViewById(R.id.detailRecView);
+        photoRecView = findViewById(R.id.photoRecView);
         btnBack = findViewById(R.id.btnDetailBack);
         btnTrailer = findViewById(R.id.btnDetailTrailer);
         btnSendComment = findViewById(R.id.btnDetailSendComment);
         edtCmt = findViewById(R.id.edtDetailComment);
+        edtCommentBox = findViewById(R.id.btnDetailCommentBox);
         btnAddToFavMovies = findViewById(R.id.btnDetailFav);
+        btnShowComment = findViewById(R.id.btnShowComment);
+        btnShowPhoto = findViewById(R.id.btnShowPhoto);
+        txtCommentOption = findViewById(R.id.txtCommentOption);
+        txtPhotoOption = findViewById(R.id.txtPhotoOption);
+
         utils = new ApiUtils();
         context = getBaseContext();
         mProgressDialog = new CustomProgressDialog(this);
         mProgressDialog.show();
-
         //------UI------------
+        loadUI();
+
+        //---------adapter-----------
+        loadAdapter();
+
+        //---------Listener--------
+        loadListener();
+
+        //---------Button---------
+        loadButton();
+    }
+
+    private void loadUI() {
         movie = (Movie) bundle.getSerializable("movie");
         Picasso.get()
                 .load(base_url_image + movie.getPosterPath())
@@ -121,20 +151,125 @@ public class CommentActivity extends AppCompatActivity {
             if (i != 0) reversedReleaseDay += "/";
         }
         txtDetailReleaseDate.setText("Release Day: " + reversedReleaseDay);
-        txtDetailGenre.setText("Genres: "+ Genres.changeGenresIdToName(movie.getGenres()));
-        txtDetailRating.setText("Rating: "+ movie.getVoteAverage());
+        txtDetailGenre.setText("Genres: " + Genres.changeGenresIdToName(movie.getGenres()));
+        txtDetailRating.setText("Rating: " + movie.getVoteAverage());
         movie_id = "" + movie.getId();
         mAuth = FirebaseAuth.getInstance();
+    }
 
-        //---------adapter-----------
+    private void loadAdapter() {
         comments = new ArrayList<>();
-        commentAdapter = new CommentAdapter(comments,this);
+        commentAdapter = new CommentAdapter(comments, this);
         commentRecView.setAdapter(commentAdapter);
         firebaseUtils = FirebaseUtils.getInstance();
         firebaseUtils.getComments(movie_id);
 
-        //---------Listener--------
-        if(firebaseUtils.isFavoriteMovie(movie.getId())){
+        images = new ArrayList<>();
+        photoAdapter = new BackdropAdapter(images, this);
+        photoRecView.setAdapter(photoAdapter);
+        photoRecView.setLayoutManager(new GridLayoutManager(this, 2));
+        utils.setApiUtilsImagesListener(new ApiUtilsImagesListener() {
+            @Override
+            public void onGetImagesDone(ArrayList<Image> data) {
+                onLoadImages(data);
+            }
+
+            @Override
+            public void onGetImagesError(String err) {
+
+            }
+        });
+        loadPhoto();
+    }
+
+    private void onLoadImages(ArrayList<Image> data) {
+        images.clear();
+        images.addAll(data);
+        photoAdapter.notifyDataSetChanged();
+    }
+
+    private void loadPhoto() {
+        images.clear();
+        photoAdapter.notifyDataSetChanged();
+        utils.getMovieImages(movie_id);
+    }
+
+    private void loadButton() {
+        refreshOptionMenu();
+        btnAddToFavMovies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressDialog.show();
+                if (firebaseUtils.isFavoriteMovie(movie.getId())) {
+                    firebaseUtils.deleteFromFavMovie(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie.getId(), 0, btnAddToFavMovies);
+                } else {
+                    firebaseUtils.addToFavMovies(0, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
+                            movie, btnAddToFavMovies);
+                }
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        btnTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = String.valueOf(movie_id);
+                utils.getTrailer(id);
+            }
+        });
+        btnSendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSendComment();
+            }
+        });
+        btnShowPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isShowComment = false;
+                refreshOptionMenu();
+            }
+        });
+        btnShowComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isShowComment = true;
+                refreshOptionMenu();
+            }
+        });
+    }
+
+    private void refreshOptionMenu() {
+        if (isShowComment) {
+            btnShowComment.setNeuBackgroundColor(getResources().getColor(R.color.orange));
+            btnShowPhoto.setNeuBackgroundColor(getResources().getColor(R.color.button_background));
+            txtCommentOption.setTextColor(getResources().getColor(R.color.white));
+            txtPhotoOption.setTextColor(getResources().getColor(R.color.text_color));
+            commentRecView.setVisibility(View.VISIBLE);
+            photoRecView.setVisibility(View.GONE);
+            edtCmt.setVisibility(View.VISIBLE);
+            btnSendComment.setVisibility(View.VISIBLE);
+            edtCommentBox.setVisibility(View.VISIBLE);
+        } else {
+            btnShowComment.setNeuBackgroundColor(getResources().getColor(R.color.button_background));
+            btnShowPhoto.setNeuBackgroundColor(getResources().getColor(R.color.orange));
+            txtCommentOption.setTextColor(getResources().getColor(R.color.text_color));
+            txtPhotoOption.setTextColor(getResources().getColor(R.color.white));
+            commentRecView.setVisibility(View.GONE);
+            photoRecView.setVisibility(View.VISIBLE);
+            edtCmt.setVisibility(View.GONE);
+            edtCommentBox.setVisibility(View.GONE);
+            btnSendComment.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void loadListener() {
+        if (firebaseUtils.isFavoriteMovie(movie.getId())) {
             btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.orange));
         } else {
             btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
@@ -162,7 +297,7 @@ public class CommentActivity extends AppCompatActivity {
               public void onGetCommentError(String err) {
               }
             });
-        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FireBaseUtilsRemoveFavoriteListener() {
+        firebaseUtils.setFireBaseUtilsRemoveFavoriteListener(new FirebaseUtilsRemoveFavoriteListener() {
             @Override
             public void onSuccess(int position, View view) {
                 btnAddToFavMovies.setBackgroundTintList(getResources().getColorStateList(R.color.white));
@@ -243,13 +378,14 @@ public class CommentActivity extends AppCompatActivity {
                     String dateComment = simpleDateFormat.format(date);
                     Float rating = ratingBar.getRating()*2;
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Comment comment = new Comment(user.getEmail(),content,rating,dateComment);
+                    assert user != null;
+                    Comment comment = new Comment(user.getUid(),user.getEmail(),content,rating,dateComment);
                     try{
                         firebaseUtils.writeComment(user.getUid(),movie_id,user.getEmail(),content,dateComment,rating);
                         if (isComment(user.getEmail()) != -1) {
                             comments.remove(isComment(user.getEmail()));
                         }
-                        comments.add(comment);
+                        comments.add(0, comment);
                         commentAdapter.notifyDataSetChanged();
                         edtCmt.getText().clear();
                         Toast.makeText(getBaseContext(),"Your comment has been posted!",Toast.LENGTH_LONG).show();

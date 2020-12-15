@@ -8,7 +8,15 @@
     android:background="@color/main_background"
     android:padding="12dp"
     tools:context=".activities.ProfileSettingActivity">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Account settings"
+        android:textSize="32sp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="30dp" />
 
     <androidx.cardview.widget.CardView
         app:cardBackgroundColor="@color/white"
@@ -35,26 +43,20 @@
                android:layout_height="wrap_content"
                android:gravity="center"
                android:padding="6dp"
-               android:textColor="@color/text_color"
+               android:textColor="@color/black"
                android:text="Change"
-               android:textSize="22dp"
+               android:textStyle="bold"
+               android:textAllCaps="true"
+               android:textSize="14sp"
                app:layout_constraintBottom_toBottomOf="parent" />
        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-<!--    <de.hdodenhof.circleimageview.CircleImageView-->
-<!--        android:layout_margin="16dp"-->
-<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--        android:id="@+id/imgAvatar"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_width="180dp"-->
-<!--        android:layout_height="180dp"-->
-<!--        android:src="@drawable/ic_launcher_background" />-->
 
     <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="6dp"
         app:cardRadius="50"
         app:enableHighlight="true"
         app:enableShadow="true"
@@ -69,7 +71,7 @@
         app:shadowDx="4dp"
         app:shadowDy="4dp"
         app:shadowRadius="16dp"
-        app:verticalPadding="8dp">
+        app:verticalPadding="4dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
@@ -83,7 +85,8 @@
                 android:id="@+id/tvGmailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
+                android:textSize="20sp"
+                android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/text_color"
                 android:text="Email: " />
@@ -92,31 +95,18 @@
                 android:id="@+id/txtProfileEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:layout_gravity="center"
                 android:textColor="@color/text_color"
                 android:text="@string/thuan_gmail_com" />
         </LinearLayout>
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
-
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/tvDisplayName"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:textSize="24sp"-->
-<!--        android:textColor="@color/text_color"-->
-<!--        android:text="Display Name:"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/tvGmailLabel"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvGmailLabel" />-->
-
    <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:layout_marginTop="12dp"
         app:cardRadius="50"
         app:enableHighlight="true"
         app:enableShadow="true"
@@ -131,7 +121,7 @@
         app:shadowDx="4dp"
         app:shadowDy="4dp"
         app:shadowRadius="16dp"
-        app:verticalPadding="8dp">
+        app:verticalPadding="4dp">
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_marginTop="16dp"
@@ -144,7 +134,8 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:textSize="24sp"
+               android:textSize="20sp"
+               android:layout_gravity="center"
                android:textStyle="bold"
                android:textColor="@color/text_color"
                android:text="Name: " />
@@ -154,7 +145,9 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:autofillHints=""
-               android:textSize="20sp"
+               android:textSize="18sp"
+               android:singleLine="true"
+               android:layout_gravity="center"
                android:textColor="@color/text_color"
                android:textColorHint="@color/text_color"
                android:background="@null"
@@ -168,8 +161,8 @@
         android:id="@+id/btnDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:layout_marginTop="10dp"
         app:cardRadius="50"
         app:enableHighlight="true"
         app:enableShadow="true"
@@ -191,9 +184,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="72dp"
-            android:text="DONE"
+            android:text="UPDATE"
             android:textColor="@color/text_color_alt"
             android:textSize="20sp"
             android:textStyle="bold" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
+
+    <TextView
+        android:id="@+id/tv_credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="@string/code_butchers"
+        android:textColor="@color/text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.977" />
 </LinearLayout>
