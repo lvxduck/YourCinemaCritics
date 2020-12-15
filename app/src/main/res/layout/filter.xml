@@ -10,30 +10,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/action"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Action"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/adventure"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb28"
-        app:layout_constraintTop_toBottomOf="@+id/cb28"
-        android:text="Adventure"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb28" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/animation"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb12"
-        app:layout_constraintTop_toBottomOf="@+id/cb12"
-        android:text="Animation"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb12" />
 
 
     <com.google.android.material.checkbox.MaterialCheckBox
@@ -41,30 +44,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/comedy"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb16"
-        app:layout_constraintTop_toBottomOf="@+id/cb16"
-        android:text="Comedy"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb16" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb80"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/crime"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb35"
-        app:layout_constraintTop_toBottomOf="@+id/cb35"
-        android:text="Crime"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb35" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb99"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/documentary"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb80"
-        app:layout_constraintTop_toBottomOf="@+id/cb80"
-        android:text="Documentary"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb80" />
 
     <TextView
         android:id="@+id/textView22"
@@ -80,40 +86,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/drama"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb99"
-        app:layout_constraintTop_toBottomOf="@+id/cb99"
-        android:text="Drama"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb99" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb10751"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/family"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb18"
-        app:layout_constraintTop_toBottomOf="@+id/cb18"
-        android:text="Family"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb18" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/fantasy"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb10751"
-        app:layout_constraintTop_toBottomOf="@+id/cb10751"
-        android:text="Fantasy"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb10751" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/history"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb14"
-        app:layout_constraintTop_toBottomOf="@+id/cb14"
-        android:text="History"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb14" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb27"
@@ -121,89 +131,98 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/horror"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Horror"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb10402"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/music"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb27"
-        app:layout_constraintTop_toBottomOf="@+id/cb27"
-        android:text="Music"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb27" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb9648"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/mystery"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb10402"
-        app:layout_constraintTop_toBottomOf="@+id/cb10402"
-        android:text="Mystery"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb10402" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb10749"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/romance"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb9648"
-        app:layout_constraintTop_toBottomOf="@+id/cb9648"
-        android:text="Romance"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb9648" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb878"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/science_fiction"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb10749"
-        app:layout_constraintTop_toBottomOf="@+id/cb10749"
-        android:text="Science fiction"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb10749" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb10770"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/tv_movie"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb878"
-        app:layout_constraintTop_toBottomOf="@+id/cb878"
-        android:text="TV Movie"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb878" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb53"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/thriller"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb10770"
-        app:layout_constraintTop_toBottomOf="@+id/cb10770"
-        android:text="Thriller"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb10770" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb10752"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/war"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb53"
-        app:layout_constraintTop_toBottomOf="@+id/cb53"
-        android:text="War"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb53" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb37"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/orange"
+        android:fontFamily="@font/raleway"
+        android:text="@string/western"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/cb10752"
-        app:layout_constraintTop_toBottomOf="@+id/cb10752"
-        android:text="Western"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/cb10752" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

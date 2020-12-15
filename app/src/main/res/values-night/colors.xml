@@ -16,6 +16,7 @@
     <color name="dark_grey">#A12C2C2C</color>
     <color name="light_grey">#343A3A3A</color>
     <color name="transparent_background">#D5252933</color>
+    <color name="transparent_dark">#23000000</color>
     <color name="text_color">#EAEAEA</color>
     <color name="text_color_alt">#EAEAEA</color>
     <color name="icon_inactive">#E2FFFFFF</color>

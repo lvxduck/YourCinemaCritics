@@ -17,6 +17,7 @@
     <color name="yellow_stars">#FFC337</color>
     <color name="dark_grey">#A12C2C2C</color>
     <color name="transparent_background">#D2FFFFFF</color>
+    <color name="transparent_dark">#23000000</color>
     <color name="text_color_alt">#EAEAEA</color>
     <color name="text_color">#1C1A1A</color>
     <color name="icon_inactive">#5A5A5A</color>

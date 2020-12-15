@@ -9,11 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.models.firebaseModels.Comment;
 import com.lduwcs.yourcinemacritics.uiComponents.StarRate;
@@ -44,6 +41,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     Log.d("TAG123", "onGetNameDone: " + path);
                     Picasso.get()
                             .load(path)
+                            .placeholder(R.drawable.spinner4)
+                            .centerCrop()
                             .fit()
                             .into(imgAvatar);
                 }
@@ -75,11 +74,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        private StarRate srCmt;
-        private TextView txtCmtDate;
-        private TextView txtCmtEmail;
-        private TextView txtCmtContent;
-        private ImageView imgCmtAvatar;
+        private final StarRate srCmt;
+        private final TextView txtCmtDate;
+        private final TextView txtCmtEmail;
+        private final TextView txtCmtContent;
+        private final ImageView imgCmtAvatar;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);

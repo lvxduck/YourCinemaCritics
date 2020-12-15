@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/raleway"
         android:text="@string/login"
         android:textColor="@color/text_color"
         android:textSize="32sp"
@@ -53,6 +54,7 @@
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:background="@null"
+            android:fontFamily="@font/raleway"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:padding="8dp"
@@ -91,13 +93,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:textSize="20sp"
+            android:background="@null"
+            android:fontFamily="@font/raleway"
+            android:hint="@string/password"
+            android:inputType="textPassword"
             android:padding="8dp"
             android:textColor="@color/text_color"
             android:textColorHint="@color/text_color"
-            android:background="@null"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:textSize="20sp" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
     <com.thelumiereguy.neumorphicview.views.NeumorphicCardView
@@ -128,6 +131,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway"
             android:paddingHorizontal="72dp"
             android:text="@string/sign_in"
             android:textColor="@color/text_color_alt"
@@ -139,9 +143,10 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_color"
-        android:text="@string/or"
         android:layout_marginVertical="16dp"
+        android:fontFamily="@font/raleway"
+        android:text="@string/or"
+        android:textColor="@color/text_color"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/btnSignIn"
         app:layout_constraintStart_toStartOf="@+id/btnSignIn"
@@ -175,13 +180,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
+            android:drawablePadding="7dp"
+            android:fontFamily="@font/raleway"
             android:text="@string/sign_in_with_google"
             android:textColor="@color/text_color_alt"
-            android:drawablePadding="7dp"
             android:textSize="20sp"
-            android:layout_gravity="center"
             android:textStyle="bold"
             app:drawableLeftCompat="@drawable/ic_google" />
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -199,22 +205,25 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_color"
-            android:text="@string/not_registered_an_account_yet" />
+            android:fontFamily="@font/raleway"
+            android:text="@string/not_registered_an_account_yet"
+            android:textColor="@color/text_color" />
 
         <TextView
             android:id="@+id/btnCreateAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/orange"
             android:layout_marginStart="8dp"
-            android:text="@string/create_new_account" />
+            android:fontFamily="@font/raleway"
+            android:text="@string/create_new_account"
+            android:textColor="@color/orange" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway"
         android:text="@string/code_butchers"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="parent"

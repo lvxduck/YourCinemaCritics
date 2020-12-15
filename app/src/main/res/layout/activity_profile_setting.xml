@@ -8,15 +8,17 @@
     android:background="@color/main_background"
     android:padding="12dp"
     tools:context=".activities.ProfileSettingActivity">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Account settings"
-        android:textSize="32sp"
-        android:textColor="@color/text_color"
-        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/raleway"
         android:gravity="center"
-        android:layout_marginTop="30dp" />
+        android:text="@string/account_settings"
+        android:textColor="@color/text_color"
+        android:textSize="32sp"
+        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         app:cardBackgroundColor="@color/white"
@@ -31,23 +33,26 @@
            android:id="@+id/ss"
            android:layout_width="match_parent"
            android:layout_height="match_parent">
+
            <ImageView
                android:id="@+id/imgAvatar"
                android:background="@color/white"
                android:layout_width="match_parent"
-               android:layout_height="match_parent"/>
+               android:layout_height="match_parent"
+               android:contentDescription="@string/avatar" />
 
            <TextView
-               android:background="@color/transparent_white"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+               android:background="@color/transparent_white"
+               android:fontFamily="@font/raleway"
                android:gravity="center"
                android:padding="6dp"
-               android:textColor="@color/black"
-               android:text="Change"
-               android:textStyle="bold"
+               android:text="@string/change"
                android:textAllCaps="true"
+               android:textColor="@color/black"
                android:textSize="14sp"
+               android:textStyle="bold"
                app:layout_constraintBottom_toBottomOf="parent" />
        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -81,25 +86,29 @@
             android:layout_marginRight="32dp"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/tvGmailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_gravity="center"
-                android:textStyle="bold"
+                android:fontFamily="@font/raleway"
+                android:text="@string/email"
                 android:textColor="@color/text_color"
-                android:text="Email: " />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtProfileEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="18sp"
                 android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/roboto"
+                android:singleLine="true"
+                android:text="@string/thuan_gmail_com"
                 android:textColor="@color/text_color"
-                android:text="@string/thuan_gmail_com" />
+                android:textSize="18sp" />
         </LinearLayout>
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
 
@@ -131,27 +140,32 @@
            android:layout_marginRight="32dp"
            android:orientation="horizontal"
            android:layout_height="wrap_content">
+
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:textSize="20sp"
                android:layout_gravity="center"
-               android:textStyle="bold"
+               android:fontFamily="@font/raleway"
+               android:text="@string/name"
                android:textColor="@color/text_color"
-               android:text="Name: " />
+               android:textSize="20sp"
+               android:textStyle="bold" />
 
            <EditText
                android:id="@+id/edtName"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:autofillHints=""
-               android:textSize="18sp"
-               android:singleLine="true"
                android:layout_gravity="center"
+               android:layout_marginStart="8dp"
+               android:autofillHints=""
+               android:background="@null"
+               android:fontFamily="@font/roboto"
+               android:hint="@string/enter_your_name"
+               android:inputType="text"
+               android:singleLine="true"
                android:textColor="@color/text_color"
                android:textColorHint="@color/text_color"
-               android:background="@null"
-               android:hint="Enter your name"/>
+               android:textSize="18sp" />
        </LinearLayout>
 
     </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>
@@ -180,11 +194,12 @@
         app:verticalPadding="12dp">
 
         <TextView
-            android:layout_margin="26dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="26dp"
+            android:fontFamily="@font/raleway"
             android:paddingHorizontal="72dp"
-            android:text="UPDATE"
+            android:text="@string/update"
             android:textColor="@color/text_color_alt"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -196,6 +211,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway"
         android:text="@string/code_butchers"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="parent"

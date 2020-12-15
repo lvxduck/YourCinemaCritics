@@ -1,5 +1,6 @@
 package com.lduwcs.yourcinemacritics.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -40,21 +41,22 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
                 .load(base_url_image_500 + images.get(position).getFilePath())
                 .centerCrop()
                 .fit()
-                .placeholder(R.drawable.no_preview)
+                .placeholder(R.drawable.spinner4)
                 .into(holder.ivBackdrop);
 
         holder.ivBackdrop.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("InflateParams")
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View layout = null;
+                View layout;
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 layout = inflater.inflate(R.layout.image_fullscreen, null);
                 Picasso.get()
                         .load(base_url_image_original + images.get(position).getFilePath())
                         .centerInside()
                         .fit()
-                        .placeholder(R.drawable.no_preview)
+                        .placeholder(R.drawable.spinner4)
                         .into((ImageView)layout.findViewById(R.id.iv_backdrop_fullscreen));
                 builder.setView(layout);
                 builder.show();
