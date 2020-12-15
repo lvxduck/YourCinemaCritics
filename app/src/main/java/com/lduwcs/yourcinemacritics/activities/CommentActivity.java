@@ -36,8 +36,11 @@ import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.ApiUtils;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -146,7 +149,8 @@ public class CommentActivity extends AppCompatActivity {
         firebaseUtils.setFireBaseUtilsCommentListener(new FireBaseUtilsCommentListener() {
               @Override
               public void onGetCommentDone(ArrayList<Comment> data) {
-                  comments.addAll(data);
+
+                  comments.addAll(sortCommentByDate(data));
                   commentAdapter.notifyDataSetChanged();
                   mProgressDialog.dismiss();
               }
@@ -287,5 +291,23 @@ public class CommentActivity extends AppCompatActivity {
         if(imm.isAcceptingText()) { // verify if the soft keyboard is open
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+    @SuppressLint("SimpleDateFormat")
+    private ArrayList<Comment> sortCommentByDate(ArrayList<Comment> comments){
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                Date date1 = new Date();
+                Date date2 = new Date();
+                try {
+                    date1=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(o1.getDate());
+                    date2=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(o2.getDate());
+                } catch (ParseException e) {
+                    Log.d("DUC", "compare: "+e.getMessage());
+                }
+                return date2.compareTo(date1);
+            }
+        });
+        return comments;
     }
 }

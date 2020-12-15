@@ -76,15 +76,16 @@
             app:srIconSize="20dp"
             app:srRate="5" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:paddingTop="6dp"
             android:id="@+id/imgCmtAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_name"
             android:contentDescription="@string/avatar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.thelumiereguy.neumorphicview.views.NeumorphicCardView>

@@ -29,6 +29,7 @@ import com.lduwcs.yourcinemacritics.R;
 import com.lduwcs.yourcinemacritics.activities.LoginActivity;
 import com.lduwcs.yourcinemacritics.activities.MainActivity;
 import com.lduwcs.yourcinemacritics.activities.ProfileSettingActivity;
+import com.lduwcs.yourcinemacritics.uiComponents.CustomProgressDialog;
 import com.lduwcs.yourcinemacritics.uiComponents.NeuButton;
 import com.lduwcs.yourcinemacritics.utils.FirebaseUtils;
 import com.lduwcs.yourcinemacritics.utils.listeners.FirebaseUtilsGetUserInfoListener;
@@ -44,6 +45,9 @@ public class ProfileFragment extends Fragment {
     private ImageView imgAvatar;
     FirebaseUser user;
     FirebaseUtils firebaseUtils;
+    private CustomProgressDialog mDialog;
+
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -85,6 +89,7 @@ public class ProfileFragment extends Fragment {
             });
             builder.show();
         });
+        mDialog = new CustomProgressDialog(getContext());
 
         swDarkMode = view.findViewById(R.id.btnDarkMode);
         if (MainActivity.isDarkMode)
@@ -108,11 +113,14 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
     }
     public void onResume() {
         Log.d("111", "onResume: ");
         super.onResume();
         if (user != null) {
+            mDialog.show();
             firebaseUtils.getUserInfo(user.getUid(), null, null, 0);
             firebaseUtils.setFirebaseUtilsGetUserNameListener(new FirebaseUtilsGetUserInfoListener() {
                 @Override
@@ -129,6 +137,7 @@ public class ProfileFragment extends Fragment {
                                 .fit()
                                 .into(imgAvatar);
                     }
+                    mDialog.dismiss();
                 }
             });
         }

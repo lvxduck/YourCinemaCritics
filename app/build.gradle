@@ -67,12 +67,13 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     //YoutubePlayerAPI
     implementation 'com.google.firebase:firebase-database'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
 
-
+    //Circle imageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
