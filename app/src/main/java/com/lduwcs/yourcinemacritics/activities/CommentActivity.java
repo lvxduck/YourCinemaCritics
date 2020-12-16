@@ -144,12 +144,17 @@ public class CommentActivity extends AppCompatActivity {
         txtDetailTitle.setText(movie.getTitle());
         txtDetailOverview.setText(movie.getOverview());
         String[] releaseDayArray = movie.getReleaseDay().split("-");
-        StringBuilder reversedReleaseDay = new StringBuilder();
-        for (int i = 2; i >= 0; i--) {
-            reversedReleaseDay.append(releaseDayArray[i]);
-            if (i != 0) reversedReleaseDay.append("/");
+        if(releaseDayArray.length == 3){
+            StringBuilder reversedReleaseDay = new StringBuilder();
+            for (int i = 2; i >= 0; i--) {
+                reversedReleaseDay.append(releaseDayArray[i]);
+                if (i != 0) reversedReleaseDay.append("/");
+            }
+            txtDetailReleaseDate.setText("Release Day: " + reversedReleaseDay);
         }
-        txtDetailReleaseDate.setText("Release Day: " + reversedReleaseDay);
+        else{
+            txtDetailReleaseDate.setText("Release Day: unknown");
+        }
         txtDetailGenre.setText("Genres: " + Genres.changeGenresIdToName(movie.getGenres()));
         txtDetailRating.setText(movie.getVoteAverage() + "/10");
         movie_id = "" + movie.getId();
